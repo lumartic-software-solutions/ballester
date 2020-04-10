@@ -28,7 +28,7 @@ class BillOfLading(models.Model):
     obervations = fields.Text('Observations')
     collection_id = fields.Many2one('collection.order', "Collection Order")
     sale_id = fields.Many2one('sale.order', "Sale Order")
-    purchase_id = fields.Many2one('puchase.order', "Purchase Order")
+    purchase_id = fields.Many2one('purchase.order', "Purchase Order")
 
     @api.model
     def default_get(self, default_fields):
