@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_teixo_document_form" model="ir.ui.view">
+        <field name="name">document.teixo.form</field>
+        <field name="model">document.teixo</field>
+        <field name="arch" type="xml">
+            <form string="Teixo Document" class="o_sale_order" create="0">
+                <header>
+                    <button name="connect_teixo" type="object"
+                        string="Connect Teixo" class="btn-primary"
+                        attrs="{'invisible':[('document_sent','=',True)]}" />
+                    <button name="connect_teixo" type="object"
+                        string="Resend Document" class="btn-primary"
+                        attrs="{'invisible':[('document_sent','!=',True)]}" />
+                    <button name="send_to_admin" type="object"
+                        string="Send To Administration" class="btn-primary"
+                        attrs="{'invisible':['|','|',('document_sent','!=',True),('enviar_admon','=',True)]}" />
+                    <button name="send_to_admin" type="object"
+                        string="Resend To Administration" class="btn-primary"
+                        attrs="{'invisible':[('enviar_admon','!=',True)]}" />
+                    <button name="check_with_administration" type="object"
+                        string="Check Status With Administration" class="btn-primary"
+                        attrs="{'invisible':[('enviar_admon','!=',True)]}" />
+                    <button
+                        name="%(ballester_teixo.change_di_state_wizard_action)d"
+                        type="action" string="Change DI State"
+                        attrs="{'invisible': ['|',('doc_type', '!=', 'di'),('state_di','=','cerrado')]}"
+                        class="primary" />
+                    <button name="doc_annul" type="object"
+                        string="Annul Document" class="btn-primary"
+                        attrs="{'invisible':[('document_sent','!=',True)]}" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="codigo" />
+                            <field name="document_sent" invisible='1'/>
+                            <field name="doc_type" />
+                            <field name="nt_id"
+                                attrs="{'invisible': [('doc_type', '!=','di')]}"
+                                context="{'rdoc_type' : 'nt','rdoc_source':doc_source,'collection':collection_line_id,
+                                'sale':sale_line_id,'purchase':purchase_line_id,'move':move_id,'partner':productor_center_id}" 
+				domain="[('productor_center_id','=',productor_center_id),('doc_type','=','nt'),('productor_residue_id','=',productor_residue_id)]"
+
+					/>
+                            <field name="ct_id"
+                                attrs="{'invisible': [('doc_type', 'not in', ['di','nt'])]}"
+                                context="{'rdoc_type' : 'ct','rdoc_source':doc_source,'collection':collection_line_id,
+                                'sale':sale_line_id,'purchase':purchase_line_id,'move':move_id,'partner':productor_center_id}"
+
+				domain="[('productor_center_id','=',productor_center_id),('doc_type','=','ct'),('productor_residue_id','=',productor_residue_id)]"/>
+                            <field name="enviar_admon" readonly='1' />
+                            <field name="estado_admon" readonly='1'
+                                attrs="{'invisible':[('enviar_admon','!=',True)]}" />
+                            <field name="error_envio_admon" readonly='1'
+                                attrs="{'invisible':[('error_envio_admon','=','/')]}" />
+                            <field name="productor_residue_id"
+                                attrs="{'invisible': [('doc_type', 'not in', ['di','ct'])],'required': [('doc_type', 'in', ['di','ct'])]}" />
+                            <field name="gestor_residue_id"
+                                attrs="{'invisible': [('doc_type', 'not in', ['di','ct'])],'required': [('doc_type', 'in', ['di','ct'])]}" />
+                            <field name="residue_id"
+                                attrs="{'invisible': [('doc_type', '!=', 'nt')],'required': [('doc_type', '=', 'nt')]}" />
+                            <field name="start_date_di"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')],'required': [('doc_type', '==', 'di')]}" />
+                            <field name="real_qty"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="gross_weight_residue"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="net_weight_residue"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="acceptance_id"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="incedence_id_1"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="incedence_id_2"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="date_transfer"
+                                attrs="{'invisible': [('doc_type', 'not in', ['nt','ct'])],'required': [('doc_type', 'in', ['nt','ct'])]}" />
+                            <field name="date_validity"
+                                attrs="{'invisible': [('doc_type', 'not in', ['nt','ct'])],'required': [('doc_type', 'in', ['nt','ct'])]}" />
+                        </group>
+                        <group>
+                            <field name="teixo_doc_url" widget="url" readonly='1' />
+                            <field name="doc_source" readonly='1' />
+                            <field name="sale_line_id"
+                                attrs="{'invisible': [('sale_line_id', '=', False)]}" />
+                            <field name="collection_sale_id"
+                                attrs="{'invisible': [('collection_sale_id', '=', False)]}" />
+                            <field name="collection_line_id"
+                                attrs="{'invisible': [('collection_line_id', '=', False)]}" />
+                            <field name="move_id"
+                                attrs="{'invisible': [('move_id', '=', False)]}" />
+                            <field name="purchase_line_id"
+                                attrs="{'invisible': [('purchase_line_id', '=', False)]}" />
+                            <field name="collection_purchase_id"
+                                attrs="{'invisible': [('collection_purchase_id', '=', False)]}" />
+                            <field name="productor_center_id"
+                                domain="[('center_type','=','producer'),('type','=','center')]"
+                                required='1' />
+                            <field name="gestor_center_id"
+                                domain="[('center_type','=','manager'),('type','=','center')]"
+                                required='1' />
+                            <field name="transportista_center_id"
+                                domain="[('center_type','=','carrier'),('type','=','center')]"
+                                attrs="{'invisible': [('doc_type', 'not in', ['di','nt'])],'required': [('doc_type', 'in', ['di','nt'])]}" />
+                            <field name="explotador_productor_center_id"
+                                domain="[('center_type','=','exploiter_producer'),('type','=','center')]" />
+                            <field name="explotador_gestor_center_id"
+                                domain="[('center_type','=','exploiter_gestor'),('type','=','center')]" />
+                            <field name="operador_center_id"
+                                domain="[('center_type','=','operator'),('type','=','center')]" />
+                            <field name="gestor_final_1_center_id"
+                                domain="[('center_type','=','final_manager_1'),('type','=','center')]"
+                                attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
+                            <field name="gestor_final_2_center_id"
+                                domain="[('center_type','=','final_manager_2'),('type','=','center')]"
+                                attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
+                            <field name="gestor_final_3_center_id"
+                                domain="[('center_type','=','final_manager_3'),('type','=','center')]"
+                                attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
+                            <field name="state_di"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="data_admission"
+                                attrs="{'invisible': [('doc_type', '!=', 'ct')]}" />
+                            <field name="consecuencias_legales"
+                                attrs="{'invisible': [('doc_type', '!=', 'ct')]}" />
+                            <field name="parametros_admision"
+                                attrs="{'invisible': [('doc_type', '!=', 'ct')]}" />
+                            <field name="acceptance_date"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="incedence1_observation"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                            <field name="incedence2_observation"
+                                attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_teixo_document_tree" model="ir.ui.view">
+        <field name="name">document.teixo.tree</field>
+        <field name="model">document.teixo</field>
+        <field name="arch" type="xml">
+            <tree string="Teixo Document" class="o_sale_order" create="0">
+                <field name="doc_type" />
+                <field name="doc_source" />
+                <field name="codigo" />
+                <field name="teixo_doc_url" />
+                <field name="productor_center_id" />
+                <field name="gestor_center_id" />
+                <field name="transportista_center_id" />
+                <field name="residue_id" />
+                <field name="productor_residue_id" />
+                <field name="gestor_residue_id" />
+                <field name="sale_line_id" />
+                <field name="move_id" />
+                <field name="purchase_line_id" />
+                <field name="state_di" />
+            </tree>
+        </field>
+    </record>
+
+
+    <menuitem id="teixo_menu_root" name="Teixo"
+        web_icon="ballester_teixo,static/description/icon.png" sequence="8" />
+
+    <menuitem id="teixo_annual_menu" name="Annualed"
+        parent="teixo_menu_root" sequence="1" />
+
+    <record id="action_teixo_annual_nt"
+        model="ir.actions.act_window">
+        <field name="name">NT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('doc_source', '=', 'annual'),('doc_type', '=',
+            'nt')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_annual_nt" name="NT"
+        action="action_teixo_annual_nt" parent="teixo_annual_menu"
+        sequence="2" />
+
+    <record id="action_teixo_annual" model="ir.actions.act_window">
+        <field name="name">Annual Teixo Documents</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_doc_source': 'annual'}</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <record id="action_teixo_annual_ct"
+        model="ir.actions.act_window">
+        <field name="name">CT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('doc_source', '=', 'annual'),('doc_type', '=',
+            'ct')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_annual_ct" name="CT"
+        action="action_teixo_annual_ct" parent="teixo_annual_menu"
+        sequence="2" />
+
+    <menuitem id="teixo_sales_menu" name="From Sales"
+        parent="teixo_menu_root" sequence="2" />
+
+    <record id="action_teixo_sales" model="ir.actions.act_window">
+        <field name="name">Teixo Document From Sales Order</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_teixo_document_form" />
+        <field name="context">{'default_doc_source': 'sale'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_teixo_sales_nt" model="ir.actions.act_window">
+        <field name="name">NT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'sale'),('doc_type', '=',
+            'nt')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_sales_nt" name="NT"
+        action="action_teixo_sales_nt" parent="teixo_sales_menu" sequence="2" />
+
+
+    <record id="action_teixo_sales_ct" model="ir.actions.act_window">
+        <field name="name">CT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'sale'),('doc_type', '=',
+            'ct')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_sales_ct" name="CT"
+        action="action_teixo_sales_ct" parent="teixo_sales_menu" sequence="2" />
+
+
+    <record id="action_teixo_sales_di" model="ir.actions.act_window">
+        <field name="name">DI</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'sale'),('doc_type', '=',
+            'di')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_sales_di" name="DI"
+        action="action_teixo_sales_di" parent="teixo_sales_menu" sequence="2" />
+
+
+
+    <menuitem id="teixo_purchase_menu" name="From Purchase"
+        parent="teixo_menu_root" sequence="2" />
+
+    <record id="action_teixo_purchase" model="ir.actions.act_window">
+        <field name="name">Teixo Documents From Purchase Order</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_teixo_document_form" />
+        <field name="context">{'default_doc_source': 'purchase'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_teixo_purchase_nt"
+        model="ir.actions.act_window">
+        <field name="name">NT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'purchase'),('doc_type', '=',
+            'nt')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_purchase_nt" name="NT"
+        action="action_teixo_purchase_nt" parent="teixo_purchase_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_purchase_ct"
+        model="ir.actions.act_window">
+        <field name="name">CT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'purchase'),('doc_type', '=',
+            'ct')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_purchase_ct" name="CT"
+        action="action_teixo_purchase_ct" parent="teixo_purchase_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_purchase_di"
+        model="ir.actions.act_window">
+        <field name="name">DI</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'purchase'),('doc_type',
+            '=','di')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_purchase_di" name="DI"
+        action="action_teixo_purchase_di" parent="teixo_purchase_menu"
+        sequence="2" />
+
+    <menuitem id="teixo_collection_menu" name="From Collections"
+        parent="teixo_menu_root" sequence="1" />
+
+    <record id="action_teixo_collection"
+        model="ir.actions.act_window">
+        <field name="name">Teixo Document From Collection Order</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_teixo_document_form" />
+        <field name="context">{'default_doc_source': 'collection'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_teixo_collection_nt"
+        model="ir.actions.act_window">
+        <field name="name">NT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'collection'),('doc_type', '=',
+            'nt')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_collection_nt" name="NT"
+        action="action_teixo_collection_nt" parent="teixo_collection_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_collection_ct"
+        model="ir.actions.act_window">
+        <field name="name">CT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'collection'),('doc_type', '=',
+            'ct')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_collection_ct" name="CT"
+        action="action_teixo_collection_ct" parent="teixo_collection_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_collection_di"
+        model="ir.actions.act_window">
+        <field name="name">DI</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'collection'),('doc_type',
+            '=','di')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_collection_di" name="DI"
+        action="action_teixo_collection_di" parent="teixo_collection_menu"
+        sequence="2" />
+
+    <menuitem id="teixo_operation_menu" name="From Operations"
+        parent="teixo_menu_root" sequence="2" />
+
+    <record id="action_teixo_operation"
+        model="ir.actions.act_window">
+        <field name="name">Teixo Documents From Operation</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_teixo_document_form" />
+        <field name="context">{'default_doc_source': 'operation'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_teixo" model="ir.actions.act_window">
+        <field name="name">Teixo Documents</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_teixo_document_form" />
+        <field name="target">new</field>
+        <field name="context">{'default_doc_source': 'collection'}</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+    </record>
+
+    <record id="action_teixo_operation_nt"
+        model="ir.actions.act_window">
+        <field name="name">NT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'operation'),('doc_type', '=',
+            'nt')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_operation_nt" name="NT"
+        action="action_teixo_operation_nt" parent="teixo_operation_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_operation_ct"
+        model="ir.actions.act_window">
+        <field name="name">CT</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'operation'),('doc_type', '=',
+            'ct')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_operation_ct" name="CT"
+        action="action_teixo_operation_ct" parent="teixo_operation_menu"
+        sequence="2" />
+
+
+    <record id="action_teixo_operation_di"
+        model="ir.actions.act_window">
+        <field name="name">DI</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">document.teixo</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="search_view_id" ref="sale_order_view_search_inherit_sale" 
+            /> -->
+        <field name="domain">[('doc_source', '=', 'operation'),('doc_type',
+            '=','di')]
+        </field>
+    </record>
+
+    <menuitem id="menu_teixo_operation_di" name="DI"
+        action="action_teixo_operation_di" parent="teixo_operation_menu"
+        sequence="2" />
+
+    <menuitem id="menu_teixo_config" name="Configuration"
+        parent="teixo_menu_root" sequence="10" />
+
+    <record id="view_res_acceptance_tree" model="ir.ui.view">
+        <field name="name">res.acceptance.tree</field>
+        <field name="model">res.acceptance</field>
+        <field name="arch" type="xml">
+            <tree string="CodeVia">
+                <field name="code" />
+                <field name="description" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_res_acceptance" model="ir.actions.act_window">
+        <field name="name">Acceptance Type Code</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.acceptance</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_res_acceptance"
+        action="action_res_acceptance" name="Acceptance Type Code"
+        parent="menu_teixo_config" sequence="17" />
+
+    <record id="view_res_incidence_tree" model="ir.ui.view">
+        <field name="name">res.incidence.tree</field>
+        <field name="model">res.incidence</field>
+        <field name="arch" type="xml">
+            <tree string="Incidence">
+                <field name="code" />
+                <field name="description" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_res_incidence" model="ir.actions.act_window">
+        <field name="name">Incidence Type Code</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.incidence</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_res_incidence"
+        action="action_res_incidence" name="Incidence Type Code"
+        parent="menu_teixo_config" sequence="18" />
+
+</odoo>

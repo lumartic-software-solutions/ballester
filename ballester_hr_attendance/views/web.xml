@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ -*- coding: utf-8 -*-
+ Odoo, Open Source  Ballester Hr Attendance.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).  
+-->
+<odoo>
+	<data>
+		<!-- apps icon set as none -->
+		<template id="webclient_bootstrap_inherit" inherit_id="web.webclient_bootstrap" name="App
+			Drawer - Web Client" >
+			<xpath expr="//i[@class='fa fa-th fa-lg app-drawer-icon-open']" position="replace">
+				<i class="fa fa-th fa-lg app-drawer-icon-open" t-translation="off" aria-hidden="true"
+					id="apps_icon" style="display: block; " />
+			</xpath>
+		</template>
+		
+		
+		
+	</data>
+</odoo>

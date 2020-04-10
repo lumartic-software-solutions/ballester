@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Survey Extend .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		 <!-- Menu for Incidents Report -->
+		 <record model="ir.actions.act_window" id="action_survey_user_input_line_extend">
+            <field name="name">Incidents Report</field>
+            <field name="res_model">survey.user_input_line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="survey.survey_response_line_search"/>
+            <field name="context">{'search_default_execution_type': 'send_mail'}</field>
+        </record>
+        
+		<!-- Menu for Incidents Report -->
+		<menuitem name="Incidents Report" id="menu_incidents_report" action="ballester_survey_extend.action_survey_user_input_line_extend" parent="survey.menu_surveys" sequence="1"/>
+	</data>
+</odoo>

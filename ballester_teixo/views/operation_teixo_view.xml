@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_view_move_form_teixo" model="ir.ui.view">
+        <field name="name">stock.move.form.teixo</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_picking_form" />
+        <field name="arch" type="xml">
+            <header position='inside'>
+                <button name="%(action_teixo_operation)d" id="operation_teixo_create_btn"
+                    type="action" string="Create Teixo Document" class="oe_highlight" />
+            </header>
+        </field>
+    </record>
+    
+    <record id="picking_form_view_teixo" model="ir.ui.view">
+        <field name="name">Operations</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+         <field name="arch" type="xml">
+             <div name="button_box" position="inside">
+                <button name="button_teixoct_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_ct_count" widget="statinfo" />
+                </button>
+                <button name="button_teixont_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_nt_count" widget="statinfo" />
+                </button>
+                <button name="button_teixodi_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_di_count" widget="statinfo" />
+                </button>
+             </div>
+         </field>
+    </record>
+</odoo>

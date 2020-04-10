@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ballester_invocie_collection_view_inherit_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="collection_id" />
+		<field name="source_location_id" />
+		<field name="destination_location_id"/>
+            </field>
+        </field>
+    </record>
+
+	<record id="ballester_invocie_purchase_collection_view_inherit_form" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form" />
+        <field name="arch" type="xml">
+            <field name="purchase_id" position="after">
+                <field name="collection_id" />
+		<field name="source_location_id" />
+		<field name="destination_location_id"/>
+            </field>
+        </field>
+    </record>
+
+
+
+</odoo>

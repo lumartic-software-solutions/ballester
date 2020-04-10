@@ -1,0 +1,22 @@
+<odoo>
+	
+	<data>
+		<!--  product template inherit form view -->
+		<record id="inherit_form_fleet_vehicle" model="ir.ui.view">
+			<field name="name">fleet.vehicle.form</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='license_plate']" position="after">
+					<label for="license_trailer" class="oe_edit_only"/>
+					<h2>
+						<field name="license_trailer" class="oe_inline"/>
+					</h2>
+				</xpath>
+				<xpath expr="//field[@name='driver_id']" position="after">
+					<field name="carrier_id" context="{'show_carrier':True}"/>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

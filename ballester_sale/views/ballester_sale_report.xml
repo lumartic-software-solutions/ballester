@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- QWeb Reports -->
+		<record id="custom_ballester_sale_paperformat" model="report.paperformat">
+			<field name="name">Ballester Sale</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_height">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">40</field>
+			<field name="margin_bottom">30</field>
+			<field name="margin_left">7</field>
+			<field name="margin_right">7</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">35</field>
+			<field name="dpi">90</field>
+		</record>
+		
+		<record id="delivery_note_ballester_sale_paperformat" model="report.paperformat">
+			<field name="name">Ballester Sale Delivery Note</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_height">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_bottom">45</field>
+			<field name="margin_left">7</field>
+			<field name="margin_right">7</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">90</field>
+		</record>
+		<report id="delivery_note_sale_report" model="sale.order" string="Delivery Notes"
+			report_type="qweb-pdf" name="ballester_sale.report_delivery_note_sale" file="ballester_sale.report_delivery_note_sale"
+			menu="True"  paperformat="ballester_sale.delivery_note_ballester_sale_paperformat"  />
+		
+		<report id="container_cleaning_certificates_sale_report" model="sale.order" string="Container
+			Cleaning Certificates" report_type="qweb-pdf" name="ballester_sale.report_container_cleaning_certificates_sale"
+			file="ballester_sale.report_container_cleaning_certificates_sale" menu="True" paperformat="ballester_sale.custom_ballester_sale_paperformat"/>
+		
+		<report id="container_washing_certificates_sale_report" model="sale.order" string="Container
+			Washing Certificates" report_type="qweb-pdf" name="ballester_sale.report_container_washing_certificates_sale"
+			file="ballester_sale.report_container_washing_certificates_sale" menu="True" paperformat="ballester_sale.custom_ballester_sale_paperformat"/>
+		
+		<report id="drum_certificates_sddr_sale_report" model="sale.order" string="Drum Certificates
+			Sddr" report_type="qweb-pdf" name="ballester_sale.report_drum_certificates_sddr_sale"
+			file="ballester_sale.report_drum_certificates_sddr_sale" menu="True" />
+		
+		<!--<report id="consignment_note_control_report" model="sale.order" string="Consignment
+			Note" report_type="qweb-pdf" name="ballester_sale.report_consignment_note_control"
+			file="ballester_sale.report_consignment_note_control" menu="True" />-->
+	</data>
+</odoo>     

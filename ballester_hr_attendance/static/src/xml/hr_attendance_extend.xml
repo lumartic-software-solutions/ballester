@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Hr Attendance. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<template xml:space="preserve">
+	<!-- ================  Attendance Screen ================-->
+	<t t-extend="HrAttendanceGreetingMessage">
+		<!-- ================  Attendance Check In ================-->
+		<t t-jquery="[t-if='!widget.attendance.check_out']" t-operation="replace">
+			<t t-if="!widget.attendance.check_out">
+				<h1 class="o_hr_attendance_validation">
+					Checked in at
+					<t t-esc="widget.attendance.check_in_time"/>
+				</h1>
+				<h2 class="o_hr_attendance_message_message">
+					Welcome
+					<t t-esc="widget.employee_name"/>
+					<br/>
+				</h2>
+				<br/>
+				<span class=' attendance_description' >
+				</span>
+				<br/>
+				<div class='warning_msg attendance_entry_question' >
+				</div>
+				<h3 class="o_hr_attendance_random_message">
+				</h3>
+				<h2 class="o_hr_attendance_warning_message">
+				</h2>
+			</t>
+		</t>
+		<!-- ================  Attendance Check Out ================-->
+		<t t-jquery="[t-if='widget.attendance.check_out']" t-operation="replace">
+			<t t-if="widget.attendance.check_out">
+				<h1 class="o_hr_attendance_validation">
+					Checked out at
+					<t t-esc="widget.attendance.check_out_time"/>
+				</h1>
+				<h2 class="o_hr_attendance_message_message">
+					Goodbye
+					<t t-esc="widget.employee_name"/>
+					<br/>
+				</h2>
+				<span class='attendance_description' >
+				</span>
+				<br/>
+				<span class='warning_msg attendance_exit_question'>
+				</span>
+				<h3 class="o_hr_attendance_random_message">
+				</h3>
+				<h2 class="o_hr_attendance_warning_message">
+				</h2>
+			</t>
+		</t>
+		<!-- ================  Attendance Status Button ================-->
+		<t t-jquery="button.o_hr_attendance_button_dismiss" t-operation="replace">
+			<button t-if="!widget.attendance" class="o_hr_attendance_button_dismiss btn btn-primary
+				btn-sm">ok</button>
+		</t>
+		<!--<t t-jquery="button.o_hr_attendance_button_dismiss" t-operation="after">
+			<button t-if="widget.attendance" class="o_hr_attendance_button_yes btn btn-primary
+				btn-sm">Yes</button>
+			<button t-if="widget.attendance" class="o_hr_attendance_button_no btn btn-primary
+				btn-sm">No</button>
+		</t> -->
+	</t>
+</template>

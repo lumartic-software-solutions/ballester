@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ballester_sale_collection_view_inherit_form" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <!--<field name="partner_shipping_id" position="after">
+                <field name="collection_id" />
+            </field>-->
+	   <field name="sales_type" position="after">
+                <field name="source_location_id" />
+		 <field name="destination_location_id" />
+            </field>
+		
+           <!--<xpath expr="//notebook" position="inside">
+                <page string="Collection Order Lines">
+                    <field name="collection_line_ids"
+                        attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}">
+                        <tree string=" Order Lines">
+                            <field name="product_id"
+                                attrs="{'readonly': [('state', 'in', ('in_process', 'picked_up', 'cancel'))]}" />
+                            <field name="name" />
+                            <field name="state" invisible="1" />
+                            <field name="product_uom" groups="product.group_uom"
+                                attrs="{'readonly': [('state', 'in', ('in_process', 'picked_up', 'cancel'))]}"
+                                force_save="1" />
+                            <field name="price_unit" />
+                            <field name="product_uom_qty" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>-->
+		<xpath expr="//field[@name='order_line']/form//field[@name='product_id']"
+                position="replace">
+               <field name="product_id"
+                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'model':'sale.order.line' ,'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id,'source_location_id':parent.source_location_id}"
+                                                attrs="{'readonly': [('product_updatable', '=', False)]}"
+                                                force_save="1"
+                                               />
+
+            </xpath>
+
+	  <button name="action_quotation_send" position="after">
+		<button name="%(action_bill_of_lading)d"
+                        id="create_bill_of_lading_sale_id" type="action" string="Create Waybill"
+                        class="oe_highlight" />
+               
+	
+	  </button>
+
+	<div  name="button_box" position="inside">
+		<button type="object" name="action_view_waybill"
+                            class="oe_stat_button" string="waybill" icon="fa-truck"
+                            attrs="{'invisible':[('waybill_count', '=', 0)] }">
+                            <field name="waybill_count" />
+                        </button>
+
+	</div>
+
+        </field>
+    </record>
+
+
+
+</odoo>

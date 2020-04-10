@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+	<template id="inherit_back_survey" name="Back" inherit_id="survey.back">
+        <xpath expr="//a[@t-attf-href='/web#view_type=form&amp;model=survey.survey&amp;id=#{survey.id}&amp;action=survey.action_survey_form']" position="replace">
+		</xpath>
+
+	</template>
+    
+
+     <template id='back_to_order_id' inherit_id="survey.sfinished" name="Survey Finished">
+        <t t-call="website.layout">
+             <xpath expr="//div[@class='wrap']" position="after">
+                 <div groups="website.group_website_publisher" t-ignore="true" class="pull-right">
+                     <a t-attf-href="/web#view_type=form&amp;model=survey.survey&amp;id=#{survey.id}&amp;action=survey.action_survey_form" class="btn btn-default">Back to Sale Order</a>
+                </div>
+            </xpath>
+           
+        </t>
+    </template>
+
+    <record id="ballester_survey_input_view_inherit_form" model="ir.ui.view">
+		<field name="name">survey.user_input.form</field>
+		<field name="model">survey.user_input</field>
+		<field name="inherit_id" ref="survey.survey_user_input_form"/>
+		<field name="arch" type="xml">
+                <field name="token" position="after">
+                    <field name="sale_order_id" readonly="1" />
+                </field>
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>	

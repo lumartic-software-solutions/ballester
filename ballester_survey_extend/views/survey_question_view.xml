@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Survey Extend .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Add field in survey question tree view-->
+		<record id="survey_question_tree_inherit" model="ir.ui.view">
+			<field name="name">survey.question.tree.inherit</field>
+			<field name="model">survey.question</field>
+			<field name="inherit_id" ref="survey.survey_question_tree" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='type']" position="before">
+						<field name="question_type"/>
+					</xpath>
+				</data>
+			</field>
+		</record>
+		
+		<!-- Add field in survey question form view-->
+		<record id="survey_question_form_inherit" model="ir.ui.view">
+			<field name="name">survey.question.form.inherit</field>
+			<field name="model">survey.question</field>
+			<field name="inherit_id" ref="survey.survey_question_form" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='type']" position="before">
+						<field name="question_type"/>
+					</xpath>
+					<xpath expr="//field[@name='labels_ids']//tree//field[@name='value']" position="after">
+						<field name="execution_type"/>
+						<field name="controller_id" domain="[('controler','=','True')]" attrs="{'readonly': [('execution_type', '=', 'continue')]}"/>
+						<field name="page_question_id" attrs="{'readonly': [('execution_type', '=', 'send_mail')]}"/>
+					</xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</odoo>

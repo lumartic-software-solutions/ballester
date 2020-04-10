@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Purchase. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="report_waste_certificate_document">
+		<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+		<div class="header">
+			<div class="col-xs-12">
+						<div class="col-xs-6">
+							<img
+								src="/ballester_purchase/static/src/img/Ballester_bicolor.jpg"
+								style="height:80px;width:250px;" />
+						</div>
+					</div>
+		</div>
+		<div class="footer">
+			<div class="row">
+				<div class="col-xs-12" >
+						<img src="/ballester_purchase/static/src/img/new_1.png" style="height:70px;width:700px;"/>
+				</div>
+			</div>
+		</div>
+		
+		<t t-call="web.external_layout">
+			<div class="page" t-foreach="o.order_line" t-as="l" style="page-break-before:always;">
+				<div class="row">
+					<div class="col-xs-12" style="font-size:20px;">
+						<center>
+							<b>Certificado de recepción de Residuos</b>
+						</center>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:16px;">
+						Certificado de recepción de Residuos La empresa Vicente Ballester Rios, S.L. con NIF/CIF/NIE
+						B97406060 y domicilio social en Calle Marjana, 29 y 30 , P.I. La Pahilla, 46370
+						- Chiva, Valencia/València, con código de autorización ambiental 314/G/RTP/CV
+						en conformidad con lo establecido en la legislación vigente relativa a la gestión
+						de residuos
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:20px;">
+						<center>
+							<b>CERTIFICA:</b>
+						</center>
+					</div>
+				</div>
+				<br/>
+				
+				<div class="row">
+					<div class="col-xs-12" style="font-size:16px;">
+						<p>
+							Que entre el <b><span t-field="o.date_order"  t-field-options='{"format": "MM/dd/yyyy"}'/></b> y el <b><span t-field="o.date_order" t-field-options='{"format": "MM/dd/yyyy"}'/></b> los residuos procedentes del centro con NIMA: <b><span t-field="o.partner_id.nima"/></b>ubicado
+							en <b><span t-field="o.partner_id.street"/></b>,<b><span t-field="o.partner_id.street2"/></b>,<b><span t-field="o.partner_id.city"/></b> ,<b><span t-field="o.partner_id.state_id.name"/></b> ,<b><span t-field="o.partner_id.zip"/></b>
+
+,perteneciente a <b><span t-field="o.partner_id.name"/></b>          con NIF/CIF/NIE <b><span t-field="o.partner_id.cif_nif_nie"/></b> y domicilio social en <b><span t-field="o.partner_id.street"/></b>,<b><span t-field="o.partner_id.street2"/></b>,<b><span t-field="o.partner_id.city"/></b> ,<b><span t-field="o.partner_id.state_id.name"/></b> ,<b><span t-field="o.partner_id.zip"/></b>correspondientes
+							al siguiente listado:
+						</p>
+					</div>
+					
+				</div>
+				<div class="row" >
+					<table class="table table-bordered mt48">
+						<thead class="text-center common_thead">
+							<tr style="line-height: 14px;">
+								<th style="text-align: center;" width="40%">
+									<strong>Residuo</strong>
+								</th>
+								<th style="text-align: center;" width="10%">
+									<strong>Fecha</strong>
+								</th>
+								<th style="text-align: center;" width="30%">
+									<strong>DCS</strong>
+								</th>
+								<th style="text-align: center;" width="10%">
+									<strong>Bultos</strong>
+								</th>
+								<th style="text-align: center;" width="10%">
+									<strong>Cantidad</strong>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="line-height: 14px;">
+								<td>
+									<span t-field="l.name"/>
+								</td>
+								<td>
+									<span t-field="l.date_planned" t-field-options='{"format": "MM/dd/yyyy"}'/>
+								</td>
+								<td>
+								     <span t-field="l.ct_document"/>
+								</td>
+								<td class="text-right">
+									<span t-field="l.product_qty"/>
+								</td>
+								<td class="text-right">
+									<span t-field="l.product_uom" groups="product.group_uom"/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+<br/>
+				
+				<div class="row">
+					<div class="col-xs-12" style="font-size:16px;">
+
+					 El transporte de los mismos corrió por cuenta de la empresa <b><span t-field="o.driver_id.name"/></b>con NIF/CIF/NIE <b><span t-field="o.driver_id.cif_nif_nie"/></b> VAT <b><span t-field="o.driver_id.vat"/></b> y domicilio social en address<b><span t-field="o.driver_id.street"/></b>,<b><span t-field="o.driver_id.street2"/></b>,<b><span t-field="o.driver_id.city"/></b> ,<b><span t-field="o.driver_id.state_id.name"/></b> ,<b><span t-field="o.driver_id.zip"/></b>, con código de autorización ambiental NIMA Nº <b><span t-field="o.driver_id.nima"/></b>.
+
+					</div>
+				</div><br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:16px;">
+
+					Observaciones:
+					<br/>
+				<table><tr>
+	Operaciones de valorización conforme anexo II Ley 22/2011, de 28 de julio, de residuos y suelos contaminados<br/>
+•R3: Reciclado o recuperación de sustancias orgánicas que no se utilizan como disolventes.<br/>
+•R4: Reciclado o recuperación de metales y compuestos metálicos. Entendiendo como:<br/>
+•Recuperación: envases lavados y listos para su reutilización<br/>
+•Reciclado: triturado de envases mediante desgarrador para su lavado y fundición posterior</tr>
+	</table>
+					</div>
+				</div><br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:16px;">
+					 para ser gestionados según las normativas actuales vigentes
+						en materia de residuos.
+						<br/>
+						En Chiva, a <b><span t-field="o.date_order"/></b>
+						<br/>
+						<br/>
+						Firma:
+						<br/>
+					      <img
+                                src="/ballester_purchase/static/src/img/firma_Ballester.png"
+                                style="height:100px;width:175px;" />
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+	
+	<template id="report_waste_certificate_purchase">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="ballester_purchase.report_waste_certificate_document" t-lang="o.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

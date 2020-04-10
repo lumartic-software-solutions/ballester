@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="transport_xlsx"
+            model="transport.report.wizard"
+            string=" Transport reports "
+            report_type="xlsx"
+            name="stock_transport_management.transport_report_xls.xlsx"
+            file="Transport reports"
+            attachment_use="False"
+        />
+    </data>
+</odoo>

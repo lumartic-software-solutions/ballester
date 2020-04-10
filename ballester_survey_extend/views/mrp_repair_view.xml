@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+   	<!-- repair inherit form view -->
+        <record id="inherit_form_repair_survey" model="ir.ui.view">
+            <field name="name">mrp.repair.form</field>
+            <field name="model">mrp.repair</field>
+            <field name="inherit_id" ref="mrp_repair.view_repair_order_form" />
+            <field name="arch" type="xml">
+		<button name="action_repair_invoice_create" position="after">
+			<button name="check_compliance" attrs="{'invisible': [ ('state','in',['cancel','draft','confirmed','check_compliance','under_repair','ready'])]}"
+                    type="object" string="Check Compliance" class="oe_highlight" states='done' context="{'check_compliance':True}"/>
+                </button>
+              <div  name="button_box" position="inside">
+                 	  <button name="action_view_survey_input"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-check" string="Compliance Result" attrs="{'invisible':[('state', 'in', ('draft','confirmed','done'),),('survey_input_ids','=',[])]}">
+                       	  <field name="survey_input_count" widget="statinfo" string="Compliance Result"/>
+                            <field name="survey_input_ids" invisible="1"/>
+                        </button>
+                 
+                 </div>
+            </field>
+        </record>
+	
+    </data>
+</odoo>

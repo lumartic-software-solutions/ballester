@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_document_teixo,Document.teixo.user,model_document_teixo,base.group_user,1,1,1,1
+access_res_acceptance,res.acceptance.user,model_res_acceptance,base.group_user,1,1,1,1
+access_res_center_cnae,res.center.cnae.user,model_res_center_cnae,base.group_user,1,1,1,1
+access_res_entiry_type,res.entity.type,model_res_entity_type,base.group_user,1,1,1,1
+access_res_transport_type,res.transport.type.user,model_res_transport_type,base.group_user,1,1,1,1
+access_res_municipio,res.municipio.user,model_res_municipio,base.group_user,1,1,1,1
+access_res_codevia,res.codevia.user,model_res_codevia,base.group_user,1,1,1,1
+access_res_association_type,res.association.type.user,model_res_association_type,base.group_user,1,1,1,1
+access_res_incidence,access_res_incidence,model_res_incidence,base.group_user,1,1,1,1
+access_authorization_type,access_authorization_type,model_authorization_type,base.group_user,1,1,1,1
+access_res_transport_form,access_res_transport_form,model_res_transport_form,base.group_user,1,1,1,1
+access_res_residue_center,access_res_residue_center,model_res_residue_center,base.group_user,1,1,1,1

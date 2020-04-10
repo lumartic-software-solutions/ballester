@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report id="collection_order_report" model="collection.order"
+            string="Collection Order" report_type="qweb-pdf"
+            name="ballester_collection.report_collection_order"
+            file="ballester_collection.report_collection_order" menu="True" />
+
+        <report id="ballester_collection.bill_of_lading" model="bill.lading"
+            string="Bill Of Lading(WayBill)" report_type="qweb-pdf"
+            name="ballester_collection.report_bill_of_lading"
+            file="ballester_collection.report_bill_of_lading"/>
+    </data>
+</odoo>     

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="view_res_center_cnae_tree" model="ir.ui.view">
+			<field name="name">res.center.cnae.tree</field>
+			<field name="model">res.center.cnae</field>
+			<field name="arch" type="xml">
+				<tree string="CNAE">
+					<field name="code" />
+					<field name="description" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_res_center_cnae" model="ir.actions.act_window">
+			<field name="name">Center Cnae</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.center.cnae</field>
+			<field name="context">{}</field>
+			<field name="domain">[]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record id="view_authorization_code_tree" model="ir.ui.view">
+			<field name="name">authorization.code.tree</field>
+			<field name="model">authorization.code</field>
+			<field name="arch" type="xml">
+				<tree string="Authorization">
+					<field name="code" />
+					<field name="entity_type_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_authorization_code" model="ir.actions.act_window">
+			<field name="name">Authorization Code</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">authorization.code</field>
+			<field name="context">{}</field>
+			<field name="domain">[]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record id="view_res_municipio_tree" model="ir.ui.view">
+			<field name="name">res.municipio.tree</field>
+			<field name="model">res.municipio</field>
+			<field name="arch" type="xml">
+				<tree string="Municipio">
+					<field name="code" />
+					<field name="description" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_res_municipio" model="ir.actions.act_window">
+			<field name="name">Municipio</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.municipio</field>
+			<field name="context">{}</field>
+			<field name="domain">[]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<record id="view_res_codevia_tree" model="ir.ui.view">
+			<field name="name">res.codevia.tree</field>
+			<field name="model">res.codevia</field>
+			<field name="arch" type="xml">
+				<tree string="CodeVia">
+					<field name="code" />
+					<field name="description" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_res_codevia" model="ir.actions.act_window">
+			<field name="name">CodeVia</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.codevia</field>
+			<field name="context">{}</field>
+			<field name="domain">[]</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="menu_authorization_code" action="action_authorization_code"
+			name="Authorization Code" parent="menu_teixo_config" sequence="25" />
+
+		<menuitem id="menu_res_codevia" action="action_res_codevia"
+			name="Code Via" parent="menu_teixo_config" sequence="14" />
+
+		<menuitem id="menu_res_municipio" action="action_res_municipio"
+			name="Municipio" parent="menu_teixo_config" sequence="13" />
+
+		<menuitem id="menu_res_cnae" action="action_res_center_cnae"
+			name="CNAE" parent="menu_teixo_config" sequence="12" />
+
+		<!-- <menuitem id="menu_res_center" action="action_res_center" -->
+		<!-- name="Center" parent="menu_teixo_config" sequence="11" /> -->
+
+
+
+	</data>
+</odoo>

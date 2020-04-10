@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_collection_order_form" model="ir.ui.view">
+        <field name="name">collection.order.form</field>
+        <field name="model">collection.order</field>
+        <field name="inherit_id" ref="ballester_collection.view_collection_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page/field/form/group" position='before'>
+                <header>
+                    <button name="%(action_teixo)d" id="teixo_create_btn"
+                    type="action" string="Create Teixo Document" class="oe_highlight" attrs="{'invisible':[('id','=',False)]}"/>
+                </header>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button name="button_teixoct_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_ct_count" widget="statinfo" />
+                </button>
+                <button name="button_teixont_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_nt_count" widget="statinfo" />
+                </button>
+                <button name="button_teixodi_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_di_count" widget="statinfo" />
+                </button>
+             </div>
+             <field name="destination_location_id" position="after">
+                <field name="carrier_id"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+             </field>
+        </field>
+    </record>
+</odoo>
+
+

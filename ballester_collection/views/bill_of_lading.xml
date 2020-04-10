@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_bill_of_lading_form" model="ir.ui.view">
+        <field name="name">bill.of.lading.form</field>
+        <field name="model">bill.lading</field>
+        <field name="arch" type="xml">
+            <form string="Bill Of Lading" create="false">
+                <header>
+                    <button name="print_waybill" type="object"
+                        string="Print Waybill" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="loading_date" />
+                            <field name="collection_id" readonly='1'/>
+			     <field name="sale_id" readonly='1'/>
+			      <field name="purchase_id" readonly='1'/>
+		            
+                        </group>
+                        <group>
+                            <field name="download_date" />
+                        </group>
+                    </group>
+                    <group>
+                      <label for="origin_id"/>
+                            <div >
+                                <field name="origin_id"/>
+                                <field name="origin_contact_id" placeholder="Origin Contact" />
+                                <field name="origin_tags" placeholder="Origin Tags" widget='many2many_tags'/>
+                            </div>
+                        <label for="carrier_id"/>
+                            <div >
+                                <field name="carrier_id"/>
+                                <field name="carrier_contact_id" placeholder="Effective Carrier Contact" />
+                                <field name="carrier_tags" placeholder="Effective Carrier Tags" widget='many2many_tags'/>
+                            </div>
+                        <label for="destination_id"/>
+                            <div >
+                                <field name="destination_id"/>
+                                <field name="destination_contact_id" placeholder="Destination Contact" />
+                                <field name="destination_tags" placeholder="Destination Tags" widget='many2many_tags'/>
+                            </div>
+                    </group>
+                    <label for="obervations"/>
+                    <field name="obervations"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_bill_of_lading" model="ir.actions.act_window">
+        <field name="name">Bill Of Lading</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bill.lading</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+    <record id="action_bill_of_lading_general" model="ir.actions.act_window">
+        <field name="name">Bill Of Lading</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bill.lading</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>

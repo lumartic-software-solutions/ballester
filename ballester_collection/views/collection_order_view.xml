@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Collection Menu -->
+
+
+
+    <record id="view_collection_order_tree" model="ir.ui.view">
+        <field name="name">collection.order.tree</field>
+        <field name="model">collection.order</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="Collection Orders">
+                <field name="name" string="Order Number" />
+                <field name="date_order" string="Order Date" />
+                <field name="partner_id" />
+                <field name="partner_shipping_id" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_collection_order_form" model="ir.ui.view">
+        <field name="name">collection.order.form</field>
+        <field name="model">collection.order</field>
+        <field name="arch" type="xml">
+            <form string="Collection Order">
+                <header>
+                    <button name="action_co_send"
+                        string="Send Collection Order by Email" type="object"
+                        class="oe_highlight" />
+                    <button name="print_quotation" string="Print" type="object"
+                        states="draft" class="btn-primary o_sale_print" />
+                    <button name="action_process" id="action_confirm"
+                        string="Confirm Order" class="btn-primary" type="object"
+                        attrs="{'invisible': [('state', 'in', ['cancel','in_process','picked_up'])]}" />
+                    <button name="action_pickup" string="Picked Up"
+                        type="object"
+                        attrs="{'invisible': [('state', 'in', ['cancel','draft','picked_up'])]}"
+                        class="btn-primary o_sale_print" />
+                    <button name="action_cancel"
+                        states="draft,picked_up,in_process" type="object" string="Cancel" />
+                    <button name="action_draft" states="cancel" type="object"
+                        string="Set to Draft" />
+                    <button name="%(action_bill_of_lading)d"
+                        id="create_bill_of_lading" type="action" string="Create Waybill"
+                        class="oe_highlight" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,in_process,picked_up,cancel" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_purchase"
+                            class="oe_stat_button" string="Purchase Order" icon="fa-truck"
+                            attrs="{'invisible':[('purchase_count', '=', 0)] }">
+                            <field name="purchase_count" />
+                        </button>
+                        <button type="object" name="action_view_sale"
+                            class="oe_stat_button" string="Sale Order" icon="fa-truck"
+                            attrs="{'invisible':[('sale_count', '=', 0)] }">
+                            <field name="sale_count" />
+                        </button>
+                        <button type="object" name="action_view_waybill"
+                            class="oe_stat_button" string="waybill" icon="fa-truck"
+                            attrs="{'invisible':[('waybill_count', '=', 0)] }">
+                            <field name="waybill_count" />
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" domain="[('supplier','=',True)]"
+                                context="{'search_default_supplier':1, 'show_address': 1}"
+                                options='{"always_reload": True}' />
+                            <field name="partner_invoice_id"
+                                context="{'default_type':'invoice','partner_id':partner_id}"
+                                options='{"always_reload": True}'
+                                domain="[('type','!=','center'),('parent_id','=',partner_id)]" />
+                            <field name="partner_shipping_id"
+                                context="{'default_type':'delivery','partner_id':partner_id}"
+                                options='{"always_reload": True}'
+                                domain="[('type','=','center'),('parent_id','=',partner_id)]" />
+                            <field name="partner_ref" />
+                            <field name="purchase_type"
+                                attrs="{'invisible': [('collection_type', '!=', 'purchase')],
+                                                                'required': [('collection_type', '=', 'purchase')]}" />
+                            <field name="sales_type"
+                                attrs="{'invisible': [('collection_type', '!=', 'sale')],
+                                                             'required': [('collection_type', '=', 'sale')]}" />
+                            <field name="collection_type" />
+                        </group>
+                        <group>
+                            <field name="date_order"
+                                attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}" />
+                            <field name="source_location_id" />
+                            <field name="destination_location_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines">
+                            <field name="collection_line_ids" mode="tree,kanban"
+                                attrs="{'readonly': [('state', 'in', ('in_process','picked_up','cancel'))]}">
+                                <form string="Collection Order Lines">
+                                    <group>
+                                        <group>
+                                            <field name="product_id"
+                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty,  'uom':product_uom, 'company_id': parent.company_id}"
+                                                force_save="1" />
+                                            <field name="price_subtotal" invisible="1" />
+                                            <label for="product_uom_qty" string="Ordered Quantity" />
+                                            <div>
+                                                <field
+                                                    context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'uom':product_uom, 'uom_qty_change':True, 'company_id': parent.company_id}"
+                                                    name="product_uom_qty" class="oe_inline" />
+                                                <field name="product_uom" groups="product.group_uom"
+                                                    class="oe_inline oe_no_button" />
+                                            </div>
+                                            <field name="price_unit" />
+                                        </group>
+                                        <group>
+                                            <field name="tax_id" widget="many2many_tags"
+                                                options="{'no_create': True}"
+                                                domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]" />
+                                        </group>
+                                    </group>
+                                    <label for="name" />
+                                    <field name="name" />
+                                    <field name="state" />
+                                </form>
+                                <tree string="Collection Order Lines">
+                                    <field name="sequence" widget="handle" />
+                                    <field name="product_id" force_save="1"
+                                        context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty,  'uom':product_uom, 'company_id': parent.company_id}" />
+                                    <field name="name" />
+                                    <field name="product_uom_qty" string="Ordered Qty"
+                                        context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'uom':product_uom, 'company_id': parent.company_id}" />
+                                    <field name="product_uom"
+                                        context="{'company_id': parent.company_id}"
+                                        groups="product.group_uom" options='{"no_open": True}' />
+                                    <field name="price_unit" />
+                                    <field name="tax_id" widget="many2many_tags"
+                                        options="{'no_create': True}"
+                                        domain="[('type_tax_use','=','purchase'),('company_id','=',parent.company_id)]" />
+                                    <field name="price_subtotal" widget="monetary" />
+                                    <field name="price_total" widget="monetary" />
+                                    <field name="state" invisible="1" />
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right" colspan="2"
+                                name="sale_total">
+                                <field name="amount_untaxed" widget='monetary'
+                                    options="{'currency_field': 'currency_id'}" />
+                                <field name="amount_tax" widget='monetary'
+                                    options="{'currency_field': 'currency_id'}" />
+                                <div
+                                    class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_total" />
+                                </div>
+                                <field name="amount_total" nolabel="1"
+                                    class="oe_subtotal_footer_separator" widget='monetary'
+                                    options="{'currency_field': 'currency_id'}" />
+                            </group>
+                            <field name="note" class="oe_inline" />
+                            <div class="oe_clear" />
+                        </page>
+                        <page string="Other Information">
+                            <group>
+                                <group string="Collection Information"
+                                    name="collection_person">
+                                    <field name="user_id" />
+
+                                    <field name="company_id" options="{'no_create': True}"
+                                        groups="base.group_multi_company" />
+                                </group>
+                                <group name="collection_pay" string="Invoicing">
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_collection_order_purchase"
+        model="ir.actions.act_window">
+        <field name="name">Collection Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">collection.order</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_collection_order_tree" />
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_collection_type':'purchase'
+            }
+        </field>
+        <field name="domain">[('collection_type','=','purchase')]</field>
+    </record>
+
+    <record id="action_collection_order_sale"
+        model="ir.actions.act_window">
+        <field name="name">Collection Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">collection.order</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_collection_order_tree" />
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_collection_type':'sale'
+            }
+        </field>
+        <field name="domain">[('collection_type','=','sale')]</field>
+    </record>
+
+
+    <menuitem id="menu_collection_order" name="Collection Order"
+        parent="purchase.menu_procurement_management"
+        action="action_collection_order_purchase" sequence="0" />
+
+ <!--   <menuitem id="menu_collection_order_sale"
+        name="Collection Order" parent="sale.sale_order_menu"
+        action="action_collection_order_sale" sequence="0" />-->
+
+
+</odoo>     
+        

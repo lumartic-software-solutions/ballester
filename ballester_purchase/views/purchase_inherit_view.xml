@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="purchase_view_inherit_tree" model="ir.ui.view">
+		<field name="name">purchase.order.tree</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.purchase_order_tree"/>
+		<field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                    <field name="purchase_type" />
+             </field>
+			<field name="origin" position="replace">
+                    <field name="partner_shipping_id" />
+             </field>   
+        </field>
+    </record>
+  
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="name">Requests for Quotation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.order</field>
+            <field name="context">{'search_default_todo':1, 'show_purchase': False}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar</field>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a request for quotation.
+              </p><p>
+                The quotation contains the history of the discussion/negotiation
+                you had with your vendor. Once confirmed, a request for
+                quotation is converted into a purchase order.
+              </p><p>
+                Most propositions of purchase orders are created automatically
+                by Odoo based on inventory needs.
+              </p>
+            </field>
+        </record>
+
+	<record id="ballester_purchase_view_inherit_form" model="ir.ui.view">
+		<field name="name">purchase.order.form</field>
+		<field name="model">purchase.order</field>
+		<field name="inherit_id" ref="purchase.purchase_order_form"/>
+		<field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree" position="replace">
+                <tree string="Purchase Order Lines" >
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="sequence" widget="handle"/>
+                    <field name="product_id"  context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" force_save="1"/>
+                    <field name="name"/>
+                    <field name="move_dest_ids" invisible="1"/>
+                    <field name="date_planned"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="account_analytic_id" context="{'default_partner_id':parent.partner_id}" groups="purchase.group_analytic_accounting"/>
+                    <field name="analytic_tag_ids" groups="purchase.group_analytic_accounting" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="product_qty"/>
+                    <field name="lot_ids"  widget="many2many_tags" domain="[('product_id','=', product_id)]" style="height:50%%" />
+                    <field name="qty_received" invisible="not context.get('show_purchase', True)"/>
+                    <field name="qty_invoiced" invisible="not context.get('show_purchase', True)"/>
+                    <field name="product_uom" groups="product.group_uom"  force_save="1"/>
+                    <field name="price_unit"/>
+                    <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase')]" context="{'default_type_tax_use': 'purchase'}" options="{'no_create': True}"/>
+                    <field name="price_subtotal" widget="monetary"/>
+                </tree>
+            </xpath>
+            <xpath expr="//button[@id='bid_confirm']" position="replace">
+			</xpath>
+                <xpath expr="//button[@name='button_confirm']" position="replace">
+                    <button name="button_confirm"
+                            string="Confirm Order" type="object" states='check_compliance'
+                                attrs="{'invisible': [('state', 'in', ['sent','draft','to approve','done','cancel','purchase'])]}"/>
+                            
+                </xpath>
+            <field name="date_order" position="after">
+                <field name="purchase_type" required="1" />
+            </field>
+              <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position="before">
+               
+		<field name="barcode_number" style="width:50%%" /> 
+                               
+            </xpath>
+
+		</field>
+	</record>
+
+
+    <record id="ballester_partner_filter_form" model="ir.ui.view">
+		<field name="name">res.partner.form</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_res_partner_filter"/>
+		<field name="arch" type="xml">
+            <filter  name="supplier" position='after'>
+                 <filter string="Vendors Service" name="Vendor Service" domain="[('is_vendor_service','=',1), ('parent_id', '=', False)]"/>
+            </filter>
+        </field>
+        </record>
+
+
+
+    <record id="action_partner_supplier_service_form" model="ir.actions.act_window">
+            <field name="name">Vendors Service</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_is_vendor_service': 1 ,'default_customer': 0,'default_supplier': 0 ,'default_is_vendor_service': 1 , 'default_company_type': 'company'}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a supplier service: discussions, history of purchases,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+
+
+
+     <menuitem id="vendor_service_id" name="Vendor Service" parent="purchase.menu_procurement_management" sequence="18" action="action_partner_supplier_service_form" />
+
+
+
+    <!---<record id="ballester_stock_picking_action_picking_type" model="ir.actions.act_window">
+            <field name="name">All Transfers</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar</field>
+            <field name="domain"></field>
+            <field name="context">{
+                    'delivery':True,
+                    'contact_display': 'partner_address',
+
+            }
+            </field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a new transfer.
+              </p><p>
+                You can either do it immediately or mark it as Todo for future processing. Use your scanner to validate the transferred quantity quicker.
+              </p>
+            </field>
+        </record>
+
+ <menuitem id="delivery_order_id" name="Delivery Orders" parent="purchase.menu_procurement_management" sequence="1" action="ballester_stock_picking_action_picking_type" />-->
+</odoo>	

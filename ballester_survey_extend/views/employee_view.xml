@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Survey Extend .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Add smart button in employee form view-->
+		<record id="view_employee_form_inherit" model="ir.ui.view">
+			<field name="name">hr.employee.form.inherit</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_form" />
+			<field name="arch" type="xml">
+				<data>
+					<!-- set smart button for incidents report details in employee    -->
+					<xpath expr="//button[@name='toggle_active']" position="before">
+						<button name="incidents_report_details" type="object" class="oe_stat_button oe_event_attendee_button"
+							icon="fa fa-bar-chart" >
+							<field name="incidents_count" widget="statinfo" string="Incidents"/>
+						</button>
+					</xpath>
+					<!-- add incidents_manager_id in employee    -->
+					<xpath expr="//field[@name='user_id']" position="after">
+							<field name="incidents_manager_id" />
+						<field name="controler" />
+					</xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</odoo>
+							

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Stock Transport Management.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- vehicle menu in sale -->
+		<menuitem id="sale_transportation_vehicle_creation_menu" name="Vehicles" parent="sale.menu_sale_config"
+			action="fleet.fleet_vehicle_action" sequence="2"/>
+		<!-- vehicle menu in purchase -->
+		<menuitem id="purchase_transportation_vehicle_creation_menu" name="Vehicles" parent="purchase.menu_purchase_config"
+			action="fleet.fleet_vehicle_action" sequence="2"/>
+	</data>
+</odoo>

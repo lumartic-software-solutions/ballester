@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+base.access_ir_config_parameter_system,base.ir_config_parameter_system,base.model_ir_config_parameter,,1,1,1,1
+

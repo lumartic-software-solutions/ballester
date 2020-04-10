@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="wash_view_inherit__compliance_form" model="ir.ui.view">
+		<field name="name">wash.order.form</field>
+		<field name="model">wash.order</field>
+		<field name="inherit_id" ref="ballester_wash.view_wash_order_form" />
+		<field name="arch" type="xml">
+			<button name="%(ballester_wash.action_time_part_wizard_custom)d" position="before">
+				<button name="check_compliance" string="Check Compliance"
+					context="{'wash_order_id': id}" type="object" states="stop_drying"
+					class="btn-primary o_sale_print"  attrs="{
+						'invisible':[('state', 'in', ['draft','confirmed','start_wash','end_wash','done','cancel','stop_re_wash','start_re_wash','stop_emptying','start_emptying','start_re_wash','stop_re_wash','repair_create','start_drying','convert','destructed','quality_control','check_compliance','transfer_to_store'])] }"/>
+	<button name="check_compliance" string="Check Compliance"
+					context="{'wash_order_id': id}" type="object" states="end_wash"
+                                        invisible="context.get('container')"
+					class="btn-primary o_sale_print"  attrs="{
+						'invisible':[('state', 'in', ['draft','confirmed','start_wash','done','cancel','stop_re_wash','start_re_wash','stop_emptying','start_emptying','start_re_wash','stop_re_wash','repair_create','start_drying','convert','destructed','quality_control','check_compliance','transfer_to_store'])] }"/>
+
+			</button>
+
+	
+
+	<xpath expr="//div[@name='button_box']" position="inside">
+            	 <button type="object"
+                            name="action_view_survey_input"
+                            class="oe_stat_button"
+                            icon="fa-check" attrs="{'invisible':[('state', 'in', ('draft','start_wash','end_wash','start_drying','stop_emptying','start_emptying','start_re_wash','stop_re_wash','confirmed','destructed'),),('survey_input_ids','=',[])]}">
+                            <field name="survey_input_count" widget="statinfo" string="Result"/>
+                            <field name="survey_input_ids" invisible="1"/>
+                        </button>
+            
+            </xpath>
+		</field>
+	</record>
+
+	<!--<record id="wash_view_inherit_crush_compliance_form" model="ir.ui.view">
+		<field name="name">wash.order.form</field>
+		<field name="model">wash.order</field>
+		<field name="inherit_id" ref="ballester_wash.view_wash_order_crush_form" />
+		<field name="arch" type="xml">
+			<button name="action_wash_stop_crush" position="before">
+				<button name="check_compliance" string="Check Compliance"
+					context="{'wash_order_id': id}" type="object" states="start_crush"
+					class="btn-primary o_sale_print"  attrs="{
+						'invisible':[('state', 'in', ['draft','confirmed','done','cancel','stop_crush','check_compliance','repair_create','transfer_to_store','destructed','convert'])] }"/>
+			</button>
+<xpath expr="//div[@name='button_box']" position="inside">
+            	 <button type="object"
+                            name="action_view_survey_input"
+                            class="oe_stat_button"
+                            icon="fa-check" attrs="{'invisible':[('state', 'in', ('draft','start_wash','end_wash','start_drying','confirmed'),),('survey_input_ids','=',[])]}">
+                            <field name="survey_input_count" widget="statinfo" string="Result"/>
+                            <field name="survey_input_ids" invisible="1"/>
+                        </button>
+            
+            </xpath>
+		</field>
+	</record>-->
+</odoo>
+

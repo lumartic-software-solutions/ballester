@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Stock Transport Management.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+    <data>
+         <record id="transportation_warehouse_form_view" model="ir.ui.view">
+            <field name="name"> Warehouse</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+             <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="transportation_name"/>
+                    <field name="no_parcels"/>
+                </xpath>
+                 <notebook position="inside">
+                     <page string="Transportation Details">
+                         <field name="transportation_details"/>
+                     </page>
+                 </notebook>
+             </field>
+        </record>
+    </data>
+</odoo>
+

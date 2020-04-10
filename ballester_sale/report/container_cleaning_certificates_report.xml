@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Sale. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="report_container_cleaning_certificates_document">
+		<t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+                <div class="header">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6">
+                            <img
+                                src="/ballester_sale/static/src/img/Ballester_bicolor.jpg"
+                                style="height:80px;width:250px;" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+		  <div class="row">
+				<div class="col-xs-12" >
+						<img src="/ballester_purchase/static/src/img/new_1.png" style="height:70px;width:700px;"/>
+				</div>
+			</div>
+		    <div class="row">
+                    <div class="col-xs-12"
+                        style="font-size: 14px; color:#C0C0C0;border-bottom: 1px solid
+                black;">
+                        Nuestros envases reciclados pasan por un control de calidad
+                        para un
+                        correcto lavado
+                        y escurrido de los mismos. La empresa no se
+                        hace responsable de un
+                        mal uso de
+                        por parte del cliente así como
+                        reacciones adversas con el producto a
+                        contener.
+                        Vicente Ballester
+                        Rios, S.L. se responsabiliza del estado estructural
+                        del
+                        envase.
+                        Envases no aptos para uso alimentario
+                    </div>
+		</div>
+                   <!-- <div class="text-center">
+                        <strong>
+                            <span style="font-size:14px;">VICENTE BALLESTER RIOS SL</span>
+                        </strong>
+                        <br />
+                        C/. Marjana, 29 y 30 - Pol. Ind. La Pahilla Tel. 96 252 11 19 -
+                        Fax
+                        96 252 14 45
+                        <br />
+                        46370 - CHIVA (Valencia) Nº Gestor autorizado: 314/G/RTP/CV
+                    </div>-->
+                </div>
+                <t t-call="web.internal_layout">
+
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <strong>
+                                        <span style="font-size:18px;" t-field="o.company_id.name" />
+                                </strong>
+                                <div style="font-size:14px;"
+                                    t-field="o.company_id.partner_id"
+                                    t-options='{"widget": "contact", "fields":
+                            ["address"], "no_marker": True}' />
+                                Tel.
+                                <span style="font-size:14px;" t-field="o.company_id.phone" />
+                                Fax. 96 252 14 45
+                                <br />
+                                <strong>
+                                    <span style="font-size:12px;">Nº Gestor Autorizado: 314/G/RTP/CV</span>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12"
+                                style="font-size:14px;line-height: 2.6;">
+                                <strong>
+                                    <b>CERTIFICA:</b>
+                                </strong>
+                                <p>
+
+                                    Que los contenedores de 1000 litros entregados en fecha según etiquetado
+                                    <span t-field="o.date_order" t-field-options='{"format": "MM/dd/yyyy"}'/>
+                                    y número de entrega
+                                    <span t-field="o.name" />
+                                    cumplen el siguiente proceso de limpieza:
+                                </p>
+                                1º Se procede a vaporizar el contenedor a una temperatura de 80º.
+                                <br />
+                                2º Se limpia el interior del contenedor con agua y sosa a una temperatura de 50º.
+                                <br />
+                                3º Se vuelve aplicar en el interior del contenedor agua fría y sosa.
+                                <br />
+                                4º Se aplica agua caliente a 50º con alta presión.
+                                <br />
+                                5º El interior del contenedor  con agua fría a alta presión 
+                                <br />
+                                6º El contenedor entra en una etapa de escurrido.
+                                <br />
+                                7º El contenedor entra en cuatro etapas de secado.
+                                <br />
+                                8º Se comprueba la estanqueidad del contenedor mediante presión de aire.
+                                <br />
+                                9º Se quitan las etiquetas mediante calor.
+                                <br />
+                                10º Se procede al lavado exterior que se realiza manualmente con agua fría a presión.
+                                <br />
+                                Con este proceso los contenedores de 1000 litros quedan limpios para su posterior llenado de materias primas.
+                                <br />
+                                No obstante al tratarse de un envase reciclado no será apto para uso alimentario.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:75px;">
+                        <div class="col-xs-12">
+                            <center>
+                                <strong>
+                                <span style="font-size:16px;">
+                                    
+                                    SE EXPIDE EL PRESENTE CERTIFICADO EN:
+                                </span>
+                                </strong>
+                                <br/>
+                                <span>
+                                    Chiva
+                                    <span t-field="o.date_order" />
+                                </span>
+                            </center>
+                        </div>
+                    </div>
+		 <table class="table" style="border:1pt solid black;border-collapse: collapse;margin-bottom: 0px;">
+						<tr style="border:1pt solid black;">
+							<td style="border:1pt solid black;width: 33%;" height='50px'>
+								<div class="box">
+									Numero de albarán:
+									<span t-field="o.name" />
+								</div>
+							</td>
+							<td style="border:1pt solid black;width: 33%" height='60px'>
+							</td>
+							<td style="border:1pt solid black;width: 33%" height='60px'>
+							</td>
+						</tr>
+					</table>
+					<table class="table" style="border:1pt solid black;border-collapse: collapse;">
+						<tr style="border:1pt solid black;">
+							<td style="border:1pt solid black;" height='120px'>
+								<div class="box">Firma responsable : Vicente Ballester Rios S.L.
+								</div>
+								<img
+                                src="/ballester_sale/static/src/img/firma_Ballester.png"
+                                style="height:100px;width:175px;" />
+							</td>
+							<td style="border:1pt solid black;" height='120px'>
+								<div class="box">Firma responsable : <span t-field="o.partner_id.name" /></div>
+							</td>
+						</tr>
+					</table>
+<!--                     <table class="table" style="border:1pt solid black;border-collapse: collapse;margin-bottom: 0px;"> -->
+<!--                         <tr style="border:1pt solid black;"> -->
+<!--                             <td style="border:1pt solid black;width: 33%;" height='50px'> -->
+<!--                                 <div class="box"> -->
+<!--                                     Numero de albarán: -->
+<!--                                     <span t-field="o.name" /> -->
+<!--                                 </div> -->
+<!--                             </td> -->
+<!--                             <td style="border:1pt solid black;width: 33%" height='60px'> -->
+<!--                             </td> -->
+<!--                             <td style="border:1pt solid black;width: 33%" height='60px'> -->
+<!--                             </td> -->
+<!--                         </tr> -->
+<!--                     </table> -->
+<!--                     <table class="table" style="border:1pt solid black;border-collapse: collapse;"> -->
+<!--                         <tr style="border:1pt solid black;"> -->
+<!--                             <td style="border:1pt solid black;" height='120px'> -->
+<!--                                 <div class="box">Firma responsable : Vicente Ballester Rios S.L. -->
+<!--                                 </div> -->
+<!--                                 <img -->
+<!--                                 src="/ballester_sale/static/src/img/firma_Ballester.png" -->
+<!--                                 style="height:100px;width:175px;" /> -->
+<!--                             </td> -->
+<!--                             <td style="border:1pt solid black;" height='120px'> -->
+<!--                                 <div class="box">Firma responsable : <span t-field="o.partner_id.name" /></div> -->
+<!--                             </td> -->
+<!--                         </tr> -->
+<!--                     </table> -->
+                </t>
+            </t>
+        </t>
+		
+	</template>
+	
+	
+	<template id="report_container_cleaning_certificates_sale">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="ballester_sale.report_container_cleaning_certificates_document" t-lang="o.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

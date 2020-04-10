@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_repair_view_form_id" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.wash</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="50"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Repair" string="Repair" data-key="repair">
+		    <h2>Compliance</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" >
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                               
+                                <div class="content-group">
+                                    <div class="mt16">
+					<label for="repair_compliance_id"/>
+                                        <field name="repair_compliance_id" class="o_light_label" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+				
+                            <div class="o_setting_right_pane">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_repair_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="view_id" ref="res_config_settings_repair_view_form_id" />
+        <field name="context">{'module' : 'repair'}</field>
+    </record>
+
+    <menuitem id="menu_repair_general_settings"
+        name="Settings"
+        parent="ballester_wash.menu_repair_configure"
+        sequence="0"
+        action="ballester_survey_extend.action_repair_config_settings"
+	 groups="base.group_system"
+        />
+
+</odoo>

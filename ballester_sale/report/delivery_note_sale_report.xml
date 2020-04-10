@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Sale. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="report_delivery_note_sale_document">
+		<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+		<div class="header">
+			<div class="row first-page">
+				<div class="col-xs-12" >
+					<div class="col-xs-6">
+						<img src="/ballester_sale/static/src/img/Ballester_bicolor.jpg" style="height:80px;width:250px;"/>
+					</div>
+					<div class="col-xs-6 text-right">
+					       <h4>Albarán de Venta</h4> 
+						<table style="margin-left: 250px; !important;">
+						   
+                                                	<tr>	
+							<td class="text-left"> 
+							    <strong>N</strong> 
+							</td>
+							<td class="text-right"><span t-field="o.name">
+								</span></td>
+							</tr>
+							<tr>
+										<td class="text-left"> 
+							    <strong>Fecha</strong> 
+							</td>
+							<td class="text-right"><span t-field="o.date_order" t-field-options='{"format": "MM/dd/yyyy"}'/></td>
+							</tr>
+							<tr>
+							<td class="text-left"> 
+							    <strong>PARA</strong> 
+							</td>
+							<td class="text-right"><span t-field="o.company_id.partner_id.vat"/></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			
+		</div>
+		<div class="footer">
+	
+			<div class="row">
+				<div class="col-xs-12" >
+						<img src="/ballester_sale/static/src/img/b1.png" style="height:70px;width:500px;"/>
+				</div>
+			</div>
+<br/>
+			<div class="row" >
+				<div class="col-xs-12 first-page" style="font-size: 11px; color:#C0C0C0;">
+					-Forma de pago: el pedido inicial como cliente nuevo se abonara antes del envío o
+					retirada de los envases. Resto de pedidos, un plazo de pago “máximo” de 60 días,
+					según la Ley 15/2010 de 5 de julio de lucha contra la morosidad. Nuestros envases
+					reciclados pasan por un control de calidad para garantizar un correcto lavado
+					y escurrido de los mismos. La empresa no se hace responsable de un mal uso de
+					por parte del cliente así como reacciones adversas con el producto a envasar.
+					Vicente Ballester Rios, S.L. solo se responsabiliza del estado estructural del
+					envase, en caso de rotura o alguna deficiencia se cambiara por otro contenedor
+					de las mismas características. - Condiciones de admisión: El contenido del envase
+					no debe superar el 0.5% de su capacidad, toda aquella cantidad que supere dicho
+					% sera gestionada con su cobro correspondiente. Para el transporte el envase
+					deberá llevar los sistemas de cierre correctamente cerrados.
+				</div>
+			</div>
+		</div>
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				
+				<!--				<div class="row">-->
+				
+				<!-- <div class="col-xs-12" style="margin-left:-210px; margin-top: 210px;">-->
+				
+				<!-- <p style="display: inline-block;-webkit-transform: rotate(-90deg); -moz-transform:-->
+				
+				<!-- rotate(-90deg); -o-transform: rotate(-90deg); -ms-transform: rotate(-90deg);-->
+				
+				<!-- transform: rotate(-90deg);">vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv</p>-->
+				
+				<!--					</div>-->
+				
+				<!--				</div>-->
+				<div class="page" >
+					<div class="oe_structure"/>
+					<div class="row">
+						<div class="col-xs-12" >
+							<div class="col-xs-6" style="margin-top: 50px !important;">
+								<div t-if="o.company_id">
+									<t t-if="o.company_id.vat">
+										<span t-esc="o.company_id.vat">
+										</span>
+									</t>
+									<div t-field="o.company_id.partner_id" t-options='{"widget": "contact", "fields":
+										["address", "name"], "no_marker": True}'/>
+									<t t-if="o.company_id.partner_id.phone">
+										t:
+										<span t-esc="o.company_id.partner_id.phone">
+										</span>
+									</t>
+									<t t-if="o.company_id.partner_id.email">
+										e:
+										<span t-esc="o.company_id.partner_id.email"/>
+									</t>
+									<br/>
+									<t t-if="o.company_id.partner_id.website">
+										w:
+										<span t-esc="o.company_id.partner_id.website"/>
+										
+									</t>
+								</div>
+							</div>
+							<div class="col-xs-6" style="margin-top: 50px !important;">
+								<t t-if="o.partner_id.name">
+									<strong>
+										Nombre:
+										<span t-esc="o.partner_id.name"/>
+									</strong>
+								</t>
+								
+								<br/>
+								<t t-if="o.partner_id.street">
+									Dirección:
+									<span t-esc="o.partner_id.street"/>
+								</t>
+								<br/>
+								<t t-if="o.partner_id.city">
+									CP/Municipio:
+									<span t-esc="o.partner_id.city"/>
+								</t>
+								
+								<br/>
+								
+								<t t-if="o.partner_id.state_id">
+									Provincia:
+									<span t-esc="o.partner_id.state_id.name"/>
+								</t>
+								<br/>
+								<t t-if="o.partner_id.state_id">
+									Teléfono:
+									<span t-esc="o.partner_id.phone"/>
+								</t>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" >
+					<div class="col-xs-12">
+						<table class="table table-bordered mt48" >
+							<thead class="text-center common_thead">
+								<tr style="line-height: 14px;">
+									<th width="40%">
+										<strong>Concepto</strong>
+									</th>
+									<th width="10%">
+										<strong>Bultos</strong>
+									</th>
+									<th width="10%">
+										<strong>Cantidad</strong>
+									</th>
+									<th width="10%">
+										<strong>Precio (€)</strong>
+									</th>
+									<th width="10%">
+										<strong>IVA</strong>
+									</th>
+									<th width="20%">
+										<strong>Base (€)</strong>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr t-foreach="o.order_line" t-as="l" style="line-height: 14px;">
+									<td>
+										<span t-field="l.name"/>
+									</td>
+									<td class="text-right">
+										<span t-field="l.product_uom_qty"/>
+									</td>
+									<td class="text-right">
+										<span t-field="l.product_uom_qty"/>
+										<span t-field="l.product_uom" groups="product.group_uom"/>
+									</td>
+									<td class="text-right">
+										<span t-field="l.price_unit"/>
+									</td>
+									<td class="text-right">
+										<span t-esc="', '.join(map(lambda x: (x.description or x.name), l.tax_id))"/>
+									</td>
+									<td class="text-right" groups="sale.group_show_price_subtotal">
+										<span t-field="l.price_subtotal" t-options='{"widget": "monetary", "display_currency":
+											o.pricelist_id.currency_id}'/>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row" >
+					<div class="col-xs-12">
+						Transportista:
+						<span style="coloe:#C0C0C0;">
+							<t t-if="o.transportation_name.driver_id">
+								<span t-esc="o.transportation_name.driver_id.name">
+								</span>
+								[
+								<span t-esc="o.transportation_name.carrier_id.name">
+								</span>
+								]
+							</t>
+						</span>
+						<!-- <div style="border-bottom: 4px dotted #C0C0C0; width:30px !important;"> </div>
+							-->
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-8">
+					</div>
+					<div class="col-xs-4 pull-right">
+						<span>Base (€):</span>
+						<span class="pull-right" t-field="o.amount_untaxed" t-options='{"widget": "monetary",
+							"display_currency": o.currency_id}'/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-8">
+					</div>
+					<div class="col-xs-4 pull-right">
+						<span>Impuestos (€):</span>
+						<span class="pull-right" t-field="o.amount_tax" t-options='{"widget": "monetary",
+							"display_currency": o.currency_id}'/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-8">
+						<t t-if="o.transportation_name">
+							Conductor:
+							<span t-esc="o.transportation_name.name">
+							</span>
+						</t>
+					</div>
+					<div class="col-xs-4 pull-right">
+						<span>Total (€):</span>
+						<span class="pull-right" t-field="o.amount_total" t-options='{"widget": "monetary",
+							"display_currency": o.currency_id}'/>
+					</div>
+				</div>
+				<div class="row" >
+					<div class="col-xs-12">
+						Observaciones:
+						<div style="border: black solid 1px !important; height:50px;">
+						</div>
+					</div>
+				</div>
+				<br/>
+				<div class="row" >
+					<div class="col-xs-12">
+						Por:
+						<strong>
+							<span t-if="o.company_id.partner_id.name" t-esc="o.partner_id.name">
+							</span>
+						</strong>
+					</div>
+				</div>
+				
+				<!--<div class="row" style="page-break-before:always;">
+					<div class="col-xs-6" style="font-size:11px;">
+						<strong>CONDICIONES GENERALES DE VENTA DE ENVASES</strong>
+						<br/>
+						<br/>
+						<strong>1. Generalidades.</strong>
+						El objeto de este contrato es la venta de mercancías especificada en el albarán adjunto
+						efectuado acorde con la políticas comer- ciales de VBR, publicadas en su página
+						web http://www.vbrreciclados.com. Los precios e informaciones de nuestro catálogo
+						no comprometen a VBR más que como información general, pudiéndose modificar
+						los datos y característi- cas allí expresado en cualquier momento.
+						<br/>
+						<strong>2. Perfeccionamiento del contrato.</strong>
+						El contrato de venta no se perfecciona más que con la aceptación expresa por parte
+						de VBR en los términos y condiciones del pedido mediante acuse de recepción.
+						Toda reclamación efectuada el acuse de la recepción deberá ser comunicada en
+						el plazo de siete días siguientes a su envío para ser tenida en cuenta por VBR.
+						La no comunicación de observaciones en el plazo acordado, significa la acepta-
+						ción por el adquirente de las condiciones generales de venta de VBR.
+						<br/>
+						<strong>3. Plazos.</strong>
+						Los plazos de entrega indicados en nuestra oferta son indicativos, no obstante, VBR
+						intentará mantenerlos en la medida de lo posible. En cualquier caso, se empezará
+						a contar el plazo de entrega en el momento en que VBR disponga de todos los
+						elementos necesarios para efectuar el envío. Los retrasos imputables a esta
+						parte, por causas sobrevenidas, en ningún caso, pueden significar anulación
+						del pedido. Ahora bien, VBR podrá anular el pedido si: a) Las condiciones de
+						pago acordadas no fueran observadas por el adquirente. b) En caso de fuerza
+						mayor o acontecimientos tales como cierre de planta, huelgas, expropiación,
+						incendio, inundación, accidente, averías en útiles de producción, interrupción
+						del trabajo en nuestra planta o del proveedor, interrupción o retraso de los
+						transportes. Asimismo, no podrán aplicarse a VBR penalizaciones por los retrasos
+						en las entregas, salvo que hayan sido previamente pactadas y expresamente aceptadas
+						por VBR en la aceptación del pedido. En este caso, las penaliza- ciones no podrán
+						ser aplicadas sin demostración de un perjuicio real al adquirente y siempre
+						y cuando la causa del retraso sea imputable a VBR.
+						<br/>
+						<strong>4. Precio y condiciones de pago.</strong>
+						Cuando se trate de primeros pedidos, el precio pactado en la presente venta más I.V.A.,
+						se abonará antes del envío o retirada de los envases GRG de las instalaciones
+						del VENDEDOR, mediante transferencia bancaria al número de cuenta indicado por
+						el mismo. Para el resto de pedidos, el CLIENTE dispondrá de un plazo máximo
+						de 60 días para efectuar el pago del precio pactado, todo ello de conformidad
+						con lo dispuesto en la Ley 15/2010, de 5 de julio, de lucha contra la morosidad.
+						<br/>
+						<br/>
+						<strong>5. Producto.</strong>
+						Los productos objeto del presente contrato pueden ser recicla- dos homologados, contenedores
+						nuevos (a excepción de la jaula que será reciclada) y envases completamente
+						nuevos. Queda prohibido, de forma tajante, la utilización de envases reciclados
+						para el uso alimentario o sanita- rio, así como para productos que estén en
+						contacto con productos alimenta- rios o sanitarios; no siendo responsable VBR
+						del uso efectuado por el adquirente contraviniendo lo dispuesto en esta cláusula,
+						así como cualquier limitación o contravención de uso de los envases de acuerdo
+						con su homolo- gación.
+						<br/>
+						<strong>6. Reserva de dominio.</strong>
+						Las mercancías entregadas son de propiedad de VBR hasta el pago completo de todo su
+						importe por el adquirente, que tiene derecho a utilizarlas y transformarlas
+						de acuerdo a sus prácticas comerciales usuales, siempre y cuando se respete
+						lo establecido en la cláusula sexta, mientras no existan retrasos en sus pagos
+						ni oposición por parte de VBR.
+						<br/>
+						<br/>
+						<strong>7. Entrega y retraso de las entregas.</strong>
+						Cualesquiera que sean las condicio- nes pactadas en el pedido, la entrega se entiende
+						en las instalaciones de VBR e implica de pleno derecho, la obligación de pago,
+						transferencia de propiedad y atribución de jurisdicción con todas sus consecuencias.
+						La entrega se realiza mediante la entrega directa al cliente, el aviso de puesta
+						a disposición o la entrega en nuestras instalaciones a un transportista designa-
+						do por una de las dos partes. Si la entrega se retrasa por causas del adquirente,
+						las mercancías serán almacenadas y mantenidas, siempre y cuando medio consentimiento
+						por parte de VBR, siendo los gastos genera- dos a cargo del adquirente, no modificando
+						este retraso las obligaciones de pago del material ni constituyendo novación.
+						<br/>
+						<strong>8. Garantías.</strong>
+						La empresa VBR garantiza al adquirente que, en el momento de la entrega, las mercancías
+						estarán libres de vicios o defectos de fabrica- ción. Nuestros envases reciclados
+						pasan por un control de calidad para garantizar un correcto lavado y escurrido
+						de los mismos. La empresa VBR no se hace responsable de un mal uso de por parte
+						del cliente, así como por reacciones adversas con el producto a envasar, contraviniendo,
+						en todo o en parte, las indicaciones de uso del envase dispuesta en su etiquetado
+						y homologaciones. Por ello, VBR solo se responsabiliza del estado estructural
+					</div>
+					<div class="col-xs-6" style="font-size:11px;">
+						del envase, en caso de detectarse rotura o alguna deficiencia en la recepción a contento
+						por parte del comprador, se cambiará el contenedor por otro de las mismas características.
+						Si en el momento de recibir las mercancías el adquirente, éstas contuvieren
+						vicios o defectos manifiestos en la estructura del envase, conforme lo anterior,
+						deberá comunicarlo a VBR tan pronto conozca su existencia y, en todo caso, antes
+						de que transcurran cuatro días a contar desde la recepción de la mercancía,
+						de conformidad con lo dispues- to en el artículo 336 del Código de Comercio.
+						En el expediente judicial o extrajudicial para la determinación de la naturaleza
+						y alcance de cualquier vicio, deberá ser citado la empresa VBR quién además
+						podrá realizar las comprobaciones que estime oportunas, estando obligado el
+						adquirente a prestar la colaboración que sea necesaria.
+						<br/>
+						<strong>9. Responsabilidades.</strong>
+						Salvo estipulación expresa acordada por las partes, todas las operaciones de aseguramiento,
+						aduanas, mantenimiento son a cargo y riesgo del comprador. La empresa VBR declina
+						toda responsabilidad desde que las mercancías abandonan sus instalaciones, incluso
+						en el caso de expediciones franco destino, en cuyo caso es responsabilidad del
+						destinatario verificar las expediciones a su llegada y ejercer, si hubiera lugar,
+						sus reclamaciones contra los transportistas.
+						<br/>
+						<strong>10. Resolución.</strong>
+						El presente contrato podrá ser resuelto en los casos que marca la Ley, así como por
+						el incumplimiento de cualquiera de las obligacio- nes derivadas del mismo por
+						las partes. Igualmente, podrá resolverse el contrato a instancia del COMPRADOR
+						si su mercancía no fuera entregada por el VENDEDOR antes de QUINCE días y en
+						los términos establecidos en la estipulación segunda de este contrato.
+						<br/>
+						<strong>11. Protección de datos.</strong>
+						Conforme a las disposiciones contenidas en la Ley Orgánica de 13 de diciembre de 1999,
+						de Protección de Datos de Carácter Personal, VBR le informa que los datos personales
+						proporcionados por el cliente pasarán a formar parte de un fichero automatizado
+						cuyo responsable es VICENTE BALLESTER RIOS, SL. Dicho fichero se halla inscrito
+						en el Registro General de Protección de Datos de la Agencia Española de Protec-
+						ción de Datos. Los datos facilitados por el cliente serán únicamente utilizados
+						con fines de gestión de realizar la prestación de los trabajos contratados.
+						Los datos personales recabados por VBR, solamente serán utilizados por ésta
+						para el tratamiento de pedidos y realizar el correspondiente servicio encomendado.
+						VBR se compromete a no vender, ni ceder, ni divulgar los datos personales recabados
+						del cliente. VBR informa al cliente de que se han adoptado las medidas de seguridad
+						exigidas en función del nivel de protección de los datos suministrados, instalando
+						las medidas técnicas y de organización necesarias, en función de las posibilidades
+						técnicas existentes, con el fin de evitar la pérdida, sustracción, desvío, manipulación
+						o uso no consentido de los mismos.
+						<br/>
+						<strong>12. Confidencialidad.</strong>
+						Los términos del contrato particular estipulado entre las partes son estrictamente
+						confidenciales. Las partes se comprometen a no divulgar ni trasmitir a terceros
+						(salvo a los empleados, colaboradores o asesores de las PARTES firmantes, que
+						pudieran necesitar la información únicamente en lo referente al objeto del contrato),
+						sin el consentimiento previo y por escrito de la otra parte. Asimismo, las partes
+						se obligan a darle dicha información el mismo tratamiento que efectuarían a
+						la información confidencial de su propiedad, haciendo extensiva esta obligación
+						a sus propios empleados o con quienes contraten. Ambas partes consideran Información
+						y Documentación Confidencial, el contenido del Contrato con sus condiciones
+						particulares, incluidos los Anexos, así como toda la informa- ción recibida
+						en cualquier forma, sea verbal o en soporte material, que incorpore cualesquiera
+						datos o mensajes de código escrito, gráfico, audiovi- sual u otros susceptibles
+						de aprehensión, generados por una de las partes en el desarrollo de sus actividades,
+						o que le hubieran sido suministrados o cedidos por razón de las mismas en el
+						marco de este contrato. Las partes se obligan a guardar estricta confidencialidad
+						y secreto de la Información y Documentación Confidencial.
+						<br/>
+						<strong>13. Sistema de cumplimiento normativo.</strong>
+						El cliente se obliga expresamente a cumplir con la normativa legal vigente durante
+						todo el proceso, así como, con las normas y procedimientos establecidos por
+						el “Sistema de Cumpli- miento Normativo o Compliance” de la empresa VBR, el
+						cual declara conocer y aceptar. En tal sentido, el cliente tiene derecho a conocer
+						las políticas y procedimientos de Compliance de VBR.
+						<br/>
+						<strong>14. Jurisdicción.</strong>
+						Para cuantas divergencias pudieran surgir con motivo de la interpretación y cumplimiento
+						de lo pactado en este documento y anexo, las partes, haciendo expresa renuncia
+						al fuero que pudiera corresponderles, se someten a los Juzgados y Tribunales
+						de Valencia.
+					</div>
+				</div>-->
+			</t>
+		</t>
+	</template>
+	
+	<template id="report_delivery_note_sale">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="ballester_sale.report_delivery_note_sale_document" t-lang="o.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>	

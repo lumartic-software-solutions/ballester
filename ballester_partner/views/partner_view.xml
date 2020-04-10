@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="partner_inherit_form_view" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='purchase']" position="inside">
+                    <field name="is_vendor_service" />
+                </xpath>
+                <field name='lang' position='before'>
+                    <field name="fax" />
+                </field>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
+     

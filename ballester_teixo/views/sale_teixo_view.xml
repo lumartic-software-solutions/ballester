@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_teixo" model="ir.ui.view">
+        <field name="name">sale.order.form.teixo</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button name="button_teixoct_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_ct_count" widget="statinfo" />
+                </button>
+                <button name="button_teixont_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_nt_count" widget="statinfo" />
+                </button>
+                <button name="button_teixodi_documents" type="object" class="oe_stat_button" icon="fa-arrows-v">
+                    <field name="teixo_di_count" widget="statinfo" />
+                </button>
+             </div>
+            <xpath expr="//notebook/page/field/form/group" position='before'>
+                <header>
+                    <button name="%(action_teixo_sales)d" id="sale_teixo_create_btn"
+                    type="action" string="Create Teixo Document" class="btn-primary" />
+                </header>
+            </xpath>
+
+
+
+        </field>
+    </record>
+
+     <record id="view_collection_order_form_teixo" model="ir.ui.view">
+        <field name="name">sale.order.form.teixo</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="ballester_collection.ballester_sale_collection_view_inherit_form" />
+        <field name="arch" type="xml">
+	     <field name="destination_location_id" position="after">
+                <field name="carrier_sale_id" />
+		 <field name="driver_id" />
+            </field>
+
+
+        </field>
+    </record>
+</odoo>

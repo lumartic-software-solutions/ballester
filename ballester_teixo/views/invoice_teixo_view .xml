@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_invoice_form_teixo" model="ir.ui.view">
+        <field name="name">account.invoice.form.teixo</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form" />
+        <field name="arch" type="xml">
+       <field name="date_due" position="after">
+                <field name="carrier_invoice_id" />
+		 <field name="driver_id" />
+            </field>
+
+        </field>
+    </record>
+   
+
+    <record id="view_invoice_purchase_form_teixo" model="ir.ui.view">
+        <field name="name">account.invoice.form.teixo</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form" />
+        <field name="arch" type="xml">
+       <field name="date_due" position="after">
+                <field name="carrier_invoice_id" />
+		 <field name="driver_id" />
+            </field>
+
+        </field>
+    </record>
+
+</odoo>

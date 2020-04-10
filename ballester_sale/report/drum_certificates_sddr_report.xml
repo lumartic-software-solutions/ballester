@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Sale. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="report_drum_certificates_sddr_document">
+		      <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+                <div class="header">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6">
+                            <img
+                                src="/ballester_sale/static/src/img/Ballester_bicolor.jpg"
+                                style="height:80px;width:250px;" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+			<div class="row">
+				<div class="col-xs-12" >
+						<img src="/ballester_purchase/static/src/img/new_1.png" style="height:70px;width:700px;"/>
+				</div>
+			</div>
+		    <div class="row">
+                    <div class="col-xs-12"
+                        style="font-size: 13px; color:#C0C0C0;border-bottom: 1px solid
+                black;">
+                        Nuestros envases reciclados pasan por un control de calidad
+                        para un
+                        correcto lavado
+                        y escurrido de los mismos. La empresa no se
+                        hace responsable de un
+                        mal uso de
+                        por parte del cliente así como
+                        reacciones adversas con el producto a
+                        contener.
+                        Vicente Ballester
+                        Rios, S.L. se responsabiliza del estado estructural
+                        del
+                        envase.
+                        Envases no aptos para uso alimentario
+                    </div></div>
+                    <!--<div class="text-center">
+                        <strong>
+                            <span style="font-size:14px;">VICENTE BALLESTER RIOS SL</span>
+                        </strong>
+                        <br />
+                        C/. Marjana, 29 y 30 - Pol. Ind. La Pahilla Tel. 96 252 11 19 -
+                        Fax
+                        96 252 14 45
+                        <br />
+                        46370 - CHIVA (Valencia) Nº Gestor autorizado: 314/G/RTP/CV
+                    </div>-->
+                </div>
+                <t t-call="web.internal_layout">
+
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-6">
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <strong>
+                                        <span style="font-size:18px;" t-field="o.company_id.name" />
+                                </strong>
+                                <div style="font-size:14px;"
+                                    t-field="o.company_id.partner_id"
+                                    t-options='{"widget": "contact", "fields":
+                            ["address"], "no_marker": True}' />
+                                Tel.
+                                <span style="font-size:14px;" t-field="o.company_id.phone" />
+                                Fax. 96 252 14 45
+                                <br />
+                                <strong>
+                                    <span style="font-size:12px;">Nº Gestor Autorizado: 314/G/RTP/CV</span>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12"
+                                style="font-size:14px;line-height: 2.6;">
+                                <strong>
+                                    <b>CERTIFICA:</b>
+                                </strong>
+                                <p>
+                                    Que el proceso de limpieza de los bidones 200 litros incluidos en SDDR  es el siguiente:
+                                </p>
+                                1º Una vez descargados los bidones estos son destinados a la zona de lavado. De forma individual pasan al puesto de lavado.
+                                <br />
+                                2º Inspección visual del estado del bidón.
+                                <br />
+                                3º Mediante bomba neumática se extraen los posibles restos de producto. Dichos restos se gestionan mediante gestor autorizado.
+                                <br />
+                                4º Limpieza interior mediante lanceado interior con agua con sosa caustica. 
+                                <br />
+                                5º Proceso de lanceado interior y desagüe posterior del agua de lavado. Proceso repetido un mínimo de 3 veces en maquina lavado.
+                                <br />
+                                6º Lavado exterior en maquina rodillo con agua potable
+                                <br />
+                                7º Aclarado final con agua de suministro potable
+                                <br />
+                                8º Revisión interna del estado del bidón
+                                <br />
+                                9º Escurrido y secado del envase
+                                <br />
+                                10º Verificación de que no queda ningún resto del producto que han contenido ni del agua y sosa utilizada para realizar su limpieza
+                                <br />
+                                11º Traslado a las instalaciones de
+                                <br />
+                                <span t-field="o.partner_id.name" /> 
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-xs-12">
+                            <center>
+                                <span>
+                                    Chiva
+                                    <span t-field="o.date_order" />
+                                </span>
+                            </center>
+                        </div>
+                    </div>
+                    <table class="table" style="border:1pt solid black;border-collapse: collapse;margin-bottom: 0px;">
+                        <tr style="border:1pt solid black;">
+                            <td style="border:1pt solid black;width: 33%;" height='50px'>
+                                <div class="box">
+                                    Numero de albarán:
+                                    <span t-field="o.name" />
+                                </div>
+                            </td>
+                            <td style="border:1pt solid black;width: 33%" height='60px'>
+                            </td>
+                            <td style="border:1pt solid black;width: 33%" height='60px'>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table" style="border:1pt solid black;border-collapse: collapse;">
+                        <tr style="border:1pt solid black;">
+                            <td style="border:1pt solid black;" height='120px'>
+                                <div class="box">Firma responsable : Vicente Ballester Rios S.L.
+                                </div>
+                                <img
+                                src="/ballester_sale/static/src/img/firma_Ballester.png"
+                                style="height:100px;width:175px;" />
+                            </td>
+                            <td style="border:1pt solid black;" height='120px'>
+                                <div class="box">Firma responsable : <span t-field="o.partner_id.name" /></div>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+        </t>
+		
+	</template>
+	
+	<template id="report_drum_certificates_sddr_sale">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="ballester_sale.report_drum_certificates_sddr_document" t-lang="o.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

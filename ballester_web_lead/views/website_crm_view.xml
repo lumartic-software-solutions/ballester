@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  -*- coding: utf-8 -*-
+      Odoo, Open Source Ballester Web Lead.
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+	
+	<!-- replace company info -->
+	<template id="ballester_contactus_form" name="Contact" inherit_id="website.contactus"
+		customize_show="True">
+		<xpath expr="//div[@class='col-md-4 mb32']" position="replace">
+		</xpath>
+	</template>
+	
+	<!-- add contact form-->
+	<template id="ballester_contactus_form" name="Contact" inherit_id="website.contactus"
+		customize_show="True">
+		<xpath expr="//div" position="replace">
+			<div>
+				<form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you"
+					class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data"
+					data-editable-form="false">
+					<h1>Solicitud sin ningún tipo de compromiso</h1>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="_custom">
+								<label  for="request_type">Solicitud</label>
+								<br/>
+								<div class="col-md-4">
+									<input type="radio" name="request_type" t-att-value="request.params.get('request_type',
+										'')" />
+									Limpieza
+								</div>
+								<div class="col-md-4">
+									<input type="radio" name="request_type" checked="checked" t-att-value="request.params.get('request_type',
+										'')" />
+									Venta
+								</div>
+								<div class="col-md-4">
+									<input type="radio" name="request_type" t-att-value="request.params.get('request_type',
+										'')" />
+									Retirada
+								</div>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<div class="form-group form-field ">
+									<label for="customer_name">Nombre *</label>
+									<input type="text" style="width:90%" class="form-control o_website_form_input" name="customer_name"
+										t-att-value="request.params.get('customer_name', '')" required="" data-error="Se
+										requiere el primer nombre." />
+									<p>Clientes habituales solo indicar el nombre</p>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group  ">
+									<label  for="phone">Teléfono</label>
+									<input type="text" style="width:90%" class="form-control o_website_form_input" name="phone"
+										t-att-value="request.params.get('phone', '')" required=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="form_name" class="text-align:left!important;">Persona de contacto</label>
+						</div>
+						<div class="col-md-6">
+							<label  for="email_from">Email</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="col-md-6">
+								<div class="form-group  ">
+									<input type="text" style="width:90%" class="form-control o_website_form_input" name="first_name"
+										t-att-value="request.params.get('first_name', '')" required="" />
+									<p>Nombre</p>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<input type="text" style="width:87%" class="form-control o_website_form_input" name="last_name"
+									t-att-value="request.params.get('last_name', '')" required=""/>
+								<p>Apellidos</p>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input style="width:90%" type="text" class="form-control o_website_form_input" name="email_from"
+									required="" t-att-value="request.params.get('email_from', '')" />
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<label for="address">Dirección</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<input style="width:90%" type="text" placeholder="calle *" class="form-control o_website_form_input"
+								name="street" required="" t-att-value="request.params.get('street', '')" />
+							<p>Dirección</p>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input style="width:90%" type="text" placeholder="calle2 *" class="form-control o_website_form_input"
+									name="street2" required="" t-att-value="request.params.get('street2', '')"
+									/>
+							</div>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-6">
+							<input style="width:90%" type="text" class="form-control o_website_form_input" name="city"
+								required="" t-att-value="request.params.get('city', '')" />
+							<p>Ciudad</p>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<select style="width:90%" name="state_id" class="form-control states_id" t-att-value="request.params.get('state_id',
+									'')">
+									<option>states...</option>
+									<t t-foreach="states or []" t-as="state">
+										<option t-att-value="state.id" >
+											<t t-esc="state.name" />
+										</option>
+									</t>
+								</select>
+							</div>
+							<p>Provincia</p>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-6">
+							<input style="width:90%" type="text" class="form-control o_website_form_input" name="zip"
+								required="required" t-att-value="request.params.get('zip', '')" />
+							<p>Código Postal</p>
+						</div>
+					</div>
+					
+					<br/>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="transfer_date">Fecha de traslado</label>
+							<input style="width:90%" type="date" class="form-control o_website_form_input" name="transfer_date"
+								required="required" t-att-value="request.params.get('transfer_date', '')"
+								/>
+						</div>
+						<div class="col-md-6">
+							<label for="date_deadline">Fecha de entrega</label>
+							<input style="width:90%" type="date" class="form-control o_website_form_input" name="date_deadline"
+								required="required" t-att-value="request.params.get('date_deadline', '')"
+								/>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<label>Lista</label>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-2">
+							<label for="transfer_date">Tipo de Envase</label>
+						</div>
+						<div class="col-md-1">
+							<label for="deadline_date">
+								Palet
+								<br/>
+							</label>
+						</div>
+						<div class="col-md-2">
+							<label for="deadline_date">
+								Cantidad
+								<p>(Número)</p>
+							</label>
+						</div>
+						<div class="col-md-2">
+							<label for="deadline_date">Tipo</label>
+						</div>
+						<div class="col-md-2">
+							<label for="deadline_date">
+								Materia
+								<p>Contenida</p>
+							</label>
+						</div>
+						<div class="col-md-2">
+							<label for="deadline_date">
+								No Un. Clasi.
+								<p>Peligrosidad</p>
+							</label>
+						</div>
+						<div class="col-md-1">
+							<i class="fa fa-plus-circle" aria-hidden="true">
+							</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<select style="width:90%" class="form-control" name="type_of_container" required="required"
+								t-att-value="request.params.get('type_of_container', '')" >
+								<option value="volvo">A</option>
+								<option value="saab">B</option>
+								<option value="opel">C</option>
+								<option value="audi">D</option>
+							</select>
+							<!--<select name='type_of_container'> <t t-foreach='widget.pos.pricelists' t-as='pricelist'>
+								<option t-att-value='pricelist.id' t-att-selected="partner.property_product_pricelist
+								? (pricelist.id === partner.property_product_pricelist[0] ? true : undefined)
+								: undefined"> <t t-esc='pricelist.display_name'/> </option> </t> </select>
+								-->
+						</div>
+						<div class="col-md-1">
+							<select style="width:90%" class="form-control" name="pallet" required="required" t-att-value="request.params.get('pallet',
+								'')" >
+								<option value="volvo">A</option>
+								<option value="saab">B</option>
+								<option value="opel">C</option>
+								<option value="audi">D</option>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<input style="width:90%" type="text" class="form-control o_website_form_input" name="quantity"
+								required="required" t-att-value="request.params.get('quantity', '')" />
+						</div>
+						<div class="col-md-2">
+							<select style="width:90%" class="form-control" name="type" required="required" t-att-value="request.params.get('type',
+								'')" >
+								<option value="volvo">A</option>
+								<option value="saab">B</option>
+								<option value="opel">C</option>
+								<option value="audi">D</option>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<input style="width:90%" type="text" class="form-control o_website_form_input" name="content_material"
+								required="required" t-att-value="request.params.get(' content_material', '')"
+								/>
+						</div>
+						<div class="col-md-2">
+							<select style="width:90%" class="form-control" name="no_un" required="required" t-att-value="request.params.get('no_un',
+								'')" >
+								<option value="volvo">A</option>
+								<option value="saab">B</option>
+								<option value="opel">C</option>
+								<option value="audi">D</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-md-12">
+							<label>Observaciones</label>
+							<textarea rows="4" class="form-control o_website_form_input" style="width:95%" name="description"
+								required="required">
+								<t t-esc="request.params.get('description', '')"/>
+							</textarea>
+						</div>
+					</div>
+					<br/>
+					<div class="form-group">
+						<div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+							<span class="btn btn-primary btn-lg o_website_form_send">Enviar</span>
+							<span id="o_website_form_result">
+							</span>
+						</div>
+					</div>
+				</form>
+			</div>
+		</xpath>
+	</template>
+</odoo>                

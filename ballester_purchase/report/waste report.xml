@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Purchase. 
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<template id="waste_report_document">
+		<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})" />
+		<div class="header">
+			<div class="row">
+				<div class="col-xs-12" >
+					<div class="col-xs-6 pull-left">
+						<center>
+							<img src="/ballester_purchase/static/src/img/ballester_logo_300.png" style="height:80px;width:150px;"/>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="row">
+			</div>
+		</div>
+		
+		<t t-call="web.external_layout">
+			<div class="page" t-foreach="o.order_line" t-as="l" style="page-break-before:always;">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="pull-right" style="text-align: left;" t-field="o.partner_id" t-options='{"widget":
+							"contact", "fields": ["address", "name"], "no_marker": True}'/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:30px; font-weight: bold;">
+						<center>
+							<b>Informe anual de residuos, para dar cumplimiento a la Ley 22/2011 de 18 de Julio</b>
+						</center>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:20px;">
+						La empresa Vicente Ballester Rios, S.L. con NIF/CIF/NIE B97406060 y domicilio social
+						en Calle Marjana, 29 y 30 , P.I. La Pahilla, 46370 - Chiva, Valencia/València,
+						con código de autorización ambiental 314/G/RTP/CV, 310/V/RNP/CV en conformidad
+						con lo establecido en la legislación vigente relativa a la gestión de residuos
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:30px; font-weight: bold;">
+						<center>
+							<b>DECLARA:</b>
+						</center>
+					</div>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:20px;">
+						<p>
+							Que entre el_______ y el_____ha recibido los residuos procedentes del centro con NIMA:
+							______ubicado en______perteneciente a________con NIF/CIF/NIE_______y domicilio
+							social en_______correspondientes al siguiente listado:
+						</p>
+					</div>
+				</div>
+				<div class="row" >
+					<table class="table table-bordered mt48">
+						<thead class="text-center common_thead">
+							<tr style="line-height: 14px;">
+								<th style="text-align: center;" width="20%">
+									<strong>Código LER</strong>
+								</th>
+								<th style="text-align: center;" width="50%">
+									<strong>Residuo</strong>
+								</th>
+								<th style="text-align: center;" width="10%">
+									<strong>Bultos</strong>
+								</th>
+								<th style="text-align: center;" width="20%">
+									<strong>Cantidad</strong>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="line-height: 14px;">
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+								<td>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
+					<div class="col-xs-12" style="font-size:20px;">
+						<p>
+							han sido entregados a ______ para ser gestionados según las normativas actuales vigentes
+							en materia de residuos.
+						</p>
+						<br/>
+						<p>Para que conste y surta los efectos oportunos, se expide la presente</p>
+						<p>certificación a fecha: __________</p>
+						<br/>
+						<br/>
+						Firma:
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+	
+	<template id="report_waste_report_purchase">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="ballester_purchase.waste_report_document" t-lang="o.partner_id.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

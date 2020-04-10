@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  -*- coding: utf-8 -*-
+      Odoo, Open Source Ballester Survey Extend.
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+	<data>
+		<!-- Incidents Status Email template -->
+		<record id="incidents_mail_template" model="mail.template">
+			<field name="name">Incidents Notification - Send by Email</field>
+			<field name="subject">Incidents Notification</field>
+			<field name="email_from">${(object.employee_id.work_email or object.employee_id.user_id.partner_id.email  or 'noreply@localhost')|safe}</field>
+			<field name="email_to">${object.get_incidents_manager_email}</field>
+			<field name="model_id" ref="survey.model_survey_user_input_line"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="lang">${object.employee_id.lang}</field>
+			<field name="body_html">
+            <![CDATA[
+				<p>Hello,</p>
+				<p>Incidents By ${object.employee_id.name} Employee.</p>
+	               <div style="margin-top: 10px;">
+	                   <a href="${object.get_incidents_url}" style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px">Go to Incidents</a>
+	               </div>
+				]]>
+        </field>
+    </record>
+
+
+
+<record id="incidents_purchase_mail_template" model="mail.template">
+			<field name="name">Incidents Notification - Send by Email</field>
+			<field name="subject">Incidents Notification</field>
+			<field name="email_from">${object.create_uid.email}</field>
+			<field name="email_to">${object.get_controller_email}</field>
+			<field name="model_id" ref="survey.model_survey_user_input_line"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="lang">${object.value_suggested.controller_id.lang}</field>
+			<field name="body_html">
+            <![CDATA[
+				<p>Hello,</p>
+				<p>Incidents By ${object.create_uid.name} Employee.</p>
+	               <div style="margin-top: 10px;">
+	                   <a href="${object.get_incidents_url}" style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius:3px">Go to Incidents</a>
+	               </div>
+				]]>
+        </field>
+    </record>
+	</data>
+</odoo>

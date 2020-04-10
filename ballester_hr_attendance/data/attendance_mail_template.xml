@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  -*- coding: utf-8 -*-
+      Odoo, Open Source Ballester Hr Attendance.
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+	<data>
+		<!-- Attendance Status Email template -->
+		<record id="attendance_mail_template" model="mail.template">
+			<field name="name">Attendance Notification - Send by Email</field>
+			<field name="subject">Attendance Notification</field>
+			<field name="email_from">${(object.employee_id.work_email and '%s &lt;%s&gt;' % (object.employee_id.name, object.employee_id.work_email) or '')|safe}</field>
+			<field name="email_to">${object.get_incidents_manager_email}</field>
+			<field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+			<field name="auto_delete" eval="True"/>
+			<field name="lang">${object.employee_id.lang}</field>
+			<field name="body_html">
+            <![CDATA[
+				<p>Hello,</p>
+				 <p>
+					 I Have Problem with Elements.
+					<br />
+				</p>
+				<p>If you have any questions, please do not hesitate to contact us.</p>]]>
+        </field>
+    </record>
+	</data>
+</odoo>

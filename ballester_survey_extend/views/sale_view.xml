@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="sale_view_inherit__compliance_form" model="ir.ui.view">
+		<field name="name">sale.order.form</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form" />
+		<field name="arch" type="xml">
+			<button name="print_quotation" position="before">
+				<button name="check_compliance" string="Check Compliance"
+					context="{'sale_order_id': id}" type="object" states="draft"
+					class="btn-primary o_sale_print"  attrs="{'invisible': [('sales_type', 'in', ['new','recycled'])],
+						'invisible':[('state', 'in', ['sale','cancel','check_compliance'])] }"/>
+			</button>
+
+			<field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"
+				position="replace">
+				<field name="state" widget="statusbar" statusbar_visible="draft,sent,check_compliance,sale" />
+			</field>
+			<xpath expr="//div[@name='button_box']" position="inside">
+            	 <button type="object"
+                            name="action_view_survey_input"
+                            class="oe_stat_button"
+                            icon="fa-check" attrs="{'invisible':[('state', 'in', ('draft','sent','to approve'),),('survey_input_ids','=',[])]}">
+                            <field name="survey_input_count" widget="statinfo" string="Result"/>
+                            <field name="survey_input_ids" invisible="1"/>
+                        </button>
+            
+            </xpath>
+		</field>
+	</record>
+</odoo>
+

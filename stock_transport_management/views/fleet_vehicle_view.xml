@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Stock Transport Management.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<record id="fleet_vehicle_form_view_inherit" model="ir.ui.view">
+			<field name="name">Fleet Vehicle</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='driver_id']" position="after">
+					<field name="mob_no"/>
+				</xpath>
+				<xpath expr="//group" position="after">
+						<group string="Vehicle Information">
+							<group>
+								<field name="vehicle_address"/>
+								<field name="vehicle_city"/>
+								<field name="state_id"/>
+							</group>
+							<group>
+								<field name="vehicle_zip"/>
+								<field name="country_id"/>
+							</group>
+						</group>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>

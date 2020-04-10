@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- QWeb Reports -->
+		<record id="delivery_note_ballester_purchase_paperformat" model="report.paperformat">
+			<field name="name">Ballester Purchase Delivery Note</field>
+			<field name="default" eval="True" />
+			<field name="format">A4</field>
+			<field name="page_height">0</field>
+			<field name="page_width">0</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">30</field>
+			<field name="margin_bottom">45</field>
+			<field name="margin_left">7</field>
+			<field name="margin_right">7</field>
+			<field name="header_line" eval="False" />
+			<field name="header_spacing">25</field>
+			<field name="dpi">90</field>
+		</record>
+		
+		<report id="delivery_note_purchse_report" model="purchase.order" string="Delivery
+			Notes" report_type="qweb-pdf" name="ballester_purchase.report_delivery_note_purchase"
+			file="ballester_purchase.report_delivery_note_purchase" menu="True" paperformat="ballester_purchase.delivery_note_ballester_purchase_paperformat"/>
+		
+		<report id="waste_certificates_purchase_report" model="purchase.order" string="Waste
+			Certificate" report_type="qweb-pdf" name="ballester_purchase.report_waste_certificate_purchase"
+			file="ballester_purchase.report_waste_certificate_purchase" menu="True" />
+		
+		
+		<!--<report id="waste_report_purchase" model="purchase.order" string="Waste Report" report_type="qweb-pdf"
+			name="ballester_purchase.report_waste_report_purchase" file="ballester_purchase.report_waste_report_purchase"
+			menu="True" />
+		
+		
+		<report id="consignment_note_control_report" model="purchase.order" string="Consignment
+			Note" report_type="qweb-pdf" name="ballester_purchase.report_consignment_note_control"
+			file="ballester_purchase.report_consignment_note_control" menu="True" />-->
+		
+		
+	</data>
+</odoo>     

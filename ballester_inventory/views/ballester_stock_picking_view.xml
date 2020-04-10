@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<!--<record id="ballester_stock_picking_view_inherit_form" model="ir.ui.view">
+		<field name="name">stock.picking.form</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.view_picking_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//page[3]" position="after">
+				<page string="Teixo Details" name="teixo_details">
+					<group>
+						<group string="Center Detail" name="center">
+							<field name="manager_center_id"/>
+							<field name="is_carrier"/>
+							<field name="carrier_center_id" attrs="{'invisible' : [('is_carrier', '=', False)]}"/>
+						</group>
+						<group string="Carrier Detail" name="carrier_detail" attrs="{'invisible' : [('is_carrier',
+							'=', False)]}">
+							<field name="transport_type_code"/>
+							<field name="enrollment"/>
+							<field name="com_autonomous_pass"/>
+							<field name="itinerary"/>
+							<field name="transport_form_code"/>
+						</group>
+					</group>
+					<group string="Other Detail" name="other_detail">
+						<group>
+							<field name="cif_nif_nie"/>
+							<field name="foreign_company_id"/>
+							<field name="external_code"/>
+						</group>
+						<group>
+							<field name="association_type_code"/>
+							<field name="tradename"/>
+							<field name="business_name"/>
+						</group>
+					</group>
+				</page>
+				
+				<page string="Create NT" name="create_nt">
+					<table width="100%" style="margin-top:10px" cellspacing="6">
+					
+						<tr>
+							<td colspan="2" width="450px">
+							</td>
+							<td width="200px"><b>Expiration Date</b>
+							</td>
+							<td width="200px"><b>Reply From Teixo</b>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_1" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_1'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_1" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_1" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_2" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_2'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_2" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_2" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_3" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_3'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_3" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_3" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_4" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_4'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_4" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_4" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_5" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_5'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_5" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_5" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+					</table>
+					
+				</page>
+				<page string="Create DI" name="create_nt">
+					<table width="100%" style="margin-top:10px" cellspacing="6">
+					
+						<tr>
+							<td colspan="2" width="400px">
+							</td>
+							<td width="180px"><b>Expiration Date</b>
+							</td>
+							<td width="180px"><b>Reply From Teixo</b>
+							</td>
+							<td ><b>Doc. DI</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_di_id_1" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_1'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_di_1" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_di_1" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_di_id_2" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_2'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_di_2" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_di_2" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_di_id_3" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_3'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_di_3" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_di_3" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_di_id_4" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_4'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_di_4" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_di_4" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_di_id_5" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_5'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_di_5" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_di_5" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+							<td><b>State</b>
+							</td>
+						</tr>
+					</table>
+				</page>
+				<page string="Create CT" name="create_nt">
+					<table width="100%" style="margin-top:10px" cellspacing="6">
+					
+						<tr>
+							<td colspan="2" width="450px">
+							</td>
+							<td width="200px"><b>Expiration Date</b>
+							</td>
+							<td width="200px"><b>Reply From Teixo</b>
+							</td>
+							<td><b>Doc. CT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_ct_id_1" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_1'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_ct_1" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_ct_1" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_ct_id_2" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_2'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_ct_2" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_ct_2" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_ct_id_3" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_3'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_ct_3" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_ct_3" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_id_4" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_4'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_ct_4" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_ct_4" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+						<tr>
+							<td  width="400px" style="padding:10px">
+							<b>Select Product Residuo</b><field name="product_ct_id_5" string="Select Product Residuo" style="width:200px"/>
+							</td>
+							<td  width="80px">
+								<button name="create_nt" type="object" string="Save" class="btn-primary" context="{'current_product' : 'product_5'}"/>
+							</td>
+							<td width="200px"><field name="expiry_date_ct_5" nolabel="1" style="width:130px"/>
+							</td>
+							<td width="200px"><field name="teixo_response_ct_5" nolabel="1" style="width:150px"/>
+							</td>
+							<td><b>Doc. NT</b>
+							</td>
+						</tr>
+					</table>
+				</page>
+			</xpath>
+		</field>
+	</record>-->
+</odoo>	

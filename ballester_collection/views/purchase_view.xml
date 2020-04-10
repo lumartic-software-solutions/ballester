@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ballester_purchase_collection_view_inherit_form"
+        model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <field name="partner_ref" position="after">
+                <field name="collection_id" />
+            </field>
+	     <field name="purchase_type" position="after">
+                <field name="source_location_id" />
+		 <field name="destination_location_id" />
+            </field>
+            <xpath expr="//notebook" position="inside">
+                <page string="Collection Order Lines">
+                    <field name="collection_line_ids"
+                        attrs="{'readonly': [('state', 'in', ('done', 'cancel'))]}">
+                        <tree string=" Order Lines">
+                            <field name="product_id"
+                                attrs="{'readonly': [('state', 'in', ('in_process', 'picked_up', 'cancel'))]}" />
+                            <field name="name" />
+                            <field name="state" invisible="1" />
+                            <field name="product_uom" groups="product.group_uom"
+                                attrs="{'readonly': [('state', 'in', ('in_process', 'picked_up', 'cancel'))]}"
+                                force_save="1" />
+                            <field name="price_unit" />
+                            <field name="product_uom_qty" />
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+	    <div  name="button_box" position="inside">
+		<button type="object" name="action_view_waybill"
+                            class="oe_stat_button" string="waybill" icon="fa-truck"
+                            attrs="{'invisible':[('waybill_count', '=', 0)] }">
+                            <field name="waybill_count" />
+                        </button>
+
+	    </div>
+
+	    <button name="action_view_picking" position="after">
+		<button name="%(action_bill_of_lading)d"
+                        id="create_bill_of_lading_purchase_id" type="action" string="Create Waybill"
+                        class="oe_highlight" />
+		</button>
+
+        </field>
+    </record>
+</odoo>

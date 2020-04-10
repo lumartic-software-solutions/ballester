@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for collection.order -->
+        <record id="seq_collection_order" model="ir.sequence">
+            <field name="name">Collection Order</field>
+            <field name="code">collection.order</field>
+            <field name="prefix">COL%(month)s%(day)s%(y)s</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_bill_lading" model="ir.sequence">
+            <field name="name">Bill Of Lading</field>
+            <field name="code">bill.lading</field>
+            <field name="prefix">CARTA DE PORTE %(year)s</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

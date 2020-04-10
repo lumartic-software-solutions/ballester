@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  -*- coding: utf-8 -*-
+      Odoo, Open Source Ballester Web Lead.
+      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+	<data>
+		<!-- added fiels in crm lead form -->
+        <record model="ir.ui.view" id="view_inherit_crm_form_view">
+        <field name="name">CRM</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+			<field name="arch" type="xml">
+				<field name="contact_name" position="after">
+					<field name="request_type" widget="radio"/>
+				</field>
+				<field name="date_deadline" position="before">
+					<field name="transfer_date"/>
+				</field>
+        	</field>
+        </record>
+	</data>
+</odoo>

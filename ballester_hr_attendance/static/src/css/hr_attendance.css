@@ -1,0 +1,26 @@
+/** -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Hr Attendance.
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+*/
+
+/* attendance msg */
+.warning_msg{
+	color:red;
+	word-wrap: break-word;
+}
+.custom_btn{
+	width :40% !important;
+	margin: 2px 2px;
+	font-size: 1.2em;
+    margin-bottom: 2rem;
+}
+.set_description{
+	line-height: normal !important;
+    display: inline-block;
+}
+
+
+.o_hr_attendance_message p {
+    text-align: left;
+    margin: 1rem 0;
+}

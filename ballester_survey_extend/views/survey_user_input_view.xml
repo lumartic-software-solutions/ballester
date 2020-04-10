@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Survey Extend .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Add field in survey answer  tree view-->
+		<record id="survey_user_input_tree_inherit" model="ir.ui.view">
+			<field name="name">survey.user_input.tree.inherit</field>
+			<field name="model">survey.user_input</field>
+			<field name="inherit_id" ref="survey.survey_user_input_tree" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='partner_id']" position="after">
+						<field name="employee_id"/>
+					</xpath>
+				</data>
+			</field>
+		</record>
+		
+		<!-- Add field in survey answer  form view-->
+		<record id="survey_user_input_form_inherit" model="ir.ui.view">
+			<field name="name">survey.user_input.form.inherit</field>
+			<field name="model">survey.user_input</field>
+			<field name="inherit_id" ref="survey.survey_user_input_form" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='partner_id']" position="after">
+						<field name="employee_id"/>
+					</xpath>
+					<xpath expr="//field[@name='user_input_line_ids']//tree//field[@name='question_id']" position="after">
+						<field name="question_type"/>
+					</xpath>
+					<xpath expr="//field[@name='user_input_line_ids']//tree//field[@name='answer_type']" position="after">
+						<field name="value_suggested"/>
+					</xpath>
+					<field name="token" position="before">
+	                    <field name="purchase_order_id" readonly="1" />
+	                    <field name="sale_order_id" readonly="1" />
+                            <field name="wash_order_id" readonly="1" />
+				 <field name="repair_id" readonly="1" />
+	                </field>
+				</data>
+			</field>
+		</record>
+		
+            
+	</data>
+</odoo>

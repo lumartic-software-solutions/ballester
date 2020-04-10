@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--     
+ -*- coding: utf-8 -*-
+ Odoo, Open Source Ballester Survey Extend .
+ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). 
+-->
+<odoo>
+	<data>
+		<!-- Add field in survey user input line in form view-->
+		<record id="survey_user_input_line_form_inherit" model="ir.ui.view">
+			<field name="name">survey_user_input_line_form_inherit</field>
+			<field name="model">survey.user_input_line</field>
+			<field name="inherit_id" ref="survey.survey_user_input_line_form" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='question_id']" position="before">
+						<field name="survey_id"/>
+						<field name="employee_id"/>
+					</xpath>
+					<xpath expr="//sheet" position="inside">
+						<group><field name="comment" attrs="{'required': [('state','in',['in_progress'])]}"/></group>
+					</xpath>
+					<xpath expr="//form//sheet" position="before">
+						<header>
+							<button name="action_in_progress"  type="object" string="In Progress" attrs="{'invisible': [('state','in',['draft','in_progress','closed','permanent'])]}"/>
+							<button name="action_closed"  type="object" string="Closed" attrs="{'invisible': [('state','in',['draft','mail_send','closed','permanent'])]}"/>
+							<button name="action_permanent"  type="object" string="Permanent" attrs="{'invisible': [('state','in',['draft','mail_send','in_progress','permanent'])]}"/>
+							<field name="state" widget="statusbar" statusbar_visible="draft,mail_send,in_progress,closed,permanent"
+								/>
+						</header>
+					</xpath>
+					<xpath expr="//form//sheet" position="after">
+						<div class="oe_chatter">
+							<field name="message_follower_ids" widget="mail_followers"/>
+							<field name="activity_ids" widget="mail_activity"/>
+							<field name="message_ids" widget="mail_thread"/>
+						</div>
+					</xpath>
+					
+				</data>
+			</field>
+		</record>
+		
+		<!-- Add field in survey user input line in search view-->
+		<record id="survey_response_line_search_inherit" model="ir.ui.view">
+			<field name="name">survey_response_line_search_inherit</field>
+			<field name="model">survey.user_input_line</field>
+			<field name="inherit_id" ref="survey.survey_response_line_search" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//field[@name='survey_id']" position="after">
+						<field name="employee_id"/>
+						<field name="execution_type"/>
+						<field name="comment"/>
+						<field name="state"/>
+					</xpath>
+					<xpath expr="//filter[@name='group_by_user_input']" position="after">
+						<filter name="group_by_execution_type" string="Execution Type" domain="[]" context="{'group_by':'execution_type'}"/>
+						<filter name="group_by_employee_id" string="Employee" domain="[]" context="{'group_by':'employee_id'}"/>
+						<filter name="group_by_comment" string="Comment" domain="[]" context="{'group_by':'comment'}"/>
+						<filter name="group_by_state" string="State" domain="[]" context="{'group_by':'state'}"/>
+					</xpath>
+				</data>
+			</field>
+		</record>
+		
+		<!-- Add field in survey user input line in tree view-->
+		<record id="survey_response_line_tree_inherit" model="ir.ui.view" >
+			<field name="name">survey_response_line_tree_inherit</field>
+			<field name="model">survey.user_input_line</field>
+			<field name="inherit_id" ref="survey.survey_response_line_tree" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//tree" position="replace">
+						<tree string="Survey Answer Line" create="false">
+							<field name="employee_id"/>
+							<field name="incidents_manager_id"/>
+							<field name="date_create"/>
+							<field name="comment"/>
+							<field name="state"/>
+						</tree>
+					</xpath>
+				</data>
+			</field>
+		</record>
+	</data>
+</odoo>

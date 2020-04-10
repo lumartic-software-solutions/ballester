@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+    <record id="ballester_purchase_survey_input_view_inherit_form" model="ir.ui.view">
+		<field name="name">survey.user_input.form</field>
+		<field name="model">survey.user_input</field>
+		<field name="inherit_id" ref="survey.survey_user_input_form"/>
+		<field name="arch" type="xml">
+                <field name="token" position="before">
+                    <field name="purchase_order_id" readonly="1" />
+                </field>
+        </field>
+    </record>
+
+
+
+    </data>
+</odoo>	
