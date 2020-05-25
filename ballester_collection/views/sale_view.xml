@@ -8,9 +8,9 @@
             <!--<field name="partner_shipping_id" position="after">
                 <field name="collection_id" />
             </field>-->
-	   <field name="sales_type" position="after">
-                <field name="source_location_id" />
-		 <field name="destination_location_id" />
+	           <field name="sales_type" position="after">
+                <field name="source_location_id"  required="1"/>
+		 <field name="destination_location_id" required="1"/>
             </field>
 		
            <!--<xpath expr="//notebook" position="inside">

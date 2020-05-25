@@ -190,7 +190,7 @@ class PurchaseorderLine(models.Model):
             'partner_id': self.order_id.dest_address_id.id,
             'move_dest_ids': [(4, x) for x in self.move_dest_ids.ids],
             'state': 'draft',
-	    'lot_ids': [(6,0, [i.id for i in self.lot_ids ])],
+	        'lot_ids': [(6,0, [i.id for i in self.lot_ids ])],
             'purchase_line_id': self.id,
             'company_id': self.order_id.company_id.id,
             'price_unit': price_unit,
@@ -299,6 +299,7 @@ class Stockmove(models.Model):
             print ("-------------missing_reserved_quantity-----",missing_reserved_uom_quantity, missing_reserved_quantity)
             if move.location_id.should_bypass_reservation()\
                     or move.product_id.type == 'consu':
+                print ("&******************************************")
                 # create the move line(s) but do not impact quants
                 if move.product_id.tracking == 'serial' and (move.picking_type_id.use_create_lots or move.picking_type_id.use_existing_lots):
                       
