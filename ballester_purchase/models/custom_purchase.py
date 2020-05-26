@@ -297,6 +297,7 @@ class Stockmove(models.Model):
             missing_reserved_uom_quantity = move.product_uom_qty - move.reserved_availability
             missing_reserved_quantity = move.product_uom._compute_quantity(missing_reserved_uom_quantity, move.product_id.uom_id, rounding_method='HALF-UP') 
             print ("-------------missing_reserved_quantity-----",missing_reserved_uom_quantity, missing_reserved_quantity)
+            print ("------------testteets-------",move.location_id.should_bypass_reservation())
             if move.location_id.should_bypass_reservation()\
                     or move.product_id.type == 'consu':
                 print ("&******************************************")
@@ -319,9 +320,13 @@ class Stockmove(models.Model):
                         self.env['stock.move.line'].create(move._prepare_move_line_vals(quantity=missing_reserved_quantity))
                 assigned_moves |= move
             else:
-                print ("ddddddddddddddddddddddddddddddddddd",move.location_id)
                 if not move.move_orig_ids:
-                    print ("========================")
+                    if move.sale_line_id.lot_ids:
+                        for i, lot in zip(range(0, int(missing_reserved_quantity)), move.sale_line_id.lot_ids):
+                            search_move_line = self.env['stock.move.line'].search([('lot_id','=',lot)])
+                            if not search_move_line:
+                                self.env['stock.move.line'].create(
+                                move.with_context(lot=lot)._prepare_move_line_vals(quantity=1))
                     if move.procure_method == 'make_to_order':
                         continue
                     # If we don't need any quantity, consider the move assigned.
@@ -331,7 +336,6 @@ class Stockmove(models.Model):
                         continue
                     # Reserve new quants and create move lines accordingly.
                     if move.sale_line_id.lot_ids:
-                        print ("&&&&&&&&&&&&&&&&&&&&&&&&")
                         available_quantity = self.env['stock.quant'].with_context(lot_ids = move.sale_line_id.lot_ids )._get_available_quantity(move.product_id, move.location_id)
                     else:
                         print ("&&@@@@@@@@@@@@@@@@@@@@@@&&")
