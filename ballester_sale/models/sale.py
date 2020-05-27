@@ -36,17 +36,31 @@ class SaleOrderLine(models.Model):
         lot_obj = self.env['stock.production.lot']
         res = super(SaleOrderLine, self).create(vals)
         product_lot_ids = []
+        error_messages = list()
         if vals.get('barcode_number'):
             spilt_value = vals.get('barcode_number').split('\n')
             barcode_value = spilt_value
             if barcode_value:
                 search_lot_ids = lot_obj.search([('name','in', barcode_value)])
+                list_lot = [i.id for i in search_lot_ids ]
+                self.env.cr.execute('select * from lot_sale_line_rel where sale_line_id in %s',(tuple(list_lot),))
+                result = self.env.cr.dictfetchall()
+                if result:
+                    for code in result:
+                        brw_lot = lot_obj.browse(code.get('sale_line_id'))
+                        brw_line = self.browse(code.get('lot_id'))
+                        error_messages.append(
+                            _("código de barras '%s' ya se usa en orden '%s' ,")
+                            % (brw_lot.name , brw_line.order_id.name))
+                    if error_messages:
+                        raise UserError(error_messages)
+
                 if search_lot_ids:
                     if res.product_uom_qty > len(search_lot_ids):
                         raise UserError(_("la cantidad del producto de '%s' no puede ser más que el código de barras")%( res.product_id.name))
                     elif  res.product_uom_qty < len(search_lot_ids):   
                         raise UserError(_("la cantidad del producto de '%s' no puede ser inferior al código de barras")%( res.product_id.name))
-                    res.lot_ids = [(6,0, [ i.id for i in search_lot_ids ])]
+                    res.lot_ids = [(6,0, list_lot)]
         if res.product_id and res.product_uom_qty and res.order_id.source_location_id:
             quant_search = self.env['stock.quant'].search([('product_id','=',res.product_id.id ),('location_id','=',res.order_id.source_location_id.id)])
             if quant_search:
@@ -54,7 +68,7 @@ class SaleOrderLine(models.Model):
                 if len(quant_search) == res.product_uom_qty:
                     for i in quant_search:
                         lot_ids.append(i.lot_id.id)
-                    product_lot_ids =  [(6,0, lot_ids)]
+                    product_lot_ids = [(6,0, lot_ids)]
                     res.lot_ids = product_lot_ids
         if not vals.get('barcode_number') and not vals.get('is_delivery') :
             if not product_lot_ids:
