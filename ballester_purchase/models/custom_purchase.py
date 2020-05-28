@@ -536,7 +536,7 @@ class Stockmove(models.Model):
 
         @api.model
         def create(self, vals):
-            if vals['origin']:
+            if vals.get('origin'):
                 purchase_brw = self.env['purchase.order'].search([('name', '=', vals.get('origin'))])
                 if purchase_brw:
                     if purchase_brw.source_location_id:

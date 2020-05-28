@@ -34,7 +34,7 @@ class SaleOrderLine(models.Model):
     @api.model
     def create(self, vals):
         lot_obj = self.env['stock.production.lot']
-        res = super(SaleOrderLine, self).create(vals)
+        search_product = self.env['product.product'].browse(vals.get('product_id'))
         product_lot_ids = []
         error_messages = list()
         if vals.get('barcode_number'):
@@ -42,41 +42,42 @@ class SaleOrderLine(models.Model):
             barcode_value = spilt_value
             if barcode_value:
                 search_lot_ids = lot_obj.search([('name','in', barcode_value)])
-                list_lot = [i.id for i in search_lot_ids ]
-                self.env.cr.execute('select * from lot_sale_line_rel where sale_line_id in %s',(tuple(list_lot),))
-                result = self.env.cr.dictfetchall()
-                if result:
-                    for code in result:
-                        brw_lot = lot_obj.browse(code.get('sale_line_id'))
-                        brw_line = self.browse(code.get('lot_id'))
-                        error_messages.append(
-                            _("código de barras '%s' ya se usa en orden '%s' ,")
-                            % (brw_lot.name , brw_line.order_id.name))
-                    if error_messages:
-                        raise UserError(error_messages)
-
                 if search_lot_ids:
-                    if res.product_uom_qty > len(search_lot_ids):
-                        raise UserError(_("la cantidad del producto de '%s' no puede ser más que el código de barras")%( res.product_id.name))
-                    elif  res.product_uom_qty < len(search_lot_ids):   
-                        raise UserError(_("la cantidad del producto de '%s' no puede ser inferior al código de barras")%( res.product_id.name))
-                    res.lot_ids = [(6,0, list_lot)]
-        if res.product_id and res.product_uom_qty and res.order_id.source_location_id:
-            quant_search = self.env['stock.quant'].search([('product_id','=',res.product_id.id ),('location_id','=',res.order_id.source_location_id.id)])
-            if quant_search:
-                lot_ids = []
-                if len(quant_search) == res.product_uom_qty:
-                    for i in quant_search:
-                        lot_ids.append(i.lot_id.id)
-                    product_lot_ids = [(6,0, lot_ids)]
-                    res.lot_ids = product_lot_ids
+                    list_lot = [i.id for i in search_lot_ids]
+                    self.env.cr.execute('select * from lot_sale_line_rel where sale_line_id in %s', (tuple(list_lot),))
+                    result = self.env.cr.dictfetchall()
+                    if result:
+                        for code in result:
+                            brw_lot = lot_obj.browse(code.get('sale_line_id'))
+                            brw_line = self.browse(code.get('lot_id'))
+                            error_messages.append(
+                                _("código de barras '%s' ya se usa en orden '%s' ,")
+                                % (brw_lot.name, brw_line.order_id.name))
+                        if error_messages:
+                            raise UserError(error_messages)
+                    if vals.get('product_uom_qty') > len(search_lot_ids):
+                        raise UserError(_("la cantidad del producto de '%s' no puede ser más que el código de barras")%( search_product[0].name))
+                    elif vals.get('product_uom_qty') < len(search_lot_ids):
+                        raise UserError(_("la cantidad del producto de '%s' no puede ser inferior al código de barras")%(search_product[0].product_id.name))
+                    vals['lot_ids'] = [(6,0, list_lot)]
         if not vals.get('barcode_number') and not vals.get('is_delivery') :
             if not product_lot_ids:
                 if vals.get('product_id'):
                     product_search = self.env['product.product'].browse(vals.get('product_id'))
                     if product_search:
                         if product_search.type == 'product':
-                            raise UserError(_("por favor agregue código de barras en este producto '%s' ")%( res.product_id.name))
+                            raise UserError(_("por favor agregue código de barras en este producto '%s' ")%(  search_product[0].name))
+        print ("LLLLLLLLLLLLLLLLLLLLLLLLL",vals)
+        res = super(SaleOrderLine, self).create(vals)
+        # if res.product_id and res.product_uom_qty and res.order_id.source_location_id:
+        #     quant_search = self.env['stock.quant'].search([('product_id','=',res.product_id.id ),('location_id','=',res.order_id.source_location_id.id)])
+        #     if quant_search:
+        #         lot_ids = []
+        #         if len(quant_search) == res.product_uom_qty:
+        #             for i in quant_search:
+        #                 lot_ids.append(i.lot_id.id)
+        #             product_lot_ids = [(6,0, lot_ids)]
+        #             res.lot_ids = product_lot_ids
         return res
 
     @api.multi
@@ -88,6 +89,7 @@ class SaleOrderLine(models.Model):
             if barcode_value:
                 search_lot_ids = lot_obj.search([('name','in', barcode_value)])
                 if search_lot_ids:
+
                     if self.product_uom_qty > len(search_lot_ids):
                         raise UserError(_("la cantidad del producto de '%s' no puede ser más que el código de barras")%( self.product_id.name))
                     elif  self.product_uom_qty < len(search_lot_ids):   
