@@ -58,7 +58,7 @@ class SaleOrderLine(models.Model):
                     if vals.get('product_uom_qty') > len(search_lot_ids):
                         raise UserError(_("la cantidad del producto de '%s' no puede ser más que el código de barras")%( search_product[0].name))
                     elif vals.get('product_uom_qty') < len(search_lot_ids):
-                        raise UserError(_("la cantidad del producto de '%s' no puede ser inferior al código de barras")%(search_product[0].product_id.name))
+                        raise UserError(_("la cantidad del producto de '%s' no puede ser inferior al código de barras")%(search_product[0].name))
                     vals['lot_ids'] = [(6,0, list_lot)]
         if not vals.get('barcode_number') and not vals.get('is_delivery') :
             if not product_lot_ids:
