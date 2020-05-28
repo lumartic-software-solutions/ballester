@@ -11,6 +11,9 @@
 					class="btn-primary o_sale_print"  attrs="{'invisible': [('sales_type', 'in', ['new','recycled'])],
 						'invisible':[('state', 'in', ['sale','cancel','check_compliance'])] }"/>
 			</button>
+			<button name="action_cancel" position="replace">
+				<button name="action_cancel" states="draft,sent,sale,check_compliance" type="object" string="Cancel"/>
+			</button>
 
 			<field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"
 				position="replace">
