@@ -9,8 +9,8 @@
                 <field name="collection_id" />
             </field>-->
 	           <field name="sales_type" position="after">
-                <field name="source_location_id"  required="1"/>
-		 <field name="destination_location_id" required="1"/>
+                <field name="source_location_id"  required="1" attrs="{'readonly': [('state', 'in', ('done', 'sale', 'cancel'))]}"/>
+		 <field name="destination_location_id" required="1" attrs="{'readonly': [('state', 'in', ('done', 'sale', 'cancel'))]}"/>
             </field>
 		
            <!--<xpath expr="//notebook" position="inside">

@@ -10,8 +10,8 @@
                 <field name="collection_id" />
             </field>
 	     <field name="purchase_type" position="after">
-                <field name="source_location_id" required="1"/>
-		 <field name="destination_location_id" required="1"/>
+                <field name="source_location_id" required="1" attrs="{'readonly': [('state', 'in', ('done','purchase', 'cancel'))]}"/>
+		 <field name="destination_location_id" required="1" attrs="{'readonly': [('state', 'in', ('done', 'purchase', 'cancel'))]}"/>
             </field>
             <xpath expr="//notebook" position="inside">
                 <page string="Collection Order Lines">

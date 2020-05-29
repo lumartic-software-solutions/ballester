@@ -7,7 +7,7 @@
 		<field name="inherit_id" ref="purchase.purchase_order_tree"/>
 		<field name="arch" type="xml">
             <field name="partner_id" position="before">
-                    <field name="purchase_type" />
+                    <field name="purchase_type" attrs="{'readonly': [('state', 'in', ('done', 'purchase', 'cancel'))]}"/>
              </field>
 			<field name="origin" position="replace">
                     <field name="partner_shipping_id" />
