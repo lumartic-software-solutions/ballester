@@ -138,14 +138,15 @@ class PurchaseorderLine(models.Model):
                                 % (brw_lot.name, brw_line.order_id.name))
                         if error_messages:
                             raise UserError(error_messages)
-                    if vals.get('product_qty') > len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
-                                search_product[0].name))
-                    elif vals.get('product_qty') < len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
-                                search_product[0].name))
+                    if search_product[0].tracking == 'serial':
+                        if vals.get('product_qty') > len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
+                                    search_product[0].name))
+                        elif vals.get('product_qty') < len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
+                                    search_product[0].name))
                     vals['lot_ids'] = [(6, 0, list_lot)]
                 else:
                     raise UserError(
@@ -166,14 +167,15 @@ class PurchaseorderLine(models.Model):
             if barcode_value:
                 search_lot_ids = lot_obj.search([('name', 'in', barcode_value)])
                 if search_lot_ids:
-                    if self.product_qty > len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
-                                self.product_id.name))
-                    elif self.product_qty < len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
-                                self.product_id.name))
+                    if self.product_id.tracking == 'serial':
+                        if self.product_qty > len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
+                                    self.product_id.name))
+                        elif self.product_qty < len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
+                                    self.product_id.name))
                     vals['lot_ids'] = [(6, 0, [i.id for i in search_lot_ids])]
         for line in self:
             if line.barcode_number and not line.lot_ids:
@@ -294,7 +296,6 @@ class Stockmove(models.Model):
             rounding = self.env['decimal.precision'].precision_get('Product Unit of Measure')
             if float_compare(taken_quantity, int(taken_quantity), precision_digits=rounding) != 0:
                 taken_quantity = 0
-
         try:
             if not float_is_zero(taken_quantity, precision_rounding=self.product_id.uom_id.rounding):
                 print("===========sale_line_id==========", self.sale_line_id.lot_ids)
@@ -319,7 +320,6 @@ class Stockmove(models.Model):
             else:
                 if self.product_id.tracking == 'serial':
                     for i in range(0, int(quantity)):
-                        print("-----------------reserv,ed_quant--------------", reserved_quant)
                         self.env['stock.move.line'].create(
                             self._prepare_move_line_vals(quantity=1, reserved_quant=reserved_quant))
                 else:
@@ -345,7 +345,6 @@ class Stockmove(models.Model):
                                                                            rounding_method='HALF-UP')
             if move.location_id.should_bypass_reservation() \
                     or move.product_id.type == 'consu':
-                print("&******************************************")
                 # create the move line(s) but do not impact quants
                 if move.product_id.tracking == 'serial' and (
                         move.picking_type_id.use_create_lots or move.picking_type_id.use_existing_lots):
@@ -361,13 +360,20 @@ class Stockmove(models.Model):
                                                                        not ml.lot_id and
                                                                        not ml.package_id and
                                                                        not ml.owner_id)
+                    print ("********to_update*******",to_update )
                     if to_update:
                         to_update[0].product_uom_qty += missing_reserved_uom_quantity
                     else:
-                        self.env['stock.move.line'].create(
-                            move._prepare_move_line_vals(quantity=missing_reserved_quantity))
+                        if move.lot_ids:
+                            if len(move.lot_ids) == 1:
+                                move_line = self.env['stock.move.line'].create(move.with_context(lot= move.lot_ids)._prepare_move_line_vals(quantity=missing_reserved_quantity))
+                                print ("_________move_line___________",move_line.product_qty ,  move_line.product_id.name, move_line.lot_name )
+                        else:
+                            self.env['stock.move.line'].create(
+                                move._prepare_move_line_vals(quantity=missing_reserved_quantity))
                 assigned_moves |= move
             else:
+                print ("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                 if not move.move_orig_ids:
                     if move.sale_line_id.lot_ids:
                         for i, lot in zip(range(0, int(missing_reserved_quantity)), move.sale_line_id.lot_ids):
@@ -402,7 +408,6 @@ class Stockmove(models.Model):
                         partially_available_moves |= move
 
                 else:
-                    print(">>>>>>>>>>>>>>>>>>>>>>")
                     # Check what our parents brought and what our siblings took in order to
                     # determine what we can distribute.
                     # `qty_done` is in `ml.product_uom_id` and, as we will later increase
@@ -500,11 +505,13 @@ class Stockmove(models.Model):
         }
         # set lot name when product is set as unique serial number 
         # pass values of product fields into lot
+        print("=====ctx.get('lot')======",ctx.get('lot'))
         if ctx.get('lot'):
+            print ("===========")
             lot_id = ctx.get('lot')
-            vals['lot_name'] = lot_id.name
-            vals['lot_id'] = lot_id.id
-            vals['qty_done'] = 1
+            vals['lot_name'] = lot_id[0].name
+            vals['lot_id'] = lot_id[0].id
+            vals['qty_done'] = quantity
             # lot_id.sudo().unlink()
         if quantity:
             uom_quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom,
@@ -534,16 +541,7 @@ class Stockmove(models.Model):
                 package_id=reserved_quant.package_id.id or False,
                 owner_id=reserved_quant.owner_id.id or False,
             )
+
         return vals
 
-        @api.model
-        def create(self, vals):
-            if vals.get('origin'):
-                purchase_brw = self.env['purchase.order'].search([('name', '=', vals.get('origin'))])
-                if purchase_brw:
-                    if purchase_brw.source_location_id:
-                        vals['location_id'] = purchase_brw.source_location_id.id
-                    if purchase_brw.destination_location_id:
-                        vals['location_dest_id'] = purchase_brw.destination_location_id.id
-            res = super(Stockmove, self).create(vals)
-            return res
+
