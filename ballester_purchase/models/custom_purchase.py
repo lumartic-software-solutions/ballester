@@ -158,6 +158,7 @@ class PurchaseorderLine(models.Model):
 
     @api.multi
     def write(self, vals):
+        print ("*********************self******",self)
         lot_obj = self.env['stock.production.lot']
         if vals.get('barcode_number'):
             spilt_value = vals.get('barcode_number').split('\n')
@@ -174,21 +175,22 @@ class PurchaseorderLine(models.Model):
                             _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
                                 self.product_id.name))
                     vals['lot_ids'] = [(6, 0, [i.id for i in search_lot_ids])]
-        if self.barcode_number and not self.lot_ids:
-            spilt_value = self.barcode_number.split('\n')
-            barcode_value = spilt_value
-            if barcode_value:
-                search_lot_ids = lot_obj.search([('name', 'in', barcode_value)])
-                if search_lot_ids:
-                    if self.product_qty > len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
-                                self.product_id.name))
-                    elif self.product_qty < len(search_lot_ids):
-                        raise UserError(
-                            _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
-                                self.product_id.name))
-                    vals['lot_ids'] = [(6, 0, [i.id for i in search_lot_ids])]
+        for line in self:
+            if line.barcode_number and not line.lot_ids:
+                spilt_value = line.barcode_number.split('\n')
+                barcode_value = spilt_value
+                if barcode_value:
+                    search_lot_ids = lot_obj.search([('name', 'in', barcode_value)])
+                    if search_lot_ids:
+                        if line.product_qty > len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser más que el código de barras") % (
+                                    line.product_id.name))
+                        elif line.product_qty < len(search_lot_ids):
+                            raise UserError(
+                                _("la cantidad del producto de '%s' no puede ser inferior al código de barras") % (
+                                    line.product_id.name))
+                        line.lot_ids = [(6, 0, [i.id for i in search_lot_ids])]
         res = super(PurchaseorderLine, self).write(vals)
         return res
 
