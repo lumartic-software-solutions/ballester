@@ -32,26 +32,37 @@ class BillOfLading(models.Model):
 
     @api.model
     def default_get(self, default_fields):
+        print("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK", default_fields)
         res = super(BillOfLading, self).default_get(default_fields)
         ctx = dict(self._context)
+        print("*********************", ctx)
         if ctx.get('active_model') == 'sale.order':
             sale = self.env['sale.order'].browse(ctx.get('active_id'))
-            
+
             res.update({
-                        'origin_id': sale.company_id.partner_id and sale.company_id.partner_id.id,
-			'sale_id':sale.id,
-			'loading_date':sale.date_order,
-			'download_date': sale.date_order,
-			'destination_id' : sale.partner_id and  sale.partner_id.id,
-			})
+                'origin_id': sale.company_id.partner_id and sale.company_id.partner_id.id,
+                'sale_id': sale.id,
+                'loading_date': sale.date_order,
+                'download_date': sale.date_order,
+                'destination_id': sale.partner_id and sale.partner_id.id,
+            })
+        elif ctx.get('active_model') == 'purchase.order':
+            purchase = self.env['purchase.order'].browse(ctx.get('active_id'))
+            res.update({
+                'origin_id': purchase.partner_id and purchase.partner_id.id,
+                'purchase_id': purchase.id,
+                'loading_date': purchase.date_order,
+                'download_date': purchase.date_order,
+                'destination_id': purchase.company_id.partner_id and purchase.company_id.partner_id.id,
+            })
         else:
             collection = self.env['collection.order'].browse(ctx.get('active_id'))
             res.update({'collection_id': ctx.get('active_id'),
                         'origin_id': collection.partner_id and collection.partner_id.id,
-			'loading_date':collection.date_order,
-			'download_date': collection.date_order,
-			'destination_id' : collection.company_id.partner_id and  collection.company_id.partner_id.id,
-			})
+                        'loading_date': collection.date_order,
+                        'download_date': collection.date_order,
+                        'destination_id': collection.company_id.partner_id and collection.company_id.partner_id.id,
+                        })
         return res
 
 
