@@ -28,17 +28,17 @@ class Picking(models.Model):
                 res.update({'picking_type_id': picking_type_id[0].id})
         return res
 
-    @api.model
-    def create(self, vals):
-        if vals.get('origin'):
-            purchase_brw = self.env['purchase.order'].search([('name', '=', vals.get('origin'))])
-            if purchase_brw:
-                if purchase_brw.source_location_id:
-                    vals['location_id'] = purchase_brw.source_location_id.id
-                if purchase_brw.destination_location_id:
-                    vals['location_dest_id'] = purchase_brw.destination_location_id.id
-        result = super(Picking, self).create(vals)
-        return result
+    # @api.model
+    # def create(self, vals):
+    #     if vals.get('origin'):
+    #         purchase_brw = self.env['purchase.order'].search([('name', '=', vals.get('origin'))])
+    #         if purchase_brw:
+    #             if purchase_brw.source_location_id:
+    #                 vals['location_id'] = purchase_brw.source_location_id.id
+    #             if purchase_brw.destination_location_id:
+    #                 vals['location_dest_id'] = purchase_brw.destination_location_id.id
+    #     result = super(Picking, self).create(vals)
+    #     return result
 
 
 class ResPartner(models.Model):
@@ -227,8 +227,8 @@ class PurchaseorderLine(models.Model):
             'product_uom': self.product_uom.id,
             'date': self.order_id.date_order,
             'date_expected': self.date_planned,
-            'location_id': self.order_id.partner_id.property_stock_supplier.id,
-            'location_dest_id': self.order_id._get_destination_location(),
+            'location_id': self.order_id.source_location_id.id,
+            'location_dest_id': self.order_id.destination_location_id.id,
             'picking_id': picking.id,
             'partner_id': self.order_id.dest_address_id.id,
             'move_dest_ids': [(4, x) for x in self.move_dest_ids.ids],

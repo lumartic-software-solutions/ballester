@@ -11,7 +11,7 @@ class Picking(models.Model):
     @api.model
     def create(self, vals):
         if vals.get('origin'):
-            sale_brw = self.env['sale.order'].search([('name','=' , vals.get('origin'))])
+            sale_brw = self.env['sale.order'].search([('name', '=', vals.get('origin'))])
             if sale_brw:
                 if sale_brw.source_location_id:
                     vals['location_id'] = sale_brw.source_location_id.id
@@ -27,17 +27,11 @@ class StockMove(models.Model):
     def create(self, vals):
         if vals.get('origin'):
             sale_brw = self.env['sale.order'].search([('name', '=', vals.get('origin'))])
-            purchase_brw = self.env['purchase.order'].search([('name', '=', vals.get('origin'))])
             if sale_brw:
                 if sale_brw.source_location_id:
                     vals['location_id'] = sale_brw.source_location_id.id
                 if sale_brw.destination_location_id:
                     vals['location_dest_id'] = sale_brw.destination_location_id.id
-            if purchase_brw:
-                if purchase_brw.source_location_id:
-                    vals['location_id'] = purchase_brw.source_location_id.id
-                if purchase_brw.destination_location_id:
-                    vals['location_dest_id'] = purchase_brw.destination_location_id.id
         res = super(StockMove, self).create(vals)
         return res
 
