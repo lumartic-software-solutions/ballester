@@ -29,9 +29,15 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
-            <field name="validity_date" position="after">
-                <field name="sales_type" required="1" />
+             <field name="date_order" position="replace">
             </field>
+            <field name="validity_date" position="replace">
+                <field name="date_order" attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+                <field name="sales_type" required="1"  attrs="{'readonly': [('state', 'in', ['sale', 'done', 'cancel'])]}"/>
+
+            </field>
+
+
             <xpath expr="//button[@id='action_confirm']" position="replace">
 			</xpath>
 			<xpath expr="//button[@name='action_confirm']" position="replace">
