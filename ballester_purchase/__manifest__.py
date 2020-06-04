@@ -21,6 +21,7 @@
             'report/waste report.xml',
             'report/inherit_purchase_report.xml',
             'report/consignment_note_report.xml',
+            'wizard/quantity_unreserved_view.xml',
 	    #'wizard/barcode_wizard_view.xml',
             'views/ballester_purchase_report.xml',
             'views/custom_ballester.xml',
