@@ -89,6 +89,25 @@ class Purchaseorder(models.Model):
                 'partner_shipping_id': search_productor_partner_ids and search_productor_partner_ids[0].id,
             })
 
+    @api.model
+    def _prepare_picking(self):
+        if not self.group_id:
+            self.group_id = self.group_id.create({
+                'name': self.name,
+                'partner_id': self.partner_id.id
+            })
+        if not self.partner_id.property_stock_supplier.id:
+            raise UserError(_("You must set a Vendor Location for this partner %s") % self.partner_id.name)
+        return {
+            'picking_type_id': self.picking_type_id.id,
+            'partner_id': self.partner_id.id,
+            'date': self.date_order,
+            'origin': self.name,
+            'location_dest_id': self.destination_location_id.id,
+            'location_id': self.source_location_id.id,
+            'company_id': self.company_id.id,
+        }
+
     @api.multi
     def button_confirm(self):
         for order in self:
@@ -106,6 +125,81 @@ class Purchaseorder(models.Model):
                 order.write({'state': 'to approve'})
         return True
 
+    #  set invoice values
+    @api.multi
+    def _prepare_invoice(self):
+        self.ensure_one()
+        journal_id = self.env['account.journal'].search([('type', 'in', ['purchase'])], limit=1)
+        if not journal_id:
+            raise UserError(_('Please define an accounting sale journal for this company.'))
+        invoice_vals = {
+            'name': self.partner_ref or '',
+            'origin': self.name,
+            'type': 'in_invoice',
+            'account_id': self.partner_id.property_account_payable_id.id,
+            'partner_id': self.partner_id.id,
+            'journal_id': journal_id.id,
+            'currency_id': self.currency_id.id,
+            'comment': self.notes,
+            'payment_term_id': self.payment_term_id.id,
+            'fiscal_position_id': self.fiscal_position_id.id or self.dest_address_id.property_account_position_id.id,
+            'company_id': self.company_id.id,
+        }
+        return invoice_vals
+
+    #  create invoice
+    @api.multi
+    def action_invoice_create(self, grouped=False, final=False):
+        inv_obj = self.env['account.invoice']
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        invoices = {}
+        invoices_origin = {}
+        invoices_name = {}
+        references = {}
+        purchase_orders = self.env['purchase.order'].browse(self._context.get('active_ids', []))
+        print ("++++++++++++++self",self)
+        for order in self:
+            print ("______order_________",order)
+            group_key = order.partner_id.id
+            for line in order.order_line.sorted(key=lambda l: l.product_qty < 0):
+                if float_is_zero(line.product_qty, precision_digits=precision):
+                    continue
+                if group_key not in invoices:
+                    inv_data = order._prepare_invoice()
+                    invoice = inv_obj.create(inv_data)
+                    print ("_______invoice________",invoice)
+                    references[invoice] = order
+                    invoices[group_key] = invoice
+                    invoices_origin[group_key] = [invoice.origin]
+                    invoices_name[group_key] = [invoice.name]
+                elif group_key in invoices:
+                    print("+++++++++group_key+++++++", group_key)
+                    if order.name not in invoices_origin[group_key]:
+                        invoices_origin[group_key].append(order.name)
+                    if order.partner_ref and order.partner_ref not in invoices_name[group_key]:
+                        invoices_name[group_key].append(order.partner_ref)
+                print ("_____________invoices_________", invoices)
+                if line.product_qty > 0:
+                    line.invoice_line_create(invoices[group_key].id, line.product_qty)
+                elif line.product_qty < 0 and final:
+                    line.invoice_line_create(invoices[group_key].id, line.product_qty)
+            if references.get(invoices.get(group_key)):
+                if order not in references[invoices[group_key]]:
+                    references[invoices[group_key]] |= order
+        print ("_________________________invoice",invoices)
+        for group_key in invoices:
+            invoices[group_key].write({'name': ', '.join(invoices_name[group_key]),
+                                       'origin': ', '.join(invoices_origin[group_key])})
+        for invoice in invoices.values():
+            invoice.compute_taxes()
+        print ("+++++++++invoices+++++++",invoices)
+        print ("++++++++++========+++++++++++", group_key , invoices[group_key])
+        # return invoices[group_key].id
+        ids = [inv.id for inv in invoices.values()]
+        print ("))))))))))))))))))))",ids)
+        return ids
+
+
 
 class PurchaseorderLine(models.Model):
     _inherit = 'purchase.order.line'
@@ -113,6 +207,50 @@ class PurchaseorderLine(models.Model):
     lot_ids = fields.Many2many('stock.production.lot', 'lot_purchase_line_rel', 'lot_id', 'purchase_line_id', 'Barcode')
     state = fields.Selection(related='order_id.state', store=True)
     barcode_number = fields.Text('Lot/Barcode')
+
+    #  set invoice lines values
+    @api.multi
+    def _prepare_invoice_line(self, qty):
+        self.ensure_one()
+        res = {}
+        account = self.product_id.property_account_income_id or self.product_id.categ_id.property_account_income_categ_id
+        if not account:
+            raise UserError(
+                _('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
+                (self.product_id.name, self.product_id.id, self.product_id.categ_id.name))
+
+        fpos = self.order_id.fiscal_position_id or self.order_id.partner_id.property_account_position_id
+        if fpos:
+            account = fpos.map_account(account)
+
+        res = {
+            'name': self.name,
+            'sequence': self.sequence,
+            'origin': self.order_id.name,
+            'account_id': account.id,
+            'price_unit': self.price_unit,
+            'quantity': qty,
+            'uom_id': self.product_uom.id,
+            'product_id': self.product_id.id or False,
+            #             'layout_category_id': self.layout_category_id and self.layout_category_id.id or False,
+            'invoice_line_tax_ids': [(6, 0, self.taxes_id.ids)],
+            #             'account_analytic_id': self.order_id.account_analytic_id.id,
+            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
+        }
+
+        return res
+
+    #  create invoice lines
+    @api.multi
+    def invoice_line_create(self, invoice_id, qty):
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        for line in self:
+            if not float_is_zero(qty, precision_digits=precision):
+                vals = line._prepare_invoice_line(qty=qty)
+                vals.update({'invoice_id': invoice_id, 'purchase_line_id': line.id})
+                self.env['account.invoice.line'].create(vals)
+                invoice_data = self.env['account.invoice'].browse(invoice_id)
+                invoice_data._onchange_invoice_line_ids()
 
     @api.model
     def create(self, vals):
@@ -253,6 +391,7 @@ class PurchaseorderLine(models.Model):
                 template['product_uom'] = quant_uom.id
                 template['product_uom_qty'] = product_qty
             else:
+                print ("#############################")
                 template['product_uom_qty'] = diff_quantity
             res.append(template)
         return res
@@ -346,10 +485,12 @@ class Stockmove(models.Model):
             if move.location_id.should_bypass_reservation() \
                     or move.product_id.type == 'consu':
                 # create the move line(s) but do not impact quants
+                print ("*********************")
                 if move.product_id.tracking == 'serial' and (
                         move.picking_type_id.use_create_lots or move.picking_type_id.use_existing_lots):
-
+                    print ("^^^^^^^^^move.lot_ids^^^^^^^^^",move.lot_ids)
                     for i, lot in zip(range(0, int(missing_reserved_quantity)), move.lot_ids):
+                        print ("/TTTTTTTTTTTTTTTTTTTTTTTTTTT")
                         self.env['stock.move.line'].create(
                             move.with_context(lot=lot)._prepare_move_line_vals(quantity=1))
                 else:
@@ -541,7 +682,7 @@ class Stockmove(models.Model):
                 package_id=reserved_quant.package_id.id or False,
                 owner_id=reserved_quant.owner_id.id or False,
             )
-
+        print ("^^vals", vals)
         return vals
 
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ <!-- purchase merge action form view -->
+    <record id="view_sale_advance_payment_inv" model="ir.ui.view">
+        <field name="name"> Unify on in invoice</field>
+        <field name="model">purchase.merge</field>
+        <field name="arch" type="xml">
+            <form string="Invoice Purchase Order">
+                <p class="oe_grey">
+                    Invoices will be merged purchase order. 
+                </p>
+                <group>
+                </group>
+                <footer>
+                	<button name="create_invoices" string="Create and View Invoices" type="object"
+                        context="{'open_invoices': True}" class="btn-primary"/>
+                	<button name="create_invoices" string="Create Invoices" type="object"
+                        class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+	 <!-- purchase merge action in purchase order -->
+    <record id="action_view_purchase_order" model="ir.actions.act_window">
+        <field name="name"> Invoice Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.merge</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+
+    <act_window
+            name="Invoice Orders"
+            res_model="purchase.merge"
+            src_model="purchase.order"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="purchase_order_line_make_invoice" />
+
+</odoo>
