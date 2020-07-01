@@ -136,7 +136,7 @@ class Purchaseorder(models.Model):
             'name': self.partner_ref or '',
             'origin': self.name,
             'type': 'in_invoice',
-            'account_id': self.partner_id.property_account_payable_id.id,
+            'account_id': self.partner_id.property_account_receivable_id.id,
             'partner_id': self.partner_id.id,
             'journal_id': journal_id.id,
             'currency_id': self.currency_id.id,
@@ -213,7 +213,7 @@ class PurchaseorderLine(models.Model):
     def _prepare_invoice_line(self, qty):
         self.ensure_one()
         res = {}
-        account = self.product_id.property_account_income_id or self.product_id.categ_id.property_account_income_categ_id
+        account = self.product_id.property_account_expense_id or self.product_id.categ_id.property_account_expense_categ_id
         if not account:
             raise UserError(
                 _('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
