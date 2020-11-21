@@ -930,7 +930,8 @@ class OperationDashboard(models.Model):
                     ctx.update({'create_wizard_val': True})
                     lot_id = lot_obj.search([('name', '=', rec.get('barcode'))])
                     if lot_id:
-                        lot_id.write({'product_id': product_id.id, 'life_date': rec.get('life_date')})
+                        life_date = datetime.strptime(rec.get('life_date') ,'%m/%d/%Y %H:%M:%S')
+                        lot_id.write({'product_id': product_id.id, 'life_date': life_date})
                         values = {
                             'product_id': product_id.id,
                             'product_uom_id': product_id.uom_id.id,
