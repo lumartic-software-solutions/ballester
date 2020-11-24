@@ -13,14 +13,14 @@
 			
 			
 		</div>
-		<div class="footer">
+		<!--<div class="footer">
 	
 			<div class="row">
 				<div class="col-xs-12" >
 						<img src="/ballester_sale/static/src/img/b1.png" style="height:70px;width:500px;"/>
 				</div>
 			</div>
-		</div>
+		</div>-->
     <t t-call="web.external_layout">
         <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
         <div class="page">
