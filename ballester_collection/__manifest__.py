@@ -10,11 +10,12 @@ Collection Order
     'depends': ['base', 'ballester_purchase', 'ballester_sale'],
 
     'data': [
+        'data/paper_format.xml',
+
         'report/report_bill_of_lading.xml',
 	 'views/report.xml',
         'data/mail_template_data.xml',
         'data/ir_sequence_data.xml',
-        'data/paper_format.xml',
         'views/bill_of_lading.xml',
         'views/collection_order_view.xml',
         'views/purchase_view.xml',
