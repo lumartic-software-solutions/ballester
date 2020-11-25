@@ -9,6 +9,8 @@
         <report id="ballester_collection.bill_of_lading" model="bill.lading"
             string="Bill Of Lading(WayBill)" report_type="qweb-pdf"
             name="ballester_collection.report_bill_of_lading"
-            file="ballester_collection.report_bill_of_lading"/>
+
+            file="ballester_collection.report_bill_of_lading"
+            paperformat="ballester_collection.custom_ballester_waybill"/>
     </data>
 </odoo>     
