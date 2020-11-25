@@ -16,11 +16,11 @@
 		</div>
 		<div class="footer">
 	
-			<div class="row">
+		<!--	<div class="row">
 				<div class="col-xs-12" >
 						<img src="/ballester_sale/static/src/img/new_1.png" style="height:70px;width:700px;"/>
 				</div>
-			</div>
+			</div> -->
 		</div>
     <t t-call="web.external_layout">
         <t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})" />
@@ -28,8 +28,9 @@
             <div class="oe_structure"/>
             <div class="row">
                         <div name="invoice_address" class="col-xs-5 col-xs-offset-7">
-                            <address t-field="o.partner_id"
-                                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                            <span t-esc="o.partner_id.name"/>
+                            <div t-field="o.partner_id"
+                                t-options='{"widget": "contact", "fields": ["address", "phone"], "no_marker": True}' />
                             <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="o.partner_id.vat"/></div>
                         </div>
 
