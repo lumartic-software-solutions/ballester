@@ -210,6 +210,7 @@ class OperationDashboard(models.Model):
             return {}
 
 
+    # devangi-code start
     @api.model
     def categ_data(self ,name ):
         categ_ids = self.env['product.category'].search([('name','=',name)])
@@ -227,25 +228,28 @@ class OperationDashboard(models.Model):
                         product_list.append({'name': set_product_name or '',
                                  'id': str(pro.id) or '',
                                  'default_code': pro.default_code or '',
-				 'ler_code': "[%s] %s" % (
+				                 'ler_code': "[%s] %s" % (
                                  pro.lercode_id.name, pro.lercode_id.description) if pro.lercode_id else 'None',
                                  })
                 product_selection = ''
+                main_product_selection = ''
                 if len(product_list) > 0:
                     product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;">'
+                    main_product_selection = '<select class="get_product" id="product_select_id" style="height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:auto!important; width:100%; font-size: 18px; "><option> -- select an option -- </option>'
                     for line in product_list:
-                        product_selection += '<option label="' + line['default_code'] + '" ids="' + line[
-                         'id'] + '"' + ' value="' + line['name'] + '" product_ler_code="' + line['ler_code'] +  '">' + line[
-                                         'name'] + '</option>'
+                        product_selection += '<option label="' + line['default_code'] + '" ids="' + line['id'] + '"' + ' value="' + line['name'] + '" product_ler_code="' + line['ler_code'] +  '">' + line['name'] + '</option>'
+                        main_product_selection += '<option ids="' + line['id'] + '"' + ' value="' + line['name'] + '">' + line['name'] + '</option>'
                     product_selection += '</select>'
+                    main_product_selection += '</select>'
                 else:
-                    product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
-                        
+                    product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option>No Data Found !</option> </select>'
+                    main_product_selection = '<select class="get_product" id="product_select_id" style="height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:auto!important; width:100%; font-size: 18px; "><option> No Data Found ! </option>'
                 return {'product_selection':product_selection,
-			'cat_product_list': product_list}
+                        'main_product_selection':main_product_selection,
+			            'cat_product_list': product_list}
         else:
             return {}
-
+# devangi-code stop
 
     @api.model
     def lot_data(self ,doamin):

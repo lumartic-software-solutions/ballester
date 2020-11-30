@@ -33,6 +33,10 @@ var BallesterScreen = Widget.extend({
 		'click .internal_transfers': 'internal_transfers',
 		// Add an item button
 		'click .add_an_item': 'add_an_item',
+		// devangi-code start
+               'click .clear_product_details': 'clear_product_details',
+               'click .save_product_details': 'save_product_details',
+		// devangi-code stop
 		// Save Barcode  button
 		'click .save_inventory_adjustments': 'save_inventory_adjustments',
 		// Edit Barcode  button
@@ -262,34 +266,108 @@ var BallesterScreen = Widget.extend({
         });
     },
 
+// devangi-code start
  CategoryOnChangeEvent: function (event)
     {	
 	var self = this;
-       var selectedCategoryValue = document.getElementById('categ_select_id').value;
-  if (selectedCategoryValue != undefined){
-
-        this._rpc({
-            model: 'operation.dashboard',
-            method: 'categ_data',
-            args: [selectedCategoryValue],
-        })
-        .then(function (result) {
-		if(result.product_selection){
-			
-			self.product_list = result.product_selection
-		
-		}
-		if(result.cat_product_list){
-			
-			self.cat_product_list = result.cat_product_list
-		
-		}
-				  
-        });
-
-	}
+    var selectedCategoryValue = document.getElementById('categ_select_id').value;
+      if (selectedCategoryValue != undefined){
+            this._rpc({
+                model: 'operation.dashboard',
+                method: 'categ_data',
+                args: [selectedCategoryValue],
+            })
+            .then(function (result) {
+    		if(result.product_selection){
+    			self.product_list = result.product_selection
+    		}
+    		// devangi-code start
+    		if(result.main_product_selection){
+                $('#product_select_id').replaceWith(result.main_product_selection);
+            }else{
+                var product_select_id = $("<select class='get_product' id='product_select_id' style='height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:auto!important; width:100%; font-size: 18px; '><option> -- select an option -- </option> </select>");
+                $('#product_select_id').replaceWith(product_select_id);
+            }
+            // devangi-code stop
+    		if(result.cat_product_list){
+    			self.cat_product_list = result.cat_product_list
+    		}
+            });
+    
+    	}
     },
 
+
+
+    clear_product_details: function(event){
+        var self = this;
+        event.stopPropagation();
+        event.preventDefault();
+        $('#inventory_adjustments_table .active').remove();
+        self.do_warn(_("Warning"),_("Successfully Clear Inventory Adjustments Lines !"));
+      },
+
+    save_product_details: function(event){
+        var self = this;
+        event.stopPropagation();
+        event.preventDefault();
+        var product_select_id = $("#product_select_id option:selected").attr('ids');
+        var created_quantity = $("#created_quantity").val();
+        if (product_select_id != undefined && product_select_id != '' && product_select_id != 'No Data Found !' && product_select_id != '-- select an option --'){
+            if (created_quantity != undefined && created_quantity != '' && created_quantity != null && created_quantity != 0){
+               var select_product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option  selected="true">No Data Found !</option> </select>'
+               var ler_code = 'None'
+               if( self.cat_product_list && product_select_id){
+                    for(var i = 0; i < self.cat_product_list.length; i++){
+                        if(self.cat_product_list[i]['id'] == product_select_id){
+                            var select_product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option selected="true" label="' + self.cat_product_list[i]['default_code'] + '" ids="' + self.cat_product_list[i]['id'] + '"' + ' value="' + self.cat_product_list[i]['name'] + '" product_ler_code="' + self.cat_product_list[i]['ler_code'] +  '">' + self.cat_product_list[i]['name'] + '</option></select>'
+                            var ler_code = self.cat_product_list[i]['ler_code']
+                         }
+                    }
+               }
+               //Create Inventory Adjustments
+               for(var i = 0; i < created_quantity; i++) {
+                   $('#inventory_adjustments_table').prepend("<tr class='active'>"+
+                           "<td style='width: 25%;'>"+select_product_list+"</td>" +
+                           "<td style='width: 15%; '> <input type='text' name='ler_code_txt' id='ler_code_id' value='"+ler_code+"' readonly='readonly'/></td>"+
+                           "<td style='width: 20%;' id='barcode'>"+self.barcode_list+"</td>"+
+                           "<td style='width: 20%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
+                           "<td style='width: 5%;'> <input type='hidden' name='line_id' value='none' /></td>"+
+                           "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
+                           "<td style='width: 5%; display:none;'></td>"+
+                           "<td style='width: 5%;' class='set_lot_details_ids'><button id='lot_details_id' class='fa fa-bars lot_details_wizard'  aria-hidden='true'></button></td>"+
+                           "</tr>");
+               }
+               $(".barcodes").editableSelect();
+               $('.products')
+               .editableSelect()
+               .on('select.editable-select', function (e, li) {
+                   var ler_code = li.attr('product_ler_code');
+                   var product_id = li.text();
+                   var row_ids = $('.products').closest('tr')
+                   row_ids.each(function(i){
+                   var current_product_id = $(this).find('.products').val();
+                       if(current_product_id === product_id){
+                           $(this).find('td #ler_code_id').val(ler_code)
+                       }
+                   })
+               });
+                var today = new Date();
+                var deafult_date = new Date(today.getFullYear() + 1,  today.getMonth(),today.getDate(),today.getHours(),today.getMinutes(),today.getSeconds())
+               $('.life_datetimepicker').datetimepicker({format: 'MM/DD/YYYY hh:mm:ss', 
+                   locale:  moment.locale('es'),
+                   defaultDate: deafult_date,
+                   widgetPositioning:{ horizontal: 'auto',vertical: 'bottom' },
+                   });
+            }else{
+                self.do_warn(_("Warning"),_("Please enter quantity !"));
+            }
+        }else{
+            self.do_warn(_("Warning"),_("Please select product !"));
+        }
+      },
+
+// devangi-code stop
 
  LotOnChangeEvent: function (event)
     {	
@@ -752,8 +830,6 @@ add_an_item: function(event){
 		   	}
     },
 
-
-
     save_inventory_adjustments: function(event){
 	   	var self = this;
 	   	event.stopPropagation();
@@ -856,6 +932,11 @@ add_an_item: function(event){
 							   	document.getElementById("created_inventory_id").value = result.id;
 							   	// hide generate barcode button
 			            		 $("#save_inventory_adjustments_button").css("display", "none");
+			            		// devangi-code start
+			            		// hide save and clear button
+			            		$("#clear_product_details_button").css("display", "none");
+			            		$("#save_product_details_button").css("display", "none");
+			            		//devangi-code stop
 			            		// display validate barcode button
 			            		 $("#validate_barcode_button").css("display", "inline");
 			            		// display edit barcode button
@@ -998,6 +1079,11 @@ add_an_item: function(event){
 	        $("#edit_inventory_adjustments_button").css("display", "none");
 	        // visible save button
 	        $("#save_inventory_adjustments_button").css("display", "inline");
+	        //devangi-code start
+		// hide save and clear button
+	        $("#clear_product_details_button").css("display", "inline");
+	        $("#save_product_details_button").css("display", "inline");
+	       //devangi-code stop
  	  },
     /**inventory_adjustments: function(event){
    	 var self = this;
