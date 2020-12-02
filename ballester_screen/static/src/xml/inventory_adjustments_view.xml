@@ -10,7 +10,10 @@
 		<html>
 			<head>
 				<script>$(".locations").editableSelect();
-					
+					$('.get_product').editableSelect({
+					}).on('select.editable-select', function (e, el) {
+						$('#get_product_id').val(el.val());
+					});
 					  </script>
 			</head>
 		</html>
@@ -59,7 +62,7 @@
 			<div class="col-md-4" id="categ_data">
 				<select class="category" id="categ_select_id" style="height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:
 					auto!important; width:100%; font-size: 18px; ">
-					<option> -- select an option -- </option>
+					<option>-- select an option --</option>
 					<t t-foreach="widget.category_list" t-as="i">
 						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
@@ -71,7 +74,7 @@
 		<!-- devangi-code start -->
 		<div class="row" style="margin-left: 10px;">
 			<div class="col-md-4">
-				<input type="hidden" name="product_id" value="None" id="created_product_id"/>
+				<input type="hidden" name="get_product_id" value="" id="get_product_id"/>
 				<h2>Product :</h2>
 			</div>
 			<div class="col-md-4" id="product_data">
@@ -138,9 +141,9 @@
 						</thead>
 						<tbody>
 							<tr id="add_an_item">
-								<td colspan="4" class="o_field_x2many_list_row_add add_an_item" >
+								<!--<td colspan="4" class="o_field_x2many_list_row_add add_an_item" >
 									<a href="#">Add an item</a>
-								</td>
+								</td> -->
 							</tr>
 						</tbody>
 					</table>

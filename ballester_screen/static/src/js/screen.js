@@ -285,9 +285,13 @@ var BallesterScreen = Widget.extend({
     		if(result.main_product_selection){
                 $('#product_select_id').replaceWith(result.main_product_selection);
             }else{
-                var product_select_id = $("<select class='get_product' id='product_select_id' style='height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:auto!important; width:100%; font-size: 18px; '><option> -- select an option -- </option> </select>");
+                var product_select_id = $("<select class='get_product' id='product_select_id' style='height:35px;margin-top: 18px; margin-bottom: 9px; overflow-y:auto!important; width:100%; font-size: 18px; '><option>-- select an option --</option> </select>");
                 $('#product_select_id').replaceWith(product_select_id);
             }
+            $('.get_product').editableSelect({
+                    }).on('select.editable-select', function (e, el) {
+                        $('#get_product_id').val(el.val());
+                    });
             // devangi-code stop
     		if(result.cat_product_list){
     			self.cat_product_list = result.cat_product_list
@@ -296,8 +300,6 @@ var BallesterScreen = Widget.extend({
     
     	}
     },
-
-
 
     clear_product_details: function(event){
         var self = this;
@@ -311,16 +313,16 @@ var BallesterScreen = Widget.extend({
         var self = this;
         event.stopPropagation();
         event.preventDefault();
-        var product_select_id = $("#product_select_id option:selected").attr('ids');
+        var product_select_id = $("#get_product_id").val();
         var created_quantity = $("#created_quantity").val();
-        if (product_select_id != undefined && product_select_id != '' && product_select_id != 'No Data Found !' && product_select_id != '-- select an option --'){
+        if (product_select_id != '0' && product_select_id != undefined &&  product_select_id != null && product_select_id != '' && product_select_id != 'No Data Found !' && product_select_id != '-- select an option --'){
             if (created_quantity != undefined && created_quantity != '' && created_quantity != null && created_quantity != 0){
-               var select_product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option  selected="true">No Data Found !</option> </select>'
+               var select_product_list = '<select class="products" disabled="disabled" style="overflow-y: auto!important; font-size: 18px;"><option  selected="true">No Data Found !</option> </select>'
                var ler_code = 'None'
                if( self.cat_product_list && product_select_id){
                     for(var i = 0; i < self.cat_product_list.length; i++){
                         if(self.cat_product_list[i]['id'] == product_select_id){
-                            var select_product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option selected="true" label="' + self.cat_product_list[i]['default_code'] + '" ids="' + self.cat_product_list[i]['id'] + '"' + ' value="' + self.cat_product_list[i]['name'] + '" product_ler_code="' + self.cat_product_list[i]['ler_code'] +  '">' + self.cat_product_list[i]['name'] + '</option></select>'
+                            var select_product_list = '<select class="products"  disabled="disabled" style="overflow-y: auto!important; font-size: 18px;"><option selected="true" label="' + self.cat_product_list[i]['default_code'] + '" ids="' + self.cat_product_list[i]['id'] + '"' + ' value="' + self.cat_product_list[i]['name'] + '" product_ler_code="' + self.cat_product_list[i]['ler_code'] +  '">' + self.cat_product_list[i]['name'] + '</option></select>'
                             var ler_code = self.cat_product_list[i]['ler_code']
                          }
                     }
@@ -331,7 +333,7 @@ var BallesterScreen = Widget.extend({
                            "<td style='width: 25%;'>"+select_product_list+"</td>" +
                            "<td style='width: 15%; '> <input type='text' name='ler_code_txt' id='ler_code_id' value='"+ler_code+"' readonly='readonly'/></td>"+
                            "<td style='width: 20%;' id='barcode'>"+self.barcode_list+"</td>"+
-                           "<td style='width: 20%; '> <input type='text' name='life_date' class='life_datetimepicker' /></td>"+
+                           "<td style='width: 20%; '> <input type='text' readonly='readonly' name='life_date' class='life_datetimepicker' /></td>"+
                            "<td style='width: 5%;'> <input type='hidden' name='line_id' value='none' /></td>"+
                            "<td style='width: 5%;'><button class='fa fa-trash-o btndelete' name='delete' aria-hidden='true'/></td>"+
                            "<td style='width: 5%; display:none;'></td>"+
@@ -992,7 +994,7 @@ add_an_item: function(event){
 			    	   }
 			    		   product_list += '</select>'
 			        }else{
-			    	   product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
+			    	   product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option>No Data Found !</option> </select>'
 			       }**/
 	
 				if (self.cat_product_list.length > 0){
@@ -1019,7 +1021,7 @@ add_an_item: function(event){
 			    	   }
 			    		product_list += '</select>'  
 			        }else{
-			    	   product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found !</option> </select>'
+			    	   product_list = '<select class="products" style="overflow-y: auto!important; font-size: 18px;"><option>No Data Found !</option> </select>'
 			       }
 
 
@@ -1034,7 +1036,7 @@ add_an_item: function(event){
 			    	    }
 			    	   barcode_list += '</select>'
 			        }else{
-			        	barcode_list = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;"><option> No Data Found ! </option> </select>'
+			        	barcode_list = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;"><option>No Data Found !</option> </select>'
 			        } 
 	              var data = "<tr class='active'>"+
 	                         "<td style='width: 25%;' class='set_product_ids'>"+product_list+"</td>"+

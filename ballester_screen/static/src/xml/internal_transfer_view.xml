@@ -12,9 +12,6 @@
 				<script>$(".locations").editableSelect();
 				$('.dest_locations').editableSelect();
 				$('.select2').select2();
-
-				
-
 				$(".select").editableSelect();
 				
 					  </script>
@@ -50,7 +47,7 @@
 			</div>
 			<div class="col-md-3" style="width:350px">
 				 <select   id="type-select" style="height: 35px;width:100%;font-size: 22px;margin-top: 20px;" >
-					<option> -- select an option -- </option>
+					<option>-- select an option --</option>
 					<t t-foreach="widget.type_of_order" t-as="i">
 					<option t-attf-value="#{i['order']}"><span t-esc="i['order']" /></option>
 								</t>
@@ -61,7 +58,7 @@
                            </div>
 			    <div class="col-md-3 " style="width:350px">
 				 <select class="washing_type" id="washing_type"  style="height:35px;font-size: 22px;margin-top: 20px;" >
-				    <option> -- select an option -- </option>
+				    <option>-- select an option --</option>
 				    <t t-foreach="widget.washing_type" t-as="i">
 				    <option t-attf-value="#{i['washing']}"><span t-esc="i['washing']" /></option>
 				                </t>
@@ -76,7 +73,7 @@
 			</div>
 			<div class="col-md-3" style="width:350px">
 				 <select  id="my-select" style="height: 35px;font-size: 22px;margin-top: 20px;" >
-				<option> -- select an option -- </option>
+				<option>-- select an option --</option>
 				<t t-foreach="widget.location_list" t-as="i">
 						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
@@ -87,7 +84,7 @@
 			</div>
 			<div class="col-md-3" style="width:350px">
 				 <select   id="my-dest-select" style="height: 35px;font-size: 22px;margin-top: 20px;" >
-				<option> -- select an option -- </option>
+				<option>-- select an option --</option>
 				<t t-foreach="widget.location_list" t-as="i">
 						<option t-attf-value="#{i['name']}"  t-attf-ids="#{i['id']}"><span t-esc="i['name']" /></option>
 					</t>
