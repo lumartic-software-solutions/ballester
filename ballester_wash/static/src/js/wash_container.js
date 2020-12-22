@@ -487,6 +487,27 @@ var WashContainerMode = Widget.extend({
         self.session = Session;
         this.chrome = parent;
         this.gui    = undefined;
+        var def1 = this._rpc({
+            model: 'res.users',
+            method: 'search_read',
+            args: [[['id', '=', Session.uid]], ['menu_access_user','sidebar_visible']],
+        }).done(function(res1) {
+                var menu_access_user = res1[0]['menu_access_user']
+                var sidebar_visible = res1[0]['sidebar_visible']
+                if (menu_access_user == true){
+                     $("#app-sidebar").css("display", "none");
+                     $("#apps_icon").css("display", "none");
+                     $(".o_sub_menu_content").css("display", "none");
+                     $("#main-nav").css("display", "none");
+                      $("#app-sidebar").removeClass("toggle-sidebar");
+                }else{
+                    $("#app-sidebar").css("display", "block");
+                     $("#apps_icon").css("display", "block");
+                     $("#main-nav").css("display", "block");
+                     $(".o_sub_menu_content").css("display", "block");
+                     $("#app-sidebar").addClass("toggle-sidebar");
+                }
+               });
         var def = this._rpc({
                 model: 'res.company',
                 method: 'search_read',
