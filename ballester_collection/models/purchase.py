@@ -20,7 +20,7 @@ class PurchaseOrder(models.Model):
     def _get_waybill(self):
         for order in self:
             search_waybill = self.env['bill.lading'].search(
-                [('collection_id', '=', order.collection_id.id)])
+                [('purchase_id', '=', order.id)])
             if search_waybill:
                 order.update(
                     {'waybill_count': len([i.id for i in search_waybill])})
@@ -29,7 +29,7 @@ class PurchaseOrder(models.Model):
     @api.multi
     def action_view_waybill(self):
         waybill_ids = self.env['bill.lading'].search(
-            [('collection_id', '=', self.collection_id.id)])
+            [('purchase_id', '=', self.id)])
         action = self.env.ref(
             'ballester_collection.action_bill_of_lading_general').read()[0]
         if waybill_ids:
