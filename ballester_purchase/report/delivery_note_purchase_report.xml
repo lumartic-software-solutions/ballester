@@ -125,7 +125,7 @@
 								<th width="10%">
 									<strong>Cantidad</strong>
 								</th>
-								<th width="10%">
+							<!--	<th width="10%">
 									<strong>Precio (€)</strong>
 								</th>
 								<th width="10%">
@@ -133,7 +133,7 @@
 								</th>
 								<th width="20%">
 									<strong>Base (€)</strong>
-								</th>
+								</th>-->
 							</tr>
 						</thead>
 						<tbody>
@@ -148,7 +148,7 @@
 									<span t-field="l.product_qty"/>
 									<span t-field="l.product_uom" groups="product.group_uom"/>
 								</td>
-								<td class="text-right">
+							<!--	<td class="text-right">
 									<span t-field="l.price_unit"/>
 								</td>
 								<td class="text-right">
@@ -157,7 +157,7 @@
 								<td class="text-right">
 									<span t-field="l.price_subtotal" t-options='{"widget": "monetary", "display_currency":
 										o.currency_id}'/>
-								</td>
+								</td>-->
 							</tr>
 						</tbody>
 					</table>
