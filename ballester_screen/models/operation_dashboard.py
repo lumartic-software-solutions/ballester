@@ -75,8 +75,8 @@ class OperationDashboard(models.Model):
             unused_barcode_list.append({'barcode': data.name or '',
                                         'id': str(data.id) or '',
                                         })
-        barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)], limit=1000)
-        used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)], limit=1000)
+        barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
+        used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)])
         for data in barcode_ids:
             barcode_list.append({'barcode': data.name or '',
                                  'id': str(data.id) or '',
