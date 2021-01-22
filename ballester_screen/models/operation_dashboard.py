@@ -75,21 +75,31 @@ class OperationDashboard(models.Model):
             unused_barcode_list.append({'barcode': data.name or '',
                                         'id': str(data.id) or '',
                                         })
-        barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
-        used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)])
-        for data in barcode_ids:
-            barcode_list.append({'barcode': data.name or '',
-                                 'id': str(data.id) or '',
-                                 })
-        for data in used_barcode_ids:
-            used_barcode_list.append({'barcode': data.name or '',
-                                      'id': str(data.id) or '',
-                                      })
-
-        self.env.cr.execute("select * from stock_production_lot where product_id = %s order by id desc limit 3000" % sample_product_id)
+        # barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
+        # used_barcode_ids = lot_obj.search([('product_id', '!=', sample_product_id)])
+        # for data in barcode_ids:
+        #     barcode_list.append({'barcode': data.name or '',
+        #                          'id': str(data.id) or '',
+        #                          })
+        # for data in used_barcode_ids:
+        #     used_barcode_list.append({'barcode': data.name or '',
+        #                               'id': str(data.id) or '',
+        #                               })
+        self.env.cr.execute("select * from stock_production_lot where product_id = %s order by id desc limit 2000" % sample_product_id)
         res = self.env.cr.fetchall()
         for data in res:
             print ("_________________data",data)
+            barcode_list.append({'barcode': data[1] or '',
+                                 'id': str(data[0]) or '',
+                                 })
+        self.env.cr.execute(
+            "select * from stock_production_lot where product_id != %s order by id desc limit 2000" % sample_product_id)
+        res = self.env.cr.fetchall()
+        for data in res:
+            print("_________________data", data)
+            used_barcode_list.append({'barcode': data[1] or '',
+                                      'id': str(data[0]) or '',
+                                      })
 
         search_wash_order = self.env['wash.order'].search([])
         unsed_wash_barcode_list_ids = lot_obj.search([('id', 'not in', [ wash.lot_id.id for wash in search_wash_order])])
