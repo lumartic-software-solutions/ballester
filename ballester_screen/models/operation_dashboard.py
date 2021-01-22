@@ -86,6 +86,11 @@ class OperationDashboard(models.Model):
                                       'id': str(data.id) or '',
                                       })
 
+        self.env.cr.execute("select * from stock_production_lot where product_id = %s order by id desc limit 3000" % sample_product_id)
+        res = self.env.cr.fetchall()
+        for data in res:
+            print ("_________________data",data)
+
         search_wash_order = self.env['wash.order'].search([])
         unsed_wash_barcode_list_ids = lot_obj.search([('id', 'not in', [ wash.lot_id.id for wash in search_wash_order])])
         for data in unsed_wash_barcode_list_ids:
