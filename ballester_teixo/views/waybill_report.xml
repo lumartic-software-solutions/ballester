@@ -410,11 +410,11 @@
                             <tr height="10%" t-foreach="o.collection_id.collection_line_ids" t-as="cl">
                                   <td colspan="4" style="border:1px solid black;padding: 6px !important;"><span t-field="cl.product_id.uncode"/>-<span t-field="cl.name"/></td>
                                     <td style="border:1px solid black;padding: 6px !important;"><b>LER:</b><span t-field="cl.product_id.lercode_id.name"/></td>
-                                    <td class="text-center"  style="border:1px solid black;padding: 6px !important;"><span t-field="cl.product_qty"/></td>
+                                    <td class="text-center"  style="border:1px solid black;padding: 6px !important;"><span t-field="cl.product_uom_qty"/></td>
                                     <td class="text-center"  style="border:1px solid black;padding: 6px !important;"><span t-field="cl.product_id.categ_id.name"/></td>
-                                    <td class="text-center"  style="border:1px solid black;padding: 6px !important;"><span t-esc="cl.product_qty * cl.product_id.weight"/>  Kgs </td>
-                                    <t t-set="total_bultos" t-value="total_bultos+cl.product_qty"/>
-                                    <t t-set="total_cantidad" t-value="total_cantidad+(cl.product_qty * cl.product_id.weight)"/>
+                                    <td class="text-center"  style="border:1px solid black;padding: 6px !important;"><span t-esc="cl.product_uom_qty * cl.product_id.weight"/>  Kgs </td>
+                                    <t t-set="total_bultos" t-value="total_bultos+cl.product_uom_qty"/>
+                                    <t t-set="total_cantidad" t-value="total_cantidad+(cl.product_uom_qty * cl.product_id.weight)"/>
                                 </tr></t>
 
                             <tr style="height: 12px;!">
