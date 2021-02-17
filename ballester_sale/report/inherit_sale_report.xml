@@ -46,8 +46,8 @@
                     </t>-->
                 </div>
                 <div class="col-xs-5 col-xs-offset-1">
-                    <span t-esc="doc.partner_id.name"/>
-                       <div t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' />
+                    <span t-esc="doc.partner_shipping_id.name"/>
+                       <div t-field="doc.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}' />
                     <t t-if="doc.partner_id.phone">
 									Teléfono:
 									<span t-esc="doc.partner_id.phone"/>

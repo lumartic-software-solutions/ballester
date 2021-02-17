@@ -12,7 +12,7 @@
                         style="height:100px;width:300px;" />
                 </div>
                 <div class="col-xs-6 text-right">
-                    <table style="margin-left: 150px; !important;">
+                    <table style="margin-left: 140px; !important;">
                         <tr>
                             <td class="text-left">
                                 <h2>ORDEN DE RECOGIDA</h2>
@@ -104,29 +104,29 @@
                                 </div>
                             </div>
                             <div class="col-xs-6" style="margin-top: 50px !important;">
-                                <t t-if="o.partner_id.name">
+                                <t t-if="o.partner_shipping_id.name">
                                     <strong>
                                         Nombre:
-                                        <span t-esc="o.partner_id.name" />
+                                        <span t-esc="o.partner_shipping_id.name" />
                                     </strong>
                                 </t>
 
                                 <br />
-                                <t t-if="o.partner_id.street">
+                                <t t-if="o.partner_shipping_id.street">
                                     Dirección:
-                                    <span t-esc="o.partner_id.street" />
+                                    <span t-esc="o.partner_shipping_id.street" />
                                 </t>
                                 <br />
-                                <t t-if="o.partner_id.city">
+                                <t t-if="o.partner_shipping_id.city">
                                     CP/Municipio:
-                                    <span t-esc="o.partner_id.city" />
+                                    <span t-esc="o.partner_shipping_id.city" />
                                 </t>
 
                                 <br />
 
-                                <t t-if="o.partner_id.state_id">
+                                <t t-if="o.partner_shipping_id.state_id">
                                     Provincia:
-                                    <span t-esc="o.partner_id.state_id.name" />
+                                    <span t-esc="o.partner_shipping_id.state_id.name" />
                                 </t>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                         <div class="col-xs-6">
                             Por:
                             <strong>
-                                <span t-if="o.partner_id.name" t-esc="o.partner_id.name">
+                                <span t-if="o.partner_shipping_id.name" t-esc="o.partner_shipping_id.name">
                                 </span>
                             </strong>
 
