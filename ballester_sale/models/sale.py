@@ -37,7 +37,7 @@ class SaleOrderLine(models.Model):
         search_product = self.env['product.product'].browse(vals.get('product_id'))
         product_lot_ids = []
         error_messages = list()
-        if vals.get('barcode_number'):
+        if vals.get('barcode_number') and search_product[0].type == 'product':
             spilt_value = vals.get('barcode_number').split('\n')
             barcode_value = spilt_value
             if barcode_value:
