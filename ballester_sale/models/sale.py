@@ -86,7 +86,7 @@ class SaleOrderLine(models.Model):
         if vals.get('barcode_number'):
             spilt_value = vals.get('barcode_number').split('\n')
             barcode_value = spilt_value
-            if barcode_value:
+            if barcode_value and self.product_id.type == 'product':
                 search_lot_ids = lot_obj.search([('name','in', barcode_value)])
                 if search_lot_ids:
 
