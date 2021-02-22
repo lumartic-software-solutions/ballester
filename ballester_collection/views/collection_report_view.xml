@@ -83,9 +83,10 @@
                                         <span t-esc="o.company_id.vat">
                                         </span>
                                     </t>
+                                    <span t-esc="doc.company_id.partner_id.name"/>
                                     <div t-field="o.company_id.partner_id"
                                         t-options='{"widget": "contact", "fields":
-                                        ["address", "name"], "no_marker": True}' />
+                                        ["address"], "no_marker": True}' />
                                     <t t-if="o.company_id.partner_id.phone">
                                         t:
                                         <span t-esc="o.company_id.partner_id.phone">
