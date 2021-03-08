@@ -132,10 +132,10 @@
                         <tbody class="invoice_tbody">
                             <tr t-foreach="o.invoice_line_ids" t-as="l">
                                 <td>
-                                    <span t-field="l.name"/>
-                                    <span t-field="l.origin_number"/>
-                                    <span t-field="l.date_delivery"/>
-                                    <span t-field="l.client_ref"/>
+                                    <span t-field="l.name"/>&#160;&#160;
+                                    <span t-field="l.origin_number"/>&#160;&#160;
+                                    <span t-field="l.date_delivery" t-field-options='{"format": "MM/dd/yyyy"}'/>&#160;&#160;
+                                    <span t-field="o.partner_id.ref"/>
                                 </td>
                                 <td class="hidden">
                                     <span t-field="l.origin"/>
