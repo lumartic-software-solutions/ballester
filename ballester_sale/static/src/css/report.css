@@ -13,3 +13,25 @@ thead.common_thead{
     height: 100px;    
     border: 1px solid #C0C0C0;
 }
+.vertical-text {
+    /* Safari */
+
+     text-align: left;
+    transform: rotate(-90deg);
+
+    -webkit-transform: rotate(-90deg);
+
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+
+    /* IE */
+    -ms-transform: rotate(-90deg);
+    margin-left: -890px;
+
+    font-size:8px;
+    /* Opera */
+    -o-transform: rotate(-90deg);
+
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
