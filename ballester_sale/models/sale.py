@@ -101,10 +101,9 @@ class SaleOrderLine(models.Model):
         fpos = self.order_id.fiscal_position_id or self.order_id.partner_id.property_account_position_id
         if fpos:
             account = fpos.map_account(account)
-        delivery_date = datetime.today()
+        delivery_date = None
         if self.order_id.picking_ids:
             for pick in self.order_id.picking_ids:
-                print (">>>>>>>>>>>>pick>>>>>>>",pick)
                 if pick.scheduled_date:
                     delivery_date = pick.scheduled_date
         res = {
