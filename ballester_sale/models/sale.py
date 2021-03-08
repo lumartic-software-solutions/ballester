@@ -5,6 +5,7 @@
 from odoo import models, fields, api, _
 from odoo.tools.float_utils import float_compare, float_round, float_is_zero
 from odoo.exceptions import UserError, ValidationError
+from datetime import datetime, timedelta
 
 
 class SaleOrder(models.Model):
@@ -79,6 +80,51 @@ class SaleOrderLine(models.Model):
         #                 lot_ids.append(i.lot_id.id)
         #             product_lot_ids = [(6,0, lot_ids)]
         #             res.lot_ids = product_lot_ids
+        return res
+
+    @api.multi
+    def _prepare_invoice_line(self, qty):
+        """
+        Prepare the dict of values to create the new invoice line for a sales order line.
+
+        :param qty: float quantity to invoice
+        """
+        self.ensure_one()
+        res = {}
+        product = self.product_id.with_context(force_company=self.company_id.id)
+        account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
+        if not account:
+            raise UserError(
+                _('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
+                (self.product_id.name, self.product_id.id, self.product_id.categ_id.name))
+
+        fpos = self.order_id.fiscal_position_id or self.order_id.partner_id.property_account_position_id
+        if fpos:
+            account = fpos.map_account(account)
+        delivery_date = datetime.today()
+        if self.order_id.picking_ids:
+            for pick in self.order_id.picking_ids:
+                print (">>>>>>>>>>>>pick>>>>>>>",pick)
+                if pick.scheduled_date:
+                    delivery_date = pick.scheduled_date
+        res = {
+            'name': self.name,
+            'client_ref': self.order_id.client_order_ref,
+            'origin_number': self.order_id.name,
+            'date_delivery': delivery_date,
+            'sequence': self.sequence,
+            'origin': self.order_id.name,
+            'account_id': account.id,
+            'price_unit': self.price_unit,
+            'quantity': qty,
+            'discount': self.discount,
+            'uom_id': self.product_uom.id,
+            'product_id': self.product_id.id or False,
+            'layout_category_id': self.layout_category_id and self.layout_category_id.id or False,
+            'invoice_line_tax_ids': [(6, 0, self.tax_id.ids)],
+            'account_analytic_id': self.order_id.analytic_account_id.id,
+            'analytic_tag_ids': [(6, 0, self.analytic_tag_ids.ids)],
+        }
         return res
 
     @api.multi

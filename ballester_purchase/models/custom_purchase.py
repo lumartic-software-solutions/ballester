@@ -6,6 +6,7 @@ from operator import itemgetter
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_round, float_compare, float_is_zero
 from itertools import groupby
+from datetime import datetime, timedelta
 
 
 class FleetVehicle(models.Model):
@@ -222,10 +223,17 @@ class PurchaseorderLine(models.Model):
         fpos = self.order_id.fiscal_position_id or self.order_id.partner_id.property_account_position_id
         if fpos:
             account = fpos.map_account(account)
-
+        delivery_date = datetime.today()
+        if self.order_id.picking_ids:
+            for pick in self.order_id.picking_ids:  
+                if pick.scheduled_date:
+                    delivery_date = pick.scheduled_date
         res = {
             'name': self.name,
             'sequence': self.sequence,
+            'client_ref': self.order_id.client_order_ref,
+            'origin_number': self.order_id.name,
+            'date_delivery': delivery_date,
             'origin': self.order_id.name,
             'account_id': account.id,
             'price_unit': self.price_unit,
