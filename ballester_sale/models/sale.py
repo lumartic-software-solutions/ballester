@@ -110,7 +110,7 @@ class SaleOrderLine(models.Model):
             'name': self.name,
             'client_ref': self.order_id.client_order_ref,
             'origin_number': self.order_id.name,
-            'date_delivery': self.effective_date,
+            'date_delivery': self.order_id.effective_date,
             'sequence': self.sequence,
             'origin': self.order_id.name,
             'account_id': account.id,
