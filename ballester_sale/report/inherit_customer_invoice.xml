@@ -134,7 +134,7 @@
                                 <td>
                                     <span t-field="l.name"/><br/>
                                     <span t-field="l.origin_number"/>&#160;&#160;
-                                    <span t-field="o.partner_id.ref"/>&#160;&#160;
+                                    <span t-field="l.client_ref"/>&#160;&#160;
                                     <span t-field="l.date_delivery" t-field-options='{"format": "MM/dd/yyyy"}'/>
 
                                 </td>
