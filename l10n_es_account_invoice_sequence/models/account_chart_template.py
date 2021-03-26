@@ -12,6 +12,7 @@ class AccountChartTemplate(models.Model):
     def _prepare_all_journals(self, acc_template_ref, company_id,
                               journals_dict=None):
         self.ensure_one()
+        print("\n\n\n _prepare_all_journals -------------------1===========")
         journal_data = super(AccountChartTemplate, self)._prepare_all_journals(
             acc_template_ref, company_id, journals_dict=journals_dict,
         )
@@ -36,6 +37,7 @@ class AccountChartTemplate(models.Model):
                 refund_seq = journal_model._create_sequence(
                     journal_vals, refund=True,
                 )
+                print("\n\n\n refund_seq -------------------1===========")
                 refund_seq.name += _(' (Refund)')
                 journal_vals['refund_inv_sequence_id'] = refund_seq.id
         return journal_data

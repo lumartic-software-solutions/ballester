@@ -23,6 +23,7 @@ def post_init_hook(cr, registry):
                 'company_id': company.id,
             })
             journal_invoice_types = journals._get_invoice_types()
+            print("\n\n\n post_init_hook -------------------1===========")
             for journal in journals:
                 vals = {
                     'sequence_id': journal_seq.id,
