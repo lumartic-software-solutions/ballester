@@ -15,3 +15,4 @@ class AccountInvoiceLine(models.Model):
     origin_number = fields.Char('Origin NUmber')
     date_delivery = fields.Datetime('Delivery Date')
     client_ref = fields.Char('Customer Reference')
+    product_name = fields.Char(related='product_id.name',string='product Name')
