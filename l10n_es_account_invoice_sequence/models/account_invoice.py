@@ -39,19 +39,19 @@ class AccountInvoice(models.Model):
                         inv.journal_id.refund_inv_sequence_id:
                     sequence = inv.journal_id.refund_inv_sequence_id
                     print("\n\n\n\n**************id*sequence********", sequence)
-
-                # if sequence:
-                #     sequence = sequence.with_context(
-                #         ir_sequence_date=inv.date or inv.date_invoice,
-                #         ir_sequence_date_range=inv.date or inv.date_invoice,
-                #     )
-                #     number = sequence.next_by_id()
-                #     print("\n\n\n\n****number**", number)
-                # else:  # pragma: no cover
-                #     # Other localizations or not configured journals
-                number = inv.move_id.name
-                print("\n\n\n\n****numbe elser**", number)
-                print("\n\n\n\nUUUUUUUUU!!!UUUUUUUUUU", number)
+                    number = inv.move_id.name
+                if sequence and inv.type not in {'out_refund', 'in_refund'}:
+                    sequence = sequence.with_context(
+                        ir_sequence_date=inv.date or inv.date_invoice,
+                        ir_sequence_date_range=inv.date or inv.date_invoice,
+                    )
+                    number = sequence.next_by_id()
+                    print("\n\n\n\n****number**", number)
+                else:  # pragma: no cover
+                    # Other localizations or not configured journals
+                    number = inv.move_id.name
+                    print("\n\n\n\n****numbe elser**", number)
+                    print("\n\n\n\nUUUUUUUUU!!!UUUUUUUUUU", number)
                 inv.write({
                     'number': number,
                     'invoice_number': number,
