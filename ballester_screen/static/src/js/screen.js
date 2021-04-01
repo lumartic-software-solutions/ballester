@@ -79,7 +79,7 @@ var BallesterScreen = Widget.extend({
             }, []).then(function(result){
             	self.operation_data = result[0]
                 //self.product_list = self.operation_data.product_list
-                self.barcode_list = self.operation_data.barcode_list
+                //self.barcode_list = self.operation_data.barcode_list
                 self.set_unused_barcode_list = self.operation_data.set_unused_barcode_list
                 self.unused_barcode_list = self.operation_data.unused_barcode_list
                 self.employee_id = session.employee_id
@@ -140,11 +140,15 @@ var BallesterScreen = Widget.extend({
     },
     generate_barcode: function(event){
     	 var self = this;
+    	 var ctx = {}
+    	 ctx['generate_barcode'] = true
          event.stopPropagation();
          event.preventDefault();
+
          self._rpc({
              model: 'operation.dashboard',
              method: 'get_operation_info',
+             context: ctx,
          }, []).then(function(result){
             self.operation_data = result[0]
             self.product_list = self.operation_data.product_list
