@@ -42,54 +42,16 @@ class OperationDashboard(models.Model):
         unsed_wash_barcode_list =[]
         recycled_product = ''
         recycled_product_list = []
-        product_ids = product_obj.search([('sale_ok', '=', True), ('type', '=', 'product')])
-        for data in product_ids:
-            set_product = self.set_product_name(data)
-            set_product_name = ''
-            if "''" in set_product:
-                set_product_name = set_product.replace("''", "*")
-            else:
-                set_product_name = set_product.replace('"', "*")
-            product_list.append({'name': set_product_name or '',
-                                 'id': str(data.id) or '',
-                                 'default_code': data.default_code or '',
-                                 'ler_code': "[%s] %s" % (
-                                 data.lercode_id.name, data.lercode_id.description) if data.lercode_id else 'None',
-                                 })
-        if product_list:
-            recycled_product = '<select class="product_recycled onchange_product"  id="my-recycled-product" style="height: 45px;font-size: 22px;margin-top: 20px;">'
-            for line in product_list:
-                recycled_product += '<option label="' + line['name'] + '" ids="' + line['id'] + '"' + ' value="' + line[
-                    'name'] + '">' + line['name'] + '</option>'
-            recycled_product += '</select>'
-
         sample_product_id = self.env.ref('ballester_screen.sample_product_id').id
-        unused_barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
-        for data in unused_barcode_ids:
-            unused_barcode_list.append({'barcode': data.name or '',
-                                        'id': str(data.id) or '',
-                                        })
 
-        self.env.cr.execute("select * from stock_production_lot where product_id = %s order by id desc limit 2000" % sample_product_id)
-        res = self.env.cr.fetchall()
-        for data in res:
-            barcode_list.append({'barcode': data[1] or '',
-                                 'id': str(data[0]) or '',
-                                 })
-        self.env.cr.execute(
-            "select * from stock_production_lot where product_id != %s order by id desc limit 2000" % sample_product_id)
-        res = self.env.cr.fetchall()
-        for data in res:
-            used_barcode_list.append({'barcode': data[1] or '',
-                                      'id': str(data[0]) or '',
-                                      })
 
-        search_wash_order = self.env['wash.order'].search([])
-        unsed_wash_barcode_list_ids = lot_obj.search([('id', 'not in', [ wash.lot_id.id for wash in search_wash_order])])
-        for data in unsed_wash_barcode_list_ids:
-            unsed_wash_barcode_list.append({'barcode': data.name or '',
-                                        'id': str(data.id) or '',
-                                        })
+
+        # search_wash_order = self.env['wash.order'].search([])
+        # unsed_wash_barcode_list_ids = lot_obj.search([('id', 'not in', [ wash.lot_id.id for wash in search_wash_order])])
+        # for data in unsed_wash_barcode_list_ids:
+        #     unsed_wash_barcode_list.append({'barcode': data.name or '',
+        #                                 'id': str(data.id) or '',
+        #                                 })
         location_ids = location_obj.search([('usage', 'in', ['internal'])])
         for location in location_ids:
             orig_location = location
@@ -104,7 +66,43 @@ class OperationDashboard(models.Model):
                                   })
         product_selection = ''
         barcode_selection = ''
+        set_unused_barcode_list = False
         if ctx.get('generate_barcode'):
+            self.env.cr.execute(
+                "select * from stock_production_lot where product_id = %s order by id desc limit 2000" % sample_product_id)
+            res = self.env.cr.fetchall()
+            for data in res:
+                barcode_list.append({'barcode': data[1] or '',
+                                     'id': str(data[0]) or '',
+                                     })
+            self.env.cr.execute(
+                "select * from stock_production_lot where product_id != %s order by id desc limit 2000" % sample_product_id)
+            res = self.env.cr.fetchall()
+            for data in res:
+                used_barcode_list.append({'barcode': data[1] or '',
+                                          'id': str(data[0]) or '',
+                                          })
+
+            unused_barcode_ids = lot_obj.search([('product_id', '=', sample_product_id)])
+            for data in unused_barcode_ids:
+                unused_barcode_list.append({'barcode': data.name or '',
+                                            'id': str(data.id) or '',
+                                            })
+            product_ids = product_obj.search([('sale_ok', '=', True), ('type', '=', 'product')])
+            for data in product_ids:
+                set_product = self.set_product_name(data)
+                set_product_name = ''
+                if "''" in set_product:
+                    set_product_name = set_product.replace("''", "*")
+                else:
+                    set_product_name = set_product.replace('"', "*")
+                product_list.append({'name': set_product_name or '',
+                                     'id': str(data.id) or '',
+                                     'default_code': data.default_code or '',
+                                     'ler_code': "[%s] %s" % (
+                                         data.lercode_id.name,
+                                         data.lercode_id.description) if data.lercode_id else 'None',
+                                     })
             if len(product_list) > 0:
                 product_selection = '<select class="products" style="overflow-y: auto!important; font-size: 18px;">'
                 for line in product_list:
@@ -122,10 +120,10 @@ class OperationDashboard(models.Model):
                 barcode_selection += '</select>'
             else:
                 barcode_selection = '<select class="barcodes" style="overflow-y: auto!important; font-size: 18px;"><option>No Data Found !</option> </select>'
-        set_unused_barcode_list = False
 
-        if len(unused_barcode_list) > 0:
-            set_unused_barcode_list = True
+
+            if len(unused_barcode_list) > 0:
+                set_unused_barcode_list = True
         # if recycled_product:
         #     recycled_product = recycled_product
         # else:
@@ -139,7 +137,7 @@ class OperationDashboard(models.Model):
                 'set_product_list': product_list,
                 'set_barcode_list': barcode_list,
                 'used_set_barcode_list': used_barcode_list,
-                'unsed_wash_barcode_list': unsed_wash_barcode_list,
+                # 'unsed_wash_barcode_list': unsed_wash_barcode_list,
                 'unused_barcode_list': unused_barcode_list,
                 'set_unused_barcode_list': set_unused_barcode_list,
                 'type_of_order': [{'order': 'Container'}, {'order': 'Drum'}],
