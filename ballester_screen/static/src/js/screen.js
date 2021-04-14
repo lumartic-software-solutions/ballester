@@ -1524,6 +1524,7 @@ create_destruction_order_confirm: function(event){
 		   	var barcode_data = []
 	   	   // append barcode to print report
 		   	var barcode_ids = event.target.getAttribute("line_id")
+		   	console.log(">>>>>>>>>>>>>>>>>>>>>>barcode_ids>>>>>>>>",barcode_ids)
 	   	    	if (barcode_ids != undefined ){
 	   	    		barcode_data.push(parseInt(barcode_ids));
                    //printing barcode
