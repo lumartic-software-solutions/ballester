@@ -231,7 +231,7 @@ class PurchaseorderLine(models.Model):
         res = {
             'name': self.name,
             'sequence': self.sequence,
-            'client_ref': self.order_id.client_order_ref,
+            'client_ref': self.order_id.partner_ref,
             'origin_number': self.order_id.name,
             'date_delivery': delivery_date,
             'origin': self.order_id.name,
