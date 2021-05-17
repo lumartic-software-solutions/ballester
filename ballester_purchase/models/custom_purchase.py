@@ -137,7 +137,7 @@ class Purchaseorder(models.Model):
             'name': self.partner_ref or '',
             'origin': self.name,
             'type': 'in_invoice',
-            'account_id': self.partner_id.property_account_receivable_id.id,
+            'account_id': self.partner_id.property_account_payable_id.id,
             'partner_id': self.partner_id.id,
             'journal_id': journal_id.id,
             'currency_id': self.currency_id.id,
