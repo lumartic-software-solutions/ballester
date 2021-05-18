@@ -67,7 +67,7 @@ class SaleOrderLine(models.Model):
                 if vals.get('product_id'):
                     product_search = self.env['product.product'].browse(vals.get('product_id'))
                     if product_search:
-                        if product_search.type == 'product':
+                        if product_search.type == 'product' and product_search.tracking != 'none':
                             raise UserError(_("por favor agregue código de barras en este producto '%s' ")%(  search_product[0].name))
         print ("LLLLLLLLLLLLLLLLLLLLLLLLL",vals)
         res = super(SaleOrderLine, self).create(vals)

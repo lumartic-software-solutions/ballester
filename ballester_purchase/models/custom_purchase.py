@@ -298,7 +298,7 @@ class PurchaseorderLine(models.Model):
                     raise UserError(
                         _("barcode '%s' not in system") % (
                             barcode_value))
-        if not vals.get('barcode_number'):
+        if not vals.get('barcode_number') and search_product.tracking != 'none':
             raise UserError(_("por favor agregue código de barras en este producto '%s' ") % (search_product[0].name))
         res = super(PurchaseorderLine, self).create(vals)
         return res
