@@ -98,6 +98,13 @@ class DocumentTeixo(models.Model):
     def onchange_nt(self):
         if self.nt_id and self.nt_id.ct_id:
             self.ct_id = self.nt_id.ct_id
+            self.explotador_gestor_center_id = self.nt_id.explotador_gestor_center_id
+            self.explotador_productor_center_id = self.nt_id.explotador_productor_center_id
+            self.operador_center_id = self.nt_id.explotador_gestor_center_id
+            self.gestor_final_1_center_id = self.nt_id.gestor_final_1_center_id
+            self.gestor_final_2_center_id = self.nt_id.gestor_final_2_center_id
+            self.gestor_final_3_center_id = self.nt_id.gestor_final_3_center_id
+
 
 #     @api.onchange('productor_residue_id')
 #     def onchange_residue(self):
