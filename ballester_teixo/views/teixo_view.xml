@@ -105,19 +105,19 @@
                                 domain="[('center_type','=','carrier'),('type','=','center')]"
                                 attrs="{'invisible': [('doc_type', 'not in', ['di','nt'])],'required': [('doc_type', 'in', ['di','nt'])]}" />
                             <field name="explotador_productor_center_id"
-                                domain="[('center_type','=','exploiter_producer'),('type','=','center')]" />
+                                domain="[('center_type','=','producer'),('type','=','center')]" />
                             <field name="explotador_gestor_center_id"
-                                domain="[('center_type','=','exploiter_gestor'),('type','=','center')]" />
+                                domain="[('center_type','=','manager'),('type','=','center')]" />
                             <field name="operador_center_id"
-                                domain="[('center_type','=','operator'),('type','=','center')]" />
+                                domain="[('type','=','center')]" />
                             <field name="gestor_final_1_center_id"
-                                domain="[('center_type','=','final_manager_1'),('type','=','center')]"
+                                domain="[('type','=','center')]"
                                 attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
                             <field name="gestor_final_2_center_id"
-                                domain="[('center_type','=','final_manager_2'),('type','=','center')]"
+                                domain="[('type','=','center')]"
                                 attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
                             <field name="gestor_final_3_center_id"
-                                domain="[('center_type','=','final_manager_3'),('type','=','center')]"
+                                domain="[('type','=','center')]"
                                 attrs="{'invisible': [('doc_type', '!=', 'nt')]}" />
                             <field name="state_di"
                                 attrs="{'invisible': [('doc_type', '!=', 'di')]}" />
