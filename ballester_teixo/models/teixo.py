@@ -237,8 +237,11 @@ class DocumentTeixo(models.Model):
                         'gross_weight_residue': order_line_id.product_id.weight * order_line_id.product_uom_qty,
                         'net_weight_residue': order_line_id.product_id.weight * order_line_id.product_uom_qty,
                         'transportista_center_id': order_line_id.order_id.carrier_id.id,
-			'ct_id':ct_id,
-			'nt_id':nt_id })
+                        # 'gestor_final_1_center_id':self.nt_id.gestor_final_1_center_id,
+                        # 'gestor_final_2_center_id':self.nt_id.gestor_final_2_center_id,
+                        # 'gestor_final_3_center_id': self.nt_id.gestor_final_3_center_id,
+                        'ct_id':ct_id,
+                        'nt_id':nt_id })
         res.update({'gestor_center_id': gestor})
         return res
 
@@ -476,25 +479,25 @@ class DocumentTeixo(models.Model):
             data['documento'].update({
                 "operador":
                     {
-                        "nombre": self.operator_center_id.parent_id.name,
-                        "codigo_externo": self.operator_center_id.parent_id.external_code,
-                        "cif_nif_nie": self.operator_center_id.parent_id.cif_nif_nie,
-                        "razon_social": self.operator_center_id.parent_id.business_name,
-                        "apellido1": self.operator_center_id.parent_id.lastname_1,
-                        "codigo_tipo_entidad": self.operator_center_id.authorization_code_id and self.operator_center_id.authorization_code_id.code,
-                        "codigo_tipo_asociacion": self.operator_center_id.parent_id.association_type_id and self.operator_center_id.parent_id.association_type_id.code,
+                        "nombre": self.operador_center_id.parent_id.name,
+                        "codigo_externo": self.operador_center_id.parent_id.external_code,
+                        "cif_nif_nie": self.operador_center_id.parent_id.cif_nif_nie,
+                        "razon_social": self.operador_center_id.parent_id.business_name,
+                        "apellido1": self.operador_center_id.parent_id.lastname_1,
+                        "codigo_tipo_entidad": self.operador_center_id.authorization_code_id and self.operador_center_id.authorization_code_id.code,
+                        "codigo_tipo_asociacion": self.operador_center_id.parent_id.association_type_id and self.operador_center_id.parent_id.association_type_id.code,
                         "centro":
                         {
-                            "telefono": self.operator_center_id.phone,
-                            "localidad": self.operator_center_id.city,
-                            "nombre": self.operator_center_id.name,
-                            "nima": self.operator_center_id.nima,
-                            "codigo_municipio": self.operator_center_id.municipality_code_id and self.operator_center_id.municipality_code_id.code,
-                            "direccion": self.operator_center_id.street,
-                            "email": self.operator_center_id.email,
-                            "codigo_via": self.operator_center_id.code_via_id and self.operator_center_id.code_via_id.code,
-                            "codigo_postal": self.operator_center_id.zip,
-                            "autorizacion": self.operator_center_id.authorization_code
+                            "telefono": self.operador_center_id.phone,
+                            "localidad": self.operador_center_id.city,
+                            "nombre": self.operador_center_id.name,
+                            "nima": self.operador_center_id.nima,
+                            "codigo_municipio": self.operador_center_id.municipality_code_id and self.operador_center_id.municipality_code_id.code,
+                            "direccion": self.operador_center_id.street,
+                            "email": self.operador_center_id.email,
+                            "codigo_via": self.operador_center_id.code_via_id and self.operador_center_id.code_via_id.code,
+                            "codigo_postal": self.operador_center_id.zip,
+                            "autorizacion": self.operador_center_id.authorization_code
                         },
                     },
             })
@@ -751,25 +754,25 @@ class DocumentTeixo(models.Model):
             data['documento'].update({
                 "operador":
                     {
-                        "nombre": self.operator_center_id.parent_id.name,
-                        "codigo_externo": self.operator_center_id.parent_id.external_code,
-                        "cif_nif_nie": self.operator_center_id.parent_id.cif_nif_nie,
-                        "razon_social": self.operator_center_id.parent_id.business_name,
-                        "apellido1": self.operator_center_id.parent_id.lastname_1,
-                        "codigo_tipo_entidad": self.operator_center_id.authorization_code_id and self.operator_center_id.authorization_code_id.code,
-                        "codigo_tipo_asociacion": self.operator_center_id.parent_id.association_type_id and self.operator_center_id.parent_id.association_type_id.code,
+                        "nombre": self.operador_center_id.parent_id.name,
+                        "codigo_externo": self.operador_center_id.parent_id.external_code,
+                        "cif_nif_nie": self.operador_center_id.parent_id.cif_nif_nie,
+                        "razon_social": self.operador_center_id.parent_id.business_name,
+                        "apellido1": self.operador_center_id.parent_id.lastname_1,
+                        "codigo_tipo_entidad": self.operador_center_id.authorization_code_id and self.operador_center_id.authorization_code_id.code,
+                        "codigo_tipo_asociacion": self.operador_center_id.parent_id.association_type_id and self.operador_center_id.parent_id.association_type_id.code,
                         "centro":
                         {
-                            "telefono": self.operator_center_id.phone,
-                            "localidad": self.operator_center_id.city,
-                            "nombre": self.operator_center_id.name,
-                            "nima": self.operator_center_id.nima,
-                            "codigo_municipio": self.operator_center_id.municipality_code_id and self.operator_center_id.municipality_code_id.code,
-                            "direccion": self.operator_center_id.street,
-                            "email": self.operator_center_id.email,
-                            "codigo_via": self.operator_center_id.code_via_id and self.operator_center_id.code_via_id.code,
-                            "codigo_postal": self.operator_center_id.zip,
-                            "autorizacion": self.operator_center_id.authorization_code
+                            "telefono": self.operador_center_id.phone,
+                            "localidad": self.operador_center_id.city,
+                            "nombre": self.operador_center_id.name,
+                            "nima": self.operador_center_id.nima,
+                            "codigo_municipio": self.operador_center_id.municipality_code_id and self.operador_center_id.municipality_code_id.code,
+                            "direccion": self.operador_center_id.street,
+                            "email": self.operador_center_id.email,
+                            "codigo_via": self.operador_center_id.code_via_id and self.operador_center_id.code_via_id.code,
+                            "codigo_postal": self.operador_center_id.zip,
+                            "autorizacion": self.operador_center_id.authorization_code
                         },
                     },
             })
@@ -1166,3 +1169,4 @@ class ResIncidence(models.Model):
             display_value += ('-' + rec.description) or ""
             data.append((rec.id, display_value))
         return data
+
